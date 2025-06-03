@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
-//#include <mpi.h> 
+#include <sys/time.h>
 #include "../matrix/ops.h"
 #include "../neural/activations.h"
 #include "../socket/socket_utils.h"
@@ -34,12 +34,12 @@ NeuralNetwork* network_create(int input, int hidden, int output, double lr) {
 double network_train(NeuralNetwork* net, Matrix* input, Matrix* output) {
 	// Feed forward
 	Matrix* hidden_inputs	= dot(net->hidden_weights, input);
-	Matrix* hidden_outputs = apply(sigmoid, hidden_inputs);
+	Matrix* hidden_outputs = apply(sigmoid, hidden_inputs); // Tính đầu ra của lớp 1 
 	Matrix* final_inputs = dot(net->output_weights, hidden_outputs);
-	Matrix* final_outputs = apply(sigmoid, final_inputs);
+	Matrix* final_outputs = apply(sigmoid, final_inputs); // Tính đầu ra của lớp 2
 
 	// Find errors
-	Matrix* output_errors = subtract(output, final_outputs);
+	Matrix* output_errors = subtract(output, final_outputs); // Lấy sai số 
 	double loss = 0.0;
 	for (int i = 0; i < output->rows; i++) {
 		double diff = output->entries[i][0] - final_outputs->entries[i][0];
@@ -47,7 +47,7 @@ double network_train(NeuralNetwork* net, Matrix* input, Matrix* output) {
 	}
 
 	Matrix* transposed_mat = transpose(net->output_weights);
-	Matrix* hidden_errors = dot(transposed_mat, output_errors);
+	Matrix* hidden_errors = dot(transposed_mat, output_errors); // Lấy hidden error của output 
 	matrix_free(transposed_mat);
 
 	// Backpropogate
@@ -69,7 +69,7 @@ double network_train(NeuralNetwork* net, Matrix* input, Matrix* output) {
 	transposed_mat = transpose(hidden_outputs);
 	Matrix* dot_mat = dot(multiplied_mat, transposed_mat);
 	Matrix* scaled_mat = scale(net->learning_rate, dot_mat);
-	Matrix* added_mat = add(net->output_weights, scaled_mat);
+	Matrix* added_mat = add(net->output_weights, scaled_mat); // điều chỉnh output weights 
 
 	matrix_free(net->output_weights); // Free the old weights before replacing
 	net->output_weights = added_mat;
@@ -101,7 +101,7 @@ double network_train(NeuralNetwork* net, Matrix* input, Matrix* output) {
 	scaled_mat = scale(net->learning_rate, dot_mat);
 	added_mat = add(net->hidden_weights, scaled_mat);
 	matrix_free(net->hidden_weights); // Free the old hidden_weights before replacement
-	net->hidden_weights = added_mat; 
+	net->hidden_weights = added_mat; // điều chỉnh hidden weights 
 
 	matrix_free(sigmoid_primed_mat);
 	matrix_free(multiplied_mat);
@@ -169,11 +169,194 @@ void network_set_weights(NeuralNetwork* net, const double* weights, int count) {
     }
 }
 
+double time_diff(struct timeval start, struct timeval end) {
+    return (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1e6;
+}
+
+double network_train_model_parallelism(NeuralNetwork* net, Matrix* input, Matrix* output, bool is_master) {
+    int mid_hidden = net->hidden_weights->rows / 2;
+    int mid_output = net->output_weights->rows / 2;
+
+    Matrix* hidden_weights_master = slice_matrix_rows(net->hidden_weights, 0, mid_hidden);
+    Matrix* output_weights_master = slice_matrix_rows(net->output_weights, 0, mid_output);
+    Matrix* hidden_weights_slave  = slice_matrix_rows(net->hidden_weights, mid_hidden, net->hidden_weights->rows);
+    Matrix* output_weights_slave  = slice_matrix_rows(net->output_weights, mid_output, net->output_weights->rows);
+
+    int sockfd;
+    if (is_master) {
+        sockfd = setup_server(port);
+        printf("[Master] Server started. Waiting for connection...\n");
+        sockfd = accept_client(sockfd);
+        printf("[Master] Connection accepted.\n");
+    } else {
+        sockfd = connect_to_server(ip, port);
+        printf("[Slave] Connected to master.\n");
+    }
+
+    if (is_master) {
+        // === FORWARD MASTER ===
+        Matrix* hidden_inputs_master = dot(hidden_weights_master, input);
+        Matrix* hidden_outputs_master = apply(sigmoid, hidden_inputs_master);
+        Matrix* final_inputs_master = dot(output_weights_master, hidden_outputs_master);
+        Matrix* final_outputs_master = apply(sigmoid, final_inputs_master);
+
+        // === RECEIVE FROM SLAVE ===
+        Matrix* hidden_outputs_slave = recv_matrix(sockfd);
+        Matrix* final_outputs_slave  = recv_matrix(sockfd);
+        double loss_slave = recv_loss(sockfd);
+
+        if (!hidden_outputs_slave || !final_outputs_slave) {
+            fprintf(stderr, "[Master] Failed to receive data from slave.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        // === MERGE & COMPUTE ERROR ===
+        Matrix* hidden_outputs = concat_rows(hidden_outputs_master, hidden_outputs_slave);
+        Matrix* final_outputs  = concat_rows(final_outputs_master, final_outputs_slave);
+        Matrix* output_errors  = subtract(output, final_outputs);
+
+        // === CALCULATE LOSS ===
+        double total_loss = 0.0;
+        for (int i = 0; i < output->rows; i++) {
+            double diff = output->entries[i][0] - final_outputs->entries[i][0];
+            total_loss += diff * diff;
+        }
+
+        // === BACKPROP ===
+
+        // Output weights update
+        Matrix* sigmoid_primed = sigmoidPrime(final_outputs);
+        Matrix* delta_output = multiply(output_errors, sigmoid_primed);
+        Matrix* trans_hidden = transpose(hidden_outputs);
+        Matrix* grad_output = dot(delta_output, trans_hidden);
+        Matrix* delta_output_scaled = scale(net->learning_rate, grad_output);
+        Matrix* new_output_weights = add(net->output_weights, delta_output_scaled);
+
+        matrix_free(net->output_weights);
+        net->output_weights = new_output_weights;
+
+        // Hidden weights update
+        Matrix* trans_output_weights = transpose(net->output_weights);
+        Matrix* hidden_errors = dot(trans_output_weights, output_errors);
+        Matrix* sigmoid_prime_hidden = sigmoidPrime(hidden_outputs);
+        Matrix* delta_hidden = multiply(hidden_errors, sigmoid_prime_hidden);
+        Matrix* trans_input = transpose(input);
+        Matrix* grad_hidden = dot(delta_hidden, trans_input);
+        Matrix* delta_hidden_scaled = scale(net->learning_rate, grad_hidden);
+        Matrix* new_hidden_weights = add(net->hidden_weights, delta_hidden_scaled);
+
+        matrix_free(net->hidden_weights);
+        net->hidden_weights = new_hidden_weights;
+
+        // === FREE ALL ===
+        matrix_free(hidden_weights_master);
+        matrix_free(output_weights_master);
+        matrix_free(hidden_weights_slave);
+        matrix_free(output_weights_slave);
+
+        matrix_free(hidden_inputs_master);
+        matrix_free(hidden_outputs_master);
+        matrix_free(final_inputs_master);
+        matrix_free(final_outputs_master);
+        matrix_free(hidden_outputs_slave);
+        matrix_free(final_outputs_slave);
+        matrix_free(hidden_outputs);
+        matrix_free(final_outputs);
+        matrix_free(output_errors);
+        matrix_free(sigmoid_primed);
+        matrix_free(delta_output);
+        matrix_free(trans_hidden);
+        matrix_free(grad_output);
+        matrix_free(delta_output_scaled);
+        matrix_free(trans_output_weights);
+        matrix_free(hidden_errors);
+        matrix_free(sigmoid_prime_hidden);
+        matrix_free(delta_hidden);
+        matrix_free(trans_input);
+        matrix_free(grad_hidden);
+        matrix_free(delta_hidden_scaled);
+
+        close(sockfd);
+        return total_loss;
+
+    } else {
+        // === SLAVE FORWARD ===
+        Matrix* hidden_inputs = dot(hidden_weights_slave, input);
+        Matrix* hidden_outputs = apply(sigmoid, hidden_inputs);
+        Matrix* final_inputs = dot(output_weights_slave, hidden_outputs);
+        Matrix* final_outputs = apply(sigmoid, final_inputs);
+
+        // === CALCULATE LOSS ===
+        double loss = 0.0;
+        for (int i = output->rows / 2; i < output->rows; i++) {
+            double diff = output->entries[i][0] - final_outputs->entries[i - output->rows / 2][0];
+            loss += diff * diff;
+        }
+
+        // === SEND TO MASTER ===
+        send_matrix(sockfd, hidden_outputs);
+        send_matrix(sockfd, final_outputs);
+        send_loss(sockfd, loss);
+
+        // === FREE ===
+        matrix_free(hidden_weights_master);
+        matrix_free(output_weights_master);
+        matrix_free(hidden_weights_slave);
+        matrix_free(output_weights_slave);
+
+        matrix_free(hidden_inputs);
+        matrix_free(hidden_outputs);
+        matrix_free(final_inputs);
+        matrix_free(final_outputs);
+
+        close(sockfd);
+        return loss;
+    }
+}
+
+void network_train_batch_imgs_model_parallelism(NeuralNetwork* net, Img** imgs, int batch_size, int epochs, bool is_master) {
+    double loss_sum = 0.0;
+    int loss_count = 0;
+
+    for (int epoch = 0; epoch < epochs; epoch++) {
+        for (int i = 0; i < batch_size; i++) {
+            if (is_master && i % 100 == 0) {
+                printf("Img No. %d\n", i);
+            }
+
+            Img* cur_img = imgs[i];
+            Matrix* img_data = matrix_flatten(cur_img->img_data, 0); // Flatten to column
+            Matrix* output = matrix_create(10, 1);
+            output->entries[cur_img->label][0] = 1;
+
+            // ⬇️ Sử dụng hàm song song mới
+            double loss = network_train_model_parallelism(net, img_data, output, is_master);
+
+            if (is_master) {
+                loss_sum += loss;
+                loss_count++;
+
+                if (i % 1000 == 0 && loss_count > 0) {
+                    printf("Average loss after %d images: %.6f\n", i+1, loss_sum / loss_count);
+                    loss_sum = 0;
+                    loss_count = 0;
+                }
+            }
+
+            matrix_free(output);
+            matrix_free(img_data);
+        }
+
+        if (is_master) {
+            printf("Epoch %d/%d finished.\n", epoch + 1, epochs);
+        }
+    }
+}
+
 void network_train_batch_imgs(NeuralNetwork* net, Img** imgs, int batch_size, int epochs) {
 	double loss_sum = 0.0;
     int loss_count = 0;
     for (int epoch = 0; epoch < epochs; epoch++) {
-        //double total_loss = 0.0;
         for (int i = 0; i < batch_size; i++) {
             if (i % 100 == 0) printf("Img No. %d\n", i);
 
@@ -278,14 +461,14 @@ void network_train_batch_imgs_socket(
 			loss_sum += loss;
 			loss_count++;
 
-			if (i % 100 == 0 && loss_count > 0) {
+			if (i % 1000 == 0 && loss_count > 0) {
 				printf("*** Average loss after %d images: %.6f ***\n", i+1, loss_sum / loss_count);
 				fflush(stdout);
 				loss_sum = 0;
 				loss_count = 0;
 			}
 
-			if (i % 100 == 0) {
+			if (i % 1000 == 0) {
 				double acc = network_predict_imgs(net, test_imgs, 1000);
 				printf("*** After %d images: %.2f%% accuracy ***\n", i, acc * 100);
 				fflush(stdout);
@@ -295,13 +478,15 @@ void network_train_batch_imgs_socket(
             matrix_free(output);
 
             // Mỗi 100 ảnh (batch) thì trao đổi trọng số
-            if ((((i - start_index + 1) % 1000) == 0) || (i == (end_index - 1))) {
+            if ((((i - start_index + 1) % 10000) == 0) || (i == (end_index - 1))) {
                 if (weights_buffer) free(weights_buffer);
                 weights_buffer = network_get_weights(net, &weight_count);
 
                 if (is_master) {
                     // Nhận trọng số từ slaver
                     double* slave_weights = (double*)malloc(sizeof(double) * weight_count);
+					struct timeval t_start, t_end;
+					gettimeofday(&t_start, NULL);
                     recv_all(sockfd, slave_weights, sizeof(double) * weight_count);
                     printf("[Master] Received weights from slaver at img %d\n", i);
 					fflush(stdout);
@@ -334,9 +519,9 @@ void network_train_batch_imgs_socket(
 					// printf("[Master] Average loss after %d images and before update weights: %.6f\n", i+1, loss_sum / loss_count);
 					// fflush(stdout);
 
-					double acc_before = network_predict_imgs(net, test_imgs, 1000);
-					printf("[Master] After %d images: %.2f%% accuracy before update weights\n", i, acc_before * 100);
-					fflush(stdout);
+					// double acc_before = network_predict_imgs(net, test_imgs, 1000);
+					// printf("[Master] After %d images: %.2f%% accuracy before update weights\n", i, acc_before * 100);
+					// fflush(stdout);
 
                     // Trung bình
                     for (int j = 0; j < weight_count; j++) {
@@ -354,7 +539,11 @@ void network_train_batch_imgs_socket(
 
                     // Gửi lại trọng số mới
                     send_all(sockfd, weights_buffer, sizeof(double) * weight_count);
+					gettimeofday(&t_end, NULL);
                     printf("[Master] Sent averaged weights to slaver\n");
+					fflush(stdout);
+
+					printf("[Master] recv and send weights took %.6f seconds at img %d\n", time_diff(t_start, t_end),i);
 					fflush(stdout);
 
                     network_set_weights(net, weights_buffer, weight_count);
@@ -362,9 +551,9 @@ void network_train_batch_imgs_socket(
 					// printf("[Master] Average loss after %d images and after update weights: %.6f\n", i+1, loss_sum / loss_count);
 					// fflush(stdout);
 
-					double acc_after = network_predict_imgs(net, test_imgs, 1000);
-					printf("[Master] After %d images: %.2f%% accuracy after update weights\n", i, acc_after * 100);
-					fflush(stdout);
+					// double acc_after = network_predict_imgs(net, test_imgs, 1000);
+					// printf("[Master] After %d images: %.2f%% accuracy after update weights\n", i, acc_after * 100);
+					// fflush(stdout);
                 } else {
 					// printf("[Slaver] Sample weights before sending to master: ");
 					// fflush(stdout);
@@ -375,10 +564,13 @@ void network_train_batch_imgs_socket(
 					// printf("\n");
 					// fflush(stdout);
                     // Gửi trọng số cho master
-					double acc_before = network_predict_imgs(net, test_imgs, 1000);
-					printf("[Slaver] After %d images: %.2f%% accuracy before send weights\n", i, acc_before * 100);
-					fflush(stdout);
+					// double acc_before = network_predict_imgs(net, test_imgs, 1000);
+					// printf("[Slaver] After %d images: %.2f%% accuracy before send weights\n", i, acc_before * 100);
+					// fflush(stdout);
 
+					struct timeval t_start, t_end;
+
+					gettimeofday(&t_start, NULL);
                     send_all(sockfd, weights_buffer, sizeof(double) * weight_count);
                     printf("[Slaver] Sent weights to master at img %d\n", i);
 					fflush(stdout);
@@ -395,9 +587,11 @@ void network_train_batch_imgs_socket(
 					// }
 					// printf("\n");
                     network_set_weights(net, weights_buffer, weight_count);
-
-					double acc_after = network_predict_imgs(net, test_imgs, 1000);
-					printf("[Slaver] After %d images: %.2f%% accuracy after receive weights\n", i, acc_after * 100);
+					gettimeofday(&t_end, NULL);
+					// double acc_after = network_predict_imgs(net, test_imgs, 1000);
+					// printf("[Slaver] After %d images: %.2f%% accuracy after receive weights\n", i, acc_after * 100);
+					// fflush(stdout);
+					printf("[Slaver] send and recv averaged weights took %.6f seconds at img %d\n", time_diff(t_start, t_end),i);
 					fflush(stdout);
                 }
             }

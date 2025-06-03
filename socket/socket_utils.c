@@ -67,3 +67,44 @@ int recv_all(int sockfd, void* buffer, int size) {
 void socket_close(int sockfd) {
     close(sockfd);
 }
+
+int send_matrix(int sockfd, Matrix* mat) {
+    // Gửi rows và cols trước
+    if (send_all(sockfd, &mat->rows, sizeof(int)) <= 0) return -1;
+    if (send_all(sockfd, &mat->cols, sizeof(int)) <= 0) return -1;
+
+    // Gửi entries
+    for (int i = 0; i < mat->rows; i++) {
+        if (send_all(sockfd, mat->entries[i], sizeof(double) * mat->cols) <= 0) return -1;
+    }
+
+    return 0;
+}
+
+Matrix* recv_matrix(int sockfd) {
+    int rows, cols;
+    if (recv_all(sockfd, &rows, sizeof(int)) <= 0) return NULL;
+    if (recv_all(sockfd, &cols, sizeof(int)) <= 0) return NULL;
+
+    Matrix* mat = malloc(sizeof(Matrix));
+    mat->rows = rows;
+    mat->cols = cols;
+    mat->entries = malloc(rows * sizeof(double*));
+
+    for (int i = 0; i < rows; i++) {
+        mat->entries[i] = malloc(cols * sizeof(double));
+        if (recv_all(sockfd, mat->entries[i], sizeof(double) * cols) <= 0) return NULL;
+    }
+
+    return mat;
+}
+
+int send_loss(int sockfd, double loss) {
+    return send_all(sockfd, &loss, sizeof(double));
+}
+
+double recv_loss(int sockfd) {
+    double loss;
+    if (recv_all(sockfd, &loss, sizeof(double)) <= 0) return -1;
+    return loss;
+}

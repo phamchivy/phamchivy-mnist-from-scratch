@@ -16,7 +16,7 @@ WORKDIR /app
 COPY . .
 
 # Biên dịch với Makefile
-RUN make
+RUN make app
 
 # Đảm bảo file thực thi có tên là 'app'
 # Nếu Makefile sinh ra tên khác (ví dụ main), đổi tên

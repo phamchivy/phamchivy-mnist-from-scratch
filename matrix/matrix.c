@@ -137,3 +137,53 @@ Matrix* matrix_flatten(Matrix* m, int axis) {
 	}
 	return mat;
 }
+
+Matrix* slice_matrix_rows(Matrix* mat, int start_row, int end_row) {
+    int new_rows = end_row - start_row;
+    int cols = mat->cols;
+
+    Matrix* result = malloc(sizeof(Matrix));
+    result->rows = new_rows;
+    result->cols = cols;
+    result->entries = malloc(new_rows * sizeof(double*));
+
+    for (int i = 0; i < new_rows; i++) {
+        result->entries[i] = malloc(cols * sizeof(double));
+        for (int j = 0; j < cols; j++) {
+            result->entries[i][j] = mat->entries[start_row + i][j];
+        }
+    }
+
+    return result;
+}
+
+Matrix* concat_rows(Matrix* a, Matrix* b) {
+    if (a->cols != b->cols) {
+        printf("Can't concat: column mismatch\n");
+        return NULL;
+    }
+
+    int rows = a->rows + b->rows;
+    int cols = a->cols;
+
+    Matrix* result = malloc(sizeof(Matrix));
+    result->rows = rows;
+    result->cols = cols;
+    result->entries = malloc(rows * sizeof(double*));
+
+    for (int i = 0; i < a->rows; i++) {
+        result->entries[i] = malloc(cols * sizeof(double));
+        for (int j = 0; j < cols; j++) {
+            result->entries[i][j] = a->entries[i][j];
+        }
+    }
+
+    for (int i = 0; i < b->rows; i++) {
+        result->entries[a->rows + i] = malloc(cols * sizeof(double));
+        for (int j = 0; j < cols; j++) {
+            result->entries[a->rows + i][j] = b->entries[i][j];
+        }
+    }
+
+    return result;
+}

@@ -31,4 +31,4 @@ $(PREDICT): predict.c $(OBJ)
 
 # Clean target
 clean:
-	rm -f matrix/*.o neural/*.o util/*.o *.o $(TARGET) $(PREDICT)
+	rm -f matrix/*.o neural/*.o util/*.o socket/*.o *.o $(TARGET) $(PREDICT) 
