@@ -157,6 +157,25 @@ Matrix* slice_matrix_rows(Matrix* mat, int start_row, int end_row) {
     return result;
 }
 
+Matrix* slice_matrix_cols(Matrix* mat, int start_col, int end_col) {
+    int new_cols = end_col - start_col;
+    int rows = mat->rows;
+
+    Matrix* result = malloc(sizeof(Matrix));
+    result->rows = rows;
+    result->cols = new_cols;
+    result->entries = malloc(rows * sizeof(double*));
+
+    for (int i = 0; i < rows; i++) {
+        result->entries[i] = malloc(new_cols * sizeof(double));
+        for (int j = 0; j < new_cols; j++) {
+            result->entries[i][j] = mat->entries[i][start_col + j];
+        }
+    }
+
+    return result;
+}
+
 Matrix* concat_rows(Matrix* a, Matrix* b) {
     if (a->cols != b->cols) {
         printf("Can't concat: column mismatch\n");
@@ -182,6 +201,53 @@ Matrix* concat_rows(Matrix* a, Matrix* b) {
         result->entries[a->rows + i] = malloc(cols * sizeof(double));
         for (int j = 0; j < cols; j++) {
             result->entries[a->rows + i][j] = b->entries[i][j];
+        }
+    }
+
+    return result;
+}
+
+Matrix* sum_matrix_rows(Matrix* mat) {
+    int rows = mat->rows;
+    int cols = mat->cols;
+
+    // Tạo ma trận kết quả: (rows x 1)
+    Matrix* result = malloc(sizeof(Matrix));
+    result->rows = rows;
+    result->cols = 1;
+    result->entries = malloc(rows * sizeof(double*));
+
+    for (int i = 0; i < rows; i++) {
+        result->entries[i] = malloc(sizeof(double));
+        double row_sum = 0.0;
+        for (int j = 0; j < cols; j++) {
+            row_sum += mat->entries[i][j];
+        }
+        result->entries[i][0] = row_sum;
+    }
+
+    return result;
+}
+
+Matrix* add_matrix(Matrix* a, Matrix* b) {
+    if (a->rows != b->rows || a->cols != b->cols) {
+        printf("Dimension mismatch in add_matrix: %dx%d vs %dx%d\n", 
+               a->rows, a->cols, b->rows, b->cols);
+        exit(1);
+    }
+
+    int rows = a->rows;
+    int cols = a->cols;
+
+    Matrix* result = malloc(sizeof(Matrix));
+    result->rows = rows;
+    result->cols = cols;
+    result->entries = malloc(rows * sizeof(double*));
+
+    for (int i = 0; i < rows; i++) {
+        result->entries[i] = malloc(cols * sizeof(double));
+        for (int j = 0; j < cols; j++) {
+            result->entries[i][j] = a->entries[i][j] + b->entries[i][j];
         }
     }
 

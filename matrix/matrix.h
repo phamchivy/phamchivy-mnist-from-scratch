@@ -17,4 +17,7 @@ void matrix_randomize(Matrix* m, int n);
 int matrix_argmax(Matrix* m);
 Matrix* matrix_flatten(Matrix* m, int axis);
 Matrix* slice_matrix_rows(Matrix* mat, int start_row, int end_row);
+Matrix* slice_matrix_cols(Matrix* mat, int start_col, int end_col);
 Matrix* concat_rows(Matrix* a, Matrix* b);
+Matrix* sum_matrix_rows(Matrix* mat);
+Matrix* add_matrix(Matrix* a, Matrix* b);

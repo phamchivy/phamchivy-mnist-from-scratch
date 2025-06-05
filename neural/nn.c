@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <sys/time.h>
+#include <sys/socket.h>
 #include "../matrix/ops.h"
 #include "../neural/activations.h"
 #include "../socket/socket_utils.h"
@@ -173,46 +174,44 @@ double time_diff(struct timeval start, struct timeval end) {
     return (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1e6;
 }
 
-double network_train_model_parallelism(NeuralNetwork* net, Matrix* input, Matrix* output, bool is_master) {
+double network_train_model_parallelism(NeuralNetwork* net, Matrix* input, Matrix* output, bool is_master,const char* ip,int port, int sockfd) {
     int mid_hidden = net->hidden_weights->rows / 2;
-    int mid_output = net->output_weights->rows / 2;
+    int mid_output = net->output_weights->cols / 2;
 
     Matrix* hidden_weights_master = slice_matrix_rows(net->hidden_weights, 0, mid_hidden);
-    Matrix* output_weights_master = slice_matrix_rows(net->output_weights, 0, mid_output);
+    Matrix* output_weights_master = slice_matrix_cols(net->output_weights, 0, mid_output);
     Matrix* hidden_weights_slave  = slice_matrix_rows(net->hidden_weights, mid_hidden, net->hidden_weights->rows);
-    Matrix* output_weights_slave  = slice_matrix_rows(net->output_weights, mid_output, net->output_weights->rows);
-
-    int sockfd;
-    if (is_master) {
-        sockfd = setup_server(port);
-        printf("[Master] Server started. Waiting for connection...\n");
-        sockfd = accept_client(sockfd);
-        printf("[Master] Connection accepted.\n");
-    } else {
-        sockfd = connect_to_server(ip, port);
-        printf("[Slave] Connected to master.\n");
-    }
+    Matrix* output_weights_slave  = slice_matrix_cols(net->output_weights, mid_output, net->output_weights->cols);
 
     if (is_master) {
         // === FORWARD MASTER ===
         Matrix* hidden_inputs_master = dot(hidden_weights_master, input);
+        printf("[Master] Hidden inputs done\n");
+        fflush(stdout);
         Matrix* hidden_outputs_master = apply(sigmoid, hidden_inputs_master);
         Matrix* final_inputs_master = dot(output_weights_master, hidden_outputs_master);
-        Matrix* final_outputs_master = apply(sigmoid, final_inputs_master);
+        printf("[Master] Final inputs done\n");
+        fflush(stdout);
+        //Matrix* final_outputs_master = apply(sigmoid, final_inputs_master);
 
         // === RECEIVE FROM SLAVE ===
         Matrix* hidden_outputs_slave = recv_matrix(sockfd);
-        Matrix* final_outputs_slave  = recv_matrix(sockfd);
-        double loss_slave = recv_loss(sockfd);
+        Matrix* final_inputs_slave  = recv_matrix(sockfd);
+        send(sockfd, "ACK", 3, 0);  
 
-        if (!hidden_outputs_slave || !final_outputs_slave) {
+        //double loss_slave = recv_loss(sockfd);
+
+		// printf("[Master] Receive loss from slaver %f \n", loss_slave);
+		// fflush(stdout);
+
+        if (!hidden_outputs_slave || !final_inputs_master) {
             fprintf(stderr, "[Master] Failed to receive data from slave.\n");
             exit(EXIT_FAILURE);
         }
 
         // === MERGE & COMPUTE ERROR ===
         Matrix* hidden_outputs = concat_rows(hidden_outputs_master, hidden_outputs_slave);
-        Matrix* final_outputs  = concat_rows(final_outputs_master, final_outputs_slave);
+        Matrix* final_outputs  = apply(sigmoid, add_matrix(final_inputs_master,final_inputs_slave));
         Matrix* output_errors  = subtract(output, final_outputs);
 
         // === CALCULATE LOSS ===
@@ -257,9 +256,9 @@ double network_train_model_parallelism(NeuralNetwork* net, Matrix* input, Matrix
         matrix_free(hidden_inputs_master);
         matrix_free(hidden_outputs_master);
         matrix_free(final_inputs_master);
-        matrix_free(final_outputs_master);
+        //matrix_free(final_outputs_master);
         matrix_free(hidden_outputs_slave);
-        matrix_free(final_outputs_slave);
+        //matrix_free(final_outputs_slave);
         matrix_free(hidden_outputs);
         matrix_free(final_outputs);
         matrix_free(output_errors);
@@ -276,27 +275,32 @@ double network_train_model_parallelism(NeuralNetwork* net, Matrix* input, Matrix
         matrix_free(grad_hidden);
         matrix_free(delta_hidden_scaled);
 
-        close(sockfd);
         return total_loss;
 
     } else {
         // === SLAVE FORWARD ===
         Matrix* hidden_inputs = dot(hidden_weights_slave, input);
+        printf("[Slaver] Hidden inputs done\n");
+        fflush(stdout);
         Matrix* hidden_outputs = apply(sigmoid, hidden_inputs);
         Matrix* final_inputs = dot(output_weights_slave, hidden_outputs);
-        Matrix* final_outputs = apply(sigmoid, final_inputs);
+        printf("[Slaver] Final inputs done\n");
+        fflush(stdout);
+        //Matrix* final_outputs = apply(sigmoid, final_inputs);
 
         // === CALCULATE LOSS ===
-        double loss = 0.0;
-        for (int i = output->rows / 2; i < output->rows; i++) {
-            double diff = output->entries[i][0] - final_outputs->entries[i - output->rows / 2][0];
-            loss += diff * diff;
-        }
+        // double loss = 0.0;
+        // for (int i = output->rows / 2; i < output->rows; i++) {
+        //     double diff = output->entries[i][0] - final_outputs->entries[i - output->rows / 2][0];
+        //     loss += diff * diff;
+        // }
 
         // === SEND TO MASTER ===
+        char buffer[4] = {0};  // Đủ để chứa "ACK" và ký tự null kết thúc '\0'
         send_matrix(sockfd, hidden_outputs);
-        send_matrix(sockfd, final_outputs);
-        send_loss(sockfd, loss);
+        send_matrix(sockfd, final_inputs);
+        recv(sockfd, buffer, 3, 0);  // Đợi ACK
+        //send_loss(sockfd, loss);
 
         // === FREE ===
         matrix_free(hidden_weights_master);
@@ -307,16 +311,29 @@ double network_train_model_parallelism(NeuralNetwork* net, Matrix* input, Matrix
         matrix_free(hidden_inputs);
         matrix_free(hidden_outputs);
         matrix_free(final_inputs);
-        matrix_free(final_outputs);
+        //matrix_free(final_outputs);
 
-        close(sockfd);
-        return loss;
+        return 0;
     }
 }
 
-void network_train_batch_imgs_model_parallelism(NeuralNetwork* net, Img** imgs, int batch_size, int epochs, bool is_master) {
+void network_train_batch_imgs_model_parallelism(NeuralNetwork* net, Img** imgs, int batch_size, int epochs, bool is_master , const char* ip,int port) {
     double loss_sum = 0.0;
     int loss_count = 0;
+
+    int sockfd;
+    if (is_master) {
+        sockfd = setup_server(port);
+        printf("[Master] Server started. Waiting for connection...\n");
+        fflush(stdout);
+        sockfd = accept_client(sockfd);
+        printf("[Master] Connection accepted.\n");
+        fflush(stdout);
+    } else {
+        sockfd = connect_to_server(ip, port);
+        printf("[Slave] Connected to master.\n");
+        fflush(stdout);
+    }
 
     for (int epoch = 0; epoch < epochs; epoch++) {
         for (int i = 0; i < batch_size; i++) {
@@ -330,7 +347,7 @@ void network_train_batch_imgs_model_parallelism(NeuralNetwork* net, Img** imgs, 
             output->entries[cur_img->label][0] = 1;
 
             // ⬇️ Sử dụng hàm song song mới
-            double loss = network_train_model_parallelism(net, img_data, output, is_master);
+            double loss = network_train_model_parallelism(net, img_data, output, is_master,ip,port, sockfd);
 
             if (is_master) {
                 loss_sum += loss;
@@ -351,6 +368,8 @@ void network_train_batch_imgs_model_parallelism(NeuralNetwork* net, Img** imgs, 
             printf("Epoch %d/%d finished.\n", epoch + 1, epochs);
         }
     }
+    
+    close(sockfd);
 }
 
 void network_train_batch_imgs(NeuralNetwork* net, Img** imgs, int batch_size, int epochs) {

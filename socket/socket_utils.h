@@ -1,5 +1,6 @@
 #ifndef SOCKET_UTILS_H
 #define SOCKET_UTILS_H
+#include "../matrix/matrix.h"
 
 int setup_server(int port);
 int accept_client(int server_fd);

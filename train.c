@@ -51,17 +51,7 @@ int get_allowed_cpu_count() {
     return count;
 }
 
-void network_train_batch_imgs_socket(
-    NeuralNetwork* net,
-    Img** imgs,
-    int batch_size,
-    int epochs,
-    bool is_master,
-    const char* ip,
-    int port,
-    int local_cpu_count, // <--- THÊM THAM SỐ NÀY
-    Img** test_imgs
-);
+void network_train_batch_imgs_model_parallelism(NeuralNetwork* net, Img** imgs, int batch_size, int epochs, bool is_master , const char* ip,int port) ;
 
 void print_usage(const char* prog_name) {
     printf("Usage:\n");
@@ -101,7 +91,7 @@ int main(int argc, char** argv) {
         int cpu_count = get_allowed_cpu_count();
         printf("[%s] Allowed CPU cores: %d\n", role, cpu_count);
         fflush(stdout);
-        network_train_batch_imgs_socket(net, imgs, number_imgs, 1, true, NULL, port,cpu_count,test_imgs);
+        network_train_batch_imgs_model_parallelism(net, imgs, number_imgs, 1, true,NULL,port);
     } else if (strcmp(role, "slaver") == 0) {
         if (argc < 4) {
             print_usage(argv[0]);
@@ -113,7 +103,7 @@ int main(int argc, char** argv) {
         printf("[%s] Allowed CPU cores: %d\n", role, cpu_count);
         printf("[SLAVER] Connecting to %s:%d\n", master_ip, port);
         fflush(stdout);
-        network_train_batch_imgs_socket(net, imgs, number_imgs, 1, false, master_ip, port,cpu_count,test_imgs);
+        network_train_batch_imgs_model_parallelism(net, imgs, number_imgs, 1, false,master_ip,port);
     } else {
         print_usage(argv[0]);
         return 1;
