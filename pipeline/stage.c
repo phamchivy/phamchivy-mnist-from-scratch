@@ -6,10 +6,12 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
+#include <unistd.h>
 
-// Global variables for loss calculation
-static double current_total_loss = 0.0;
-static int current_processed_batches = 0;
+// Global variables for stage management
+extern PipelineStats global_stats;
+extern pthread_mutex_t stats_mutex;
 static int random_seeded = 0;
 
 NetworkStage* create_stage(int stage_id, int input_size, int output_size, double lr) {
@@ -379,4 +381,335 @@ int calculate_optimal_batch_size(PipelineStats* stats) {
     if (optimal_size > 128) optimal_size = 128;
     
     return optimal_size;
-} 
+}
+
+// Phase 2: Batch tracking implementation
+long get_current_timestamp(void) {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000000 + tv.tv_usec;
+}
+
+int initialize_batch_tracker(PipelineBatchTracker* tracker) {
+    if (!tracker) return -1;
+    
+    tracker->pending_count = 0;
+    tracker->next_expected_gradient_id = 0;
+    tracker->buffered_count = 0;
+    
+    if (pthread_mutex_init(&tracker->tracker_mutex, NULL) != 0) {
+        return -1;
+    }
+    
+    for (int i = 0; i < MAX_PIPELINE_DEPTH; i++) {
+        tracker->pending_batches[i].batch_id = -1;
+        tracker->pending_batches[i].saved_activations = NULL;
+        tracker->pending_batches[i].saved_inputs = NULL;
+        tracker->buffered_gradients[i] = NULL;
+    }
+    
+    return 0;
+}
+
+int add_pending_batch(PipelineBatchTracker* tracker, int batch_id, Matrix* activations, Matrix* inputs) {
+    if (!tracker || tracker->pending_count >= MAX_PIPELINE_DEPTH) return -1;
+    
+    pthread_mutex_lock(&tracker->tracker_mutex);
+    
+    int slot = tracker->pending_count;
+    tracker->pending_batches[slot].batch_id = batch_id;
+    tracker->pending_batches[slot].saved_activations = activations;
+    tracker->pending_batches[slot].saved_inputs = inputs;
+    tracker->pending_batches[slot].timestamp = get_current_timestamp();
+    tracker->pending_count++;
+    
+    pthread_mutex_unlock(&tracker->tracker_mutex);
+    return 0;
+}
+
+int process_pending_gradients(PipelineBatchTracker* tracker, int backward_client) {
+    if (!tracker) return -1;
+    
+    pthread_mutex_lock(&tracker->tracker_mutex);
+    
+    // Process any buffered gradients that match expected batch ID
+    for (int i = 0; i < tracker->buffered_count; i++) {
+        BackwardMessage* grad_msg = tracker->buffered_gradients[i];
+        if (grad_msg && grad_msg->batch_id == tracker->next_expected_gradient_id) {
+            // Find corresponding pending batch
+            for (int j = 0; j < tracker->pending_count; j++) {
+                if (tracker->pending_batches[j].batch_id == grad_msg->batch_id) {
+                    // Apply gradients using saved context
+                    // This would be implemented in the main processing loop
+                    
+                    // Clean up this batch
+                    tracker->pending_batches[j].batch_id = -1;
+                    if (tracker->pending_batches[j].saved_activations) {
+                        matrix_free(tracker->pending_batches[j].saved_activations);
+                        tracker->pending_batches[j].saved_activations = NULL;
+                    }
+                    if (tracker->pending_batches[j].saved_inputs) {
+                        matrix_free(tracker->pending_batches[j].saved_inputs);
+                        tracker->pending_batches[j].saved_inputs = NULL;
+                    }
+                    
+                    tracker->next_expected_gradient_id++;
+                    break;
+                }
+            }
+            
+            // Remove from buffered gradients
+            free_backward_message(grad_msg);
+            tracker->buffered_gradients[i] = NULL;
+            
+            // Compact the buffer
+            for (int k = i; k < tracker->buffered_count - 1; k++) {
+                tracker->buffered_gradients[k] = tracker->buffered_gradients[k + 1];
+            }
+            tracker->buffered_count--;
+            i--; // Adjust index after compaction
+        }
+    }
+    
+    pthread_mutex_unlock(&tracker->tracker_mutex);
+    return 0;
+}
+
+void cleanup_batch_tracker(PipelineBatchTracker* tracker) {
+    if (!tracker) return;
+    
+    pthread_mutex_lock(&tracker->tracker_mutex);
+    
+    // Clean up pending batches
+    for (int i = 0; i < tracker->pending_count; i++) {
+        if (tracker->pending_batches[i].saved_activations) {
+            matrix_free(tracker->pending_batches[i].saved_activations);
+        }
+        if (tracker->pending_batches[i].saved_inputs) {
+            matrix_free(tracker->pending_batches[i].saved_inputs);
+        }
+    }
+    
+    // Clean up buffered gradients
+    for (int i = 0; i < tracker->buffered_count; i++) {
+        if (tracker->buffered_gradients[i]) {
+            free_backward_message(tracker->buffered_gradients[i]);
+        }
+    }
+    
+    pthread_mutex_unlock(&tracker->tracker_mutex);
+    pthread_mutex_destroy(&tracker->tracker_mutex);
+}
+
+// Phase 3: Dynamic load balancing implementation
+void update_pipeline_config(PipelineConfig* config, PipelineStats* stats) {
+    if (!config || !stats) return;
+    
+    long current_time = get_current_timestamp();
+    
+    // Only adjust every 5 seconds to avoid thrashing
+    if (current_time - config->last_adjustment_time < 5000000) return;
+    
+    // Calculate communication ratio
+    double total_processing = stats->stage1_processing_time + stats->stage2_processing_time;
+    if (total_processing > 0) {
+        config->communication_ratio = stats->communication_time / total_processing;
+    }
+    
+    // Adjust batch size based on communication ratio
+    if (config->communication_ratio > 0.3) {
+        // Communication is bottleneck, increase batch size
+        config->current_batch_size = min(config->current_batch_size * 1.2, 64);
+    } else if (config->communication_ratio < 0.1) {
+        // Processing is bottleneck, decrease batch size for better pipelining
+        config->current_batch_size = max(config->current_batch_size * 0.8, 16);
+    }
+    
+    config->last_adjustment_time = current_time;
+}
+
+int calculate_adaptive_batch_size(PipelineStats* stats, PipelineConfig* config) {
+    if (!stats || !config) return MINI_BATCH_SIZE;
+    
+    // Base the batch size on throughput and latency
+    double avg_processing_time = (stats->stage1_processing_time + stats->stage2_processing_time) / 
+                                max(stats->processed_batches, 1);
+    
+    // If processing time per batch is too high, reduce batch size
+    if (avg_processing_time > config->target_latency) {
+        return max(config->current_batch_size - 4, 8);
+    }
+    // If processing time is low, we can afford larger batches
+    else if (avg_processing_time < config->target_latency * 0.5) {
+        return min(config->current_batch_size + 4, 128);
+    }
+    
+    return config->current_batch_size;
+}
+
+void adjust_pipeline_depth(PipelineConfig* config, PipelineStats* stats) {
+    if (!config || !stats) return;
+    
+    // Increase pipeline depth if we have high throughput but low utilization
+    if (stats->throughput > 10.0 && config->communication_ratio < 0.2) {
+        config->pipeline_depth = min(config->pipeline_depth + 1, MAX_PIPELINE_DEPTH);
+    }
+    // Decrease pipeline depth if communication is becoming a bottleneck
+    else if (config->communication_ratio > 0.4) {
+        config->pipeline_depth = max(config->pipeline_depth - 1, 2);
+    }
+}
+
+// Phase 2: Asynchronous processing implementations
+void* async_forward_processor(void* args) {
+    AsyncForwardArgs* fwd_args = (AsyncForwardArgs*)args;
+    if (!fwd_args) return NULL;
+    
+    printf("[ASYNC_FORWARD] Starting asynchronous forward processor\n");
+    fflush(stdout);
+    
+    while (*fwd_args->training_active) {
+        // Dequeue forward message from buffer
+        ForwardMessage* fwd_msg = dequeue_forward(fwd_args->buffer);
+        if (!fwd_msg) {
+            usleep(1000); // 1ms sleep if no messages
+            continue;
+        }
+        
+        // Send forward activations to next stage
+        struct timeval comm_start, comm_end;
+        gettimeofday(&comm_start, NULL);
+        
+        if (send_forward_activations(fwd_args->forward_socket, fwd_msg) < 0) {
+            printf("[ASYNC_FORWARD] Error sending forward message\n");
+            free_forward_message(fwd_msg);
+            continue;
+        }
+        
+        gettimeofday(&comm_end, NULL);
+        double comm_time = get_time_diff(comm_start, comm_end);
+        
+        // Update communication stats
+        pthread_mutex_lock(&stats_mutex);
+        global_stats.communication_time += comm_time;
+        pthread_mutex_unlock(&stats_mutex);
+        
+        free_forward_message(fwd_msg);
+    }
+    
+    printf("[ASYNC_FORWARD] Stopping asynchronous forward processor\n");
+    return NULL;
+}
+
+void* async_backward_processor(void* args) {
+    AsyncBackwardArgs* bwd_args = (AsyncBackwardArgs*)args;
+    if (!bwd_args) return NULL;
+    
+    printf("[ASYNC_BACKWARD] Starting asynchronous backward processor\n");
+    fflush(stdout);
+    
+    while (*bwd_args->training_active) {
+        // Receive backward gradients
+        BackwardMessage* bwd_msg = receive_backward_gradients(bwd_args->backward_socket);
+        if (!bwd_msg) {
+            usleep(1000); // 1ms sleep if no messages
+            continue;
+        }
+        
+        // Add to pipeline buffer for processing
+        if (enqueue_backward(bwd_args->buffer, bwd_msg) < 0) {
+            printf("[ASYNC_BACKWARD] Error enqueuing backward message\n");
+            free_backward_message(bwd_msg);
+            continue;
+        }
+        
+        // Process pending gradients asynchronously
+        process_pending_gradients(bwd_args->tracker, bwd_args->backward_socket);
+    }
+    
+    printf("[ASYNC_BACKWARD] Stopping asynchronous backward processor\n");
+    return NULL;
+}
+
+// Asynchronous gradient application function
+int apply_gradient_to_pending_batch(NetworkStage* stage, PipelineBatchTracker* tracker, BackwardMessage* bwd_msg) {
+    if (!stage || !tracker || !bwd_msg) return -1;
+    
+    pthread_mutex_lock(&tracker->tracker_mutex);
+    
+    // Find corresponding pending batch
+    int found_batch = -1;
+    for (int i = 0; i < tracker->pending_count; i++) {
+        if (tracker->pending_batches[i].batch_id == bwd_msg->batch_id) {
+            found_batch = i;
+            break;
+        }
+    }
+    
+    if (found_batch == -1) {
+        // Buffer this gradient for later if batch not found yet
+        if (tracker->buffered_count < MAX_PIPELINE_DEPTH) {
+            tracker->buffered_gradients[tracker->buffered_count] = malloc(sizeof(BackwardMessage));
+            if (tracker->buffered_gradients[tracker->buffered_count]) {
+                // Deep copy the backward message
+                memcpy(tracker->buffered_gradients[tracker->buffered_count], bwd_msg, sizeof(BackwardMessage));
+                
+                // Deep copy gradients array
+                tracker->buffered_gradients[tracker->buffered_count]->gradients = malloc(sizeof(double) * bwd_msg->gradient_count);
+                if (tracker->buffered_gradients[tracker->buffered_count]->gradients) {
+                    memcpy(tracker->buffered_gradients[tracker->buffered_count]->gradients, 
+                           bwd_msg->gradients, sizeof(double) * bwd_msg->gradient_count);
+                    tracker->buffered_count++;
+                    printf("[ASYNC] Buffered gradient for batch_id %d (not yet sent)\n", bwd_msg->batch_id);
+                }
+            }
+        }
+        pthread_mutex_unlock(&tracker->tracker_mutex);
+        return 0; // Not an error, just buffered
+    }
+    
+    BatchContext* batch_ctx = &tracker->pending_batches[found_batch];
+    
+    // Apply gradient using saved context
+    int batch_size = (batch_ctx->saved_activations) ? batch_ctx->saved_activations->cols : 32;
+    
+    // Convert gradients back to matrix form
+    Matrix* gradients_from_stage2 = matrix_create(512, batch_size);
+    if (gradients_from_stage2) {
+        int idx = 0;
+        for (int r = 0; r < 512 && idx < bwd_msg->gradient_count; r++) {
+            for (int c = 0; c < batch_size && idx < bwd_msg->gradient_count; c++) {
+                gradients_from_stage2->entries[r][c] = bwd_msg->gradients[idx++];
+            }
+        }
+        
+        // Perform backpropagation with saved context
+        int is_eval_mode = (bwd_msg->batch_id == -1);
+        Matrix* stage1_gradients = stage1_backward(stage, gradients_from_stage2, 
+                                                  batch_ctx->saved_activations, 
+                                                  batch_ctx->saved_inputs, is_eval_mode);
+        
+        // Clean up processed batch
+        matrix_free(batch_ctx->saved_activations);
+        matrix_free(batch_ctx->saved_inputs);
+        batch_ctx->batch_id = -1;
+        batch_ctx->saved_activations = NULL;
+        batch_ctx->saved_inputs = NULL;
+        
+        // Compact pending batches array
+        for (int j = found_batch; j < tracker->pending_count - 1; j++) {
+            tracker->pending_batches[j] = tracker->pending_batches[j + 1];
+        }
+        tracker->pending_count--;
+        
+        matrix_free(gradients_from_stage2);
+        if (stage1_gradients) matrix_free(stage1_gradients);
+        
+        printf("[ASYNC] Applied gradient for batch_id %d, pending: %d\n", bwd_msg->batch_id, tracker->pending_count);
+    }
+    
+    pthread_mutex_unlock(&tracker->tracker_mutex);
+    return 0;
+}
+
+ 

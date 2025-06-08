@@ -22,7 +22,7 @@ double get_time_diff(struct timeval start, struct timeval end) {
 }
 
 void pipeline_stage1_main(int forward_port, int backward_port) {
-    printf("[STAGE1] Starting Stage 1 on ports %d/%d\n", forward_port, backward_port);
+    printf("[STAGE1] Starting Stage 1 with Pipeline Optimization (Phase 2+3) on ports %d/%d\n", forward_port, backward_port);
     fflush(stdout);
     
     // Small delay to ensure proper initialization
@@ -44,10 +44,39 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
         return;
     }
     
+    // Initialize pipeline buffer and batch tracker
+    PipelineBuffer pipeline_buffer;
+    if (initialize_buffer(&pipeline_buffer) < 0) {
+        printf("[STAGE1] Error initializing pipeline buffer\n");
+        free_stage(stage1);
+        imgs_free(imgs, number_imgs);
+        return;
+    }
+    
+    PipelineBatchTracker batch_tracker;
+    if (initialize_batch_tracker(&batch_tracker) < 0) {
+        printf("[STAGE1] Error initializing batch tracker\n");
+        cleanup_buffer(&pipeline_buffer);
+        free_stage(stage1);
+        imgs_free(imgs, number_imgs);
+        return;
+    }
+    
+    // Initialize adaptive pipeline configuration
+    PipelineConfig config = {
+        .current_batch_size = MINI_BATCH_SIZE,
+        .pipeline_depth = 4,
+        .target_latency = 0.1, // 100ms target
+        .communication_ratio = 0.0,
+        .last_adjustment_time = 0
+    };
+    
     // Setup sockets
     int forward_server = setup_server(forward_port);
     if (forward_server < 0) {
         printf("[STAGE1] Error setting up forward server\n");
+        cleanup_batch_tracker(&batch_tracker);
+        cleanup_buffer(&pipeline_buffer);
         free_stage(stage1);
         imgs_free(imgs, number_imgs);
         return;
@@ -60,6 +89,8 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
     if (forward_client < 0) {
         printf("[STAGE1] Error accepting Stage 2 connection\n");
         socket_close(forward_server);
+        cleanup_batch_tracker(&batch_tracker);
+        cleanup_buffer(&pipeline_buffer);
         free_stage(stage1);
         imgs_free(imgs, number_imgs);
         return;
@@ -87,29 +118,41 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
         printf("[STAGE1] Error connecting to Stage 2 backward server after retries\n");
         socket_close(forward_client);
         socket_close(forward_server);
+        cleanup_batch_tracker(&batch_tracker);
+        cleanup_buffer(&pipeline_buffer);
         free_stage(stage1);
         imgs_free(imgs, number_imgs);
         return;
     }
     
-    printf("[STAGE1] Connected to Stage 2. Starting training...\n");
+    printf("[STAGE1] Connected to Stage 2. Starting optimized pipeline training...\n");
     fflush(stdout);
     
     int current_batch_id = 0;
     int epochs = 5;
-    int current_mini_batch_size = MINI_BATCH_SIZE;
     
     gettimeofday(&start_time, NULL);
     
     for (int epoch = 0; epoch < epochs && training_active; epoch++) {
-        printf("[STAGE1] Starting epoch %d/%d\n", epoch + 1, epochs);
+        printf("[STAGE1] Starting epoch %d/%d with adaptive batch size: %d\n", 
+               epoch + 1, epochs, config.current_batch_size);
         fflush(stdout);
         
-        for (int i = 0; i < number_imgs; i += current_mini_batch_size) {
-            if (!training_active) break;
+        for (int i = 0; i < number_imgs && training_active; i += config.current_batch_size) {
+            // Phase 3: Dynamic batch size adjustment
+            if (i > 0 && (i / config.current_batch_size) % 10 == 0) {
+                PipelineStats current_stats = collect_pipeline_stats();
+                update_pipeline_config(&config, &current_stats);
+                int new_batch_size = calculate_adaptive_batch_size(&current_stats, &config);
+                if (new_batch_size != config.current_batch_size) {
+                    printf("[STAGE1] Adjusting batch size from %d to %d (comm_ratio: %.3f)\n", 
+                           config.current_batch_size, new_batch_size, config.communication_ratio);
+                    config.current_batch_size = new_batch_size;
+                }
+            }
             
-            int batch_size = (i + current_mini_batch_size > number_imgs) ? 
-                           (number_imgs - i) : current_mini_batch_size;
+            int batch_size = (i + config.current_batch_size > number_imgs) ? 
+                           (number_imgs - i) : config.current_batch_size;
             
             // Prepare mini-batch
             Img** mini_batch = &imgs[i];
@@ -117,7 +160,7 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
             for (int j = 0; j < batch_size; j++) {
                 labels[j] = mini_batch[j]->label;
             }
-            
+        
             struct timeval stage1_start, stage1_end;
             gettimeofday(&stage1_start, NULL);
             
@@ -125,10 +168,10 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
             Matrix* input_matrix = matrix_create(784, batch_size);
             for (int img_idx = 0; img_idx < batch_size; img_idx++) {
                 Img* img = mini_batch[img_idx];
-                for (int i = 0; i < 28; i++) {
-                    for (int j = 0; j < 28; j++) {
-                        int pixel_idx = i * 28 + j;
-                        input_matrix->entries[pixel_idx][img_idx] = img->img_data->entries[i][j];
+                for (int pixel_row = 0; pixel_row < 28; pixel_row++) {
+                    for (int pixel_col = 0; pixel_col < 28; pixel_col++) {
+                        int pixel_idx = pixel_row * 28 + pixel_col;
+                        input_matrix->entries[pixel_idx][img_idx] = img->img_data->entries[pixel_row][pixel_col];
                     }
                 }
             }
@@ -145,12 +188,28 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
             gettimeofday(&stage1_end, NULL);
             double stage1_time = get_time_diff(stage1_start, stage1_end);
             
+            // Phase 2: Add to pipeline tracker for asynchronous processing
+            Matrix* saved_activations = matrix_create(hidden_activations->rows, hidden_activations->cols);
+            Matrix* saved_inputs = matrix_create(input_matrix->rows, input_matrix->cols);
+            
+            // Copy matrices for pipeline tracking
+            for (int r = 0; r < hidden_activations->rows; r++) {
+                for (int c = 0; c < hidden_activations->cols; c++) {
+                    saved_activations->entries[r][c] = hidden_activations->entries[r][c];
+                }
+            }
+            for (int r = 0; r < input_matrix->rows; r++) {
+                for (int c = 0; c < input_matrix->cols; c++) {
+                    saved_inputs->entries[r][c] = input_matrix->entries[r][c];
+                }
+            }
+            
             // Create and send forward message
             ForwardMessage* fwd_msg = create_forward_message(
-                current_batch_id++, i / current_mini_batch_size, 
+                current_batch_id, i / config.current_batch_size, 
                 hidden_activations, labels, batch_size
             );
-            
+        
             if (fwd_msg) {
                 struct timeval comm_start, comm_end;
                 gettimeofday(&comm_start, NULL);
@@ -159,83 +218,127 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
                     printf("[STAGE1] Error sending forward message\n");
                     free_forward_message(fwd_msg);
                     matrix_free(hidden_activations);
+                    matrix_free(input_matrix);
+                    matrix_free(saved_activations);
+                    matrix_free(saved_inputs);
                     free(labels);
                     continue;
                 }
                 
-                // Receive gradients from stage 2
-                BackwardMessage* bwd_msg = receive_backward_gradients(backward_client);
-                
                 gettimeofday(&comm_end, NULL);
                 double comm_time = get_time_diff(comm_start, comm_end);
                 
-                if (bwd_msg) {
-                    // Apply gradients to stage 1 using proper backpropagation
-                    Matrix* gradients_from_stage2 = matrix_create(512, batch_size); // 300 hidden units
-                    
-                    // Convert received gradients back to matrix form
-                    int idx = 0;
-                    for (int r = 0; r < gradients_from_stage2->rows && idx < bwd_msg->gradient_count; r++) {
-                        for (int c = 0; c < gradients_from_stage2->cols && idx < bwd_msg->gradient_count; c++) {
-                            gradients_from_stage2->entries[r][c] = bwd_msg->gradients[idx++];
-                        }
+                // Add batch to pipeline tracker for asynchronous processing (ONLY ONCE)
+                add_pending_batch(&batch_tracker, current_batch_id, saved_activations, saved_inputs);
+                current_batch_id++;
+                
+                // Update stats immediately (without waiting for gradients)
+                pthread_mutex_lock(&stats_mutex);
+                global_stats.stage1_processing_time += stage1_time;
+                global_stats.communication_time += comm_time;
+                global_stats.processed_batches++;
+                pthread_mutex_unlock(&stats_mutex);
+                
+                // Process any available gradients asynchronously (but don't block!)
+                int processed_gradients = 0;
+                printf("[STAGE1] Processing async gradients, pending: %d\n", batch_tracker.pending_count);
+                
+                while (processed_gradients < 2) { // Process up to 2 gradients per batch send
+                    BackwardMessage* bwd_msg = receive_backward_gradients_timeout(backward_client, 10); // 10ms timeout
+                    if (!bwd_msg) {
+                        printf("[STAGE1] No gradients available after 10ms timeout\n");
+                        break; // No gradients available
                     }
                     
-                    // Perform proper backpropagation through stage 1
-                    int is_eval_mode = (bwd_msg->batch_id == -1);
-                    Matrix* stage1_gradients = stage1_backward(stage1, gradients_from_stage2, hidden_activations, input_matrix, is_eval_mode);
+                    printf("[STAGE1] Received gradient for batch_id %d\n", bwd_msg->batch_id);
                     
-                    // Update global stats
-                    pthread_mutex_lock(&stats_mutex);
-                    global_stats.stage1_processing_time += stage1_time;
-                    global_stats.communication_time += comm_time;
-                    global_stats.total_loss += bwd_msg->loss;
-                    global_stats.correct_predictions += bwd_msg->correct_predictions;
-                    global_stats.total_predictions += bwd_msg->total_predictions;
-                    global_stats.processed_batches++;
-                    pthread_mutex_unlock(&stats_mutex);
+                    if (apply_gradient_to_pending_batch(stage1, &batch_tracker, bwd_msg) == 0) {
+                        processed_gradients++;
+                        
+                        // Update loss/accuracy stats from gradient
+                        pthread_mutex_lock(&stats_mutex);
+                        global_stats.total_loss += bwd_msg->loss;
+                        global_stats.correct_predictions += bwd_msg->correct_predictions;
+                        global_stats.total_predictions += bwd_msg->total_predictions;
+                        pthread_mutex_unlock(&stats_mutex);
+                        
+                        printf("[STAGE1] Applied gradient for batch_id %d, loss: %.4f, acc: %d/%d\n", 
+                               bwd_msg->batch_id, bwd_msg->loss, bwd_msg->correct_predictions, bwd_msg->total_predictions);
+                    } else {
+                        printf("[STAGE1] Failed to apply gradient for batch_id %d\n", bwd_msg->batch_id);
+                    }
+                    
+                    free_backward_message(bwd_msg);
+                }
+                
+                printf("[STAGE1] Processed %d gradients, pending: %d\n", processed_gradients, batch_tracker.pending_count);
+                
+                // Only enforce pipeline depth BEFORE next epoch or when really necessary
+                if (batch_tracker.pending_count > config.pipeline_depth * 2) {
+                    printf("[STAGE1] Pipeline overflow (%d), waiting for gradients...\n", batch_tracker.pending_count);
+                    while (batch_tracker.pending_count > config.pipeline_depth) {
+                        BackwardMessage* bwd_msg = receive_backward_gradients_timeout(backward_client, 100); // 100ms timeout
+                        if (bwd_msg) {
+                            apply_gradient_to_pending_batch(stage1, &batch_tracker, bwd_msg);
+                            free_backward_message(bwd_msg);
+                        } else {
+                            break; // Timeout, continue
+                        }
+                    }
+                }
+                
+                // Periodic logging and stats reporting
+                if ((i / config.current_batch_size) % 50 == 0) {
+                    printf("[STAGE1] ASYNC: Sent batch %d, processed %d gradients, pending: %d, pipeline_depth: %d\n", 
+                           i / config.current_batch_size, processed_gradients, batch_tracker.pending_count, config.pipeline_depth);
+                    fflush(stdout);
                     
                     // Send stats to coordinator
-                    if (i % 100 == 0) { // Send stats every 100 batches
-                        int stats_client = connect_stats_client("172.32.0.4", 12347);
-                        if (stats_client >= 0) {
-                            StatsMessage stats_msg = {
-                                .stage_id = 1,
-                                .processing_time = stage1_time,
-                                .communication_time = comm_time,
-                                .loss = bwd_msg->loss,
-                                .batch_count = 1,
-                                .correct_predictions = bwd_msg->correct_predictions,
-                                .total_predictions = bwd_msg->total_predictions,
-                                .timestamp = time(NULL)
-                            };
-                            send_stats_message(stats_client, &stats_msg);
-                            socket_close(stats_client);
-                        }
+                    int stats_client = connect_stats_client("172.32.0.4", 12347);
+                    if (stats_client >= 0) {
+                        StatsMessage stats_msg = {
+                            .stage_id = 1,
+                            .processing_time = stage1_time,
+                            .communication_time = comm_time,
+                            .loss = 0.0, // Will be updated by gradients
+                            .batch_count = 1,
+                            .correct_predictions = 0, // Will be updated by gradients
+                            .total_predictions = batch_size,
+                            .timestamp = time(NULL)
+                        };
+                        send_stats_message(stats_client, &stats_msg);
+                        socket_close(stats_client);
                     }
-                    
-                    if ((i / current_mini_batch_size) % 100 == 0) {
-                        printf("[STAGE1] Processed batch %d, loss: %.4f, stage1_time: %.3fs, comm_time: %.3fs\n", 
-                               i / current_mini_batch_size, bwd_msg->loss, stage1_time, comm_time);
-                        fflush(stdout);
-                    }
-                    
-                    matrix_free(gradients_from_stage2);
-                    if (stage1_gradients) matrix_free(stage1_gradients);
-                    free_backward_message(bwd_msg);
-                } else {
-                    printf("[STAGE1] Error receiving backward message\n");
                 }
                 
                 free_forward_message(fwd_msg);
             }
-            
-            matrix_free(hidden_activations);
-            matrix_free(input_matrix);
+        
+            // DO NOT free matrices here - they are now owned by pipeline tracker
+            // saved_activations and saved_inputs will be freed by apply_gradient_to_pending_batch
+            matrix_free(hidden_activations); // Only free the original, not the saved copies
+            matrix_free(input_matrix);       // Only free the original, not the saved copies  
             free(labels);
         }
         
-        printf("[STAGE1] Completed epoch %d\n", epoch + 1);
+        // Process remaining gradients at end of epoch
+        printf("[STAGE1] Processing remaining %d gradients at end of epoch %d...\n", 
+               batch_tracker.pending_count, epoch + 1);
+        
+        while (batch_tracker.pending_count > 0) {
+            BackwardMessage* bwd_msg = receive_backward_gradients_timeout(backward_client, 1000); // 1 second timeout
+            if (bwd_msg) {
+                apply_gradient_to_pending_batch(stage1, &batch_tracker, bwd_msg);
+                free_backward_message(bwd_msg);
+                printf("[STAGE1] Processed cleanup gradient, pending: %d\n", batch_tracker.pending_count);
+            } else {
+                // Timeout - break to avoid infinite loop
+                printf("[STAGE1] Cleanup timeout, %d batches remaining\n", batch_tracker.pending_count);
+                break;
+            }
+        }
+        
+        printf("[STAGE1] Completed epoch %d with adaptive pipeline\n", epoch + 1);
         fflush(stdout);
     }
     
@@ -279,9 +382,9 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
         int eval_batches = 0;
         
         // Process test data in mini-batches (evaluation mode - no weight updates)
-        for (int i = 0; i < test_number_imgs; i += current_mini_batch_size) {
-            int batch_size = (i + current_mini_batch_size > test_number_imgs) ? 
-                           (test_number_imgs - i) : current_mini_batch_size;
+        for (int i = 0; i < test_number_imgs; i += config.current_batch_size) {
+            int batch_size = (i + config.current_batch_size > test_number_imgs) ? 
+                           (test_number_imgs - i) : config.current_batch_size;
             
             // Prepare mini-batch
             Img** mini_batch = &test_imgs[i];
@@ -300,7 +403,7 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
             
             // Create and send forward message for evaluation
             ForwardMessage* fwd_msg = create_forward_message(
-                -1, i / current_mini_batch_size, // Use -1 to indicate evaluation mode
+                -1, i / config.current_batch_size, // Use -1 to indicate evaluation mode
                 hidden_activations, labels, batch_size
             );
             
@@ -352,6 +455,8 @@ void pipeline_stage1_main(int forward_port, int backward_port) {
     socket_close(forward_client);
     socket_close(backward_client);
     socket_close(forward_server);
+    cleanup_batch_tracker(&batch_tracker);
+    cleanup_buffer(&pipeline_buffer);
     free_stage(stage1);
     imgs_free(imgs, number_imgs);
 }
@@ -424,7 +529,7 @@ void pipeline_stage2_main(int forward_port, int backward_port, const char* stage
         gettimeofday(&stage2_start, NULL);
         
         // Convert received activations back to matrix
-        Matrix* activations = matrix_create(512, fwd_msg->label_count); // 300 hidden units
+        Matrix* activations = matrix_create(512, fwd_msg->label_count); // 512 hidden units
         int idx = 0;
         for (int i = 0; i < activations->rows && idx < fwd_msg->activation_count; i++) {
             for (int j = 0; j < activations->cols && idx < fwd_msg->activation_count; j++) {
@@ -524,6 +629,7 @@ void pipeline_stage2_main(int forward_port, int backward_port, const char* stage
                     if (bwd_msg) free_backward_message(bwd_msg);
                 }
                 
+                // Always free gradients matrix as it's only copied to msg, not transferred
                 matrix_free(gradients);
             }
         }

@@ -4,9 +4,21 @@
 #include "../matrix/matrix.h"
 #include "../util/img.h"
 #include <pthread.h>
+#include <sys/time.h>
 
 #define MAX_PIPELINE_DEPTH 8
 #define MINI_BATCH_SIZE 32
+
+// Utility macros
+#ifndef min
+#define min(a,b) ((a) < (b) ? (a) : (b))
+#endif
+#ifndef max
+#define max(a,b) ((a) > (b) ? (a) : (b))
+#endif
+
+// Time utility function
+double get_time_diff(struct timeval start, struct timeval end);
 
 // Pipeline message structures
 typedef struct {
@@ -89,6 +101,51 @@ typedef struct {
     long timestamp;
 } StatsMessage;
 
+// Batch tracking for pipeline depth management  
+typedef struct {
+    int batch_id;
+    Matrix* saved_activations;
+    Matrix* saved_inputs;
+    long timestamp;
+} BatchContext;
+
+typedef struct {
+    BatchContext pending_batches[MAX_PIPELINE_DEPTH];
+    int pending_count;
+    int next_expected_gradient_id;
+    BackwardMessage* buffered_gradients[MAX_PIPELINE_DEPTH];
+    int buffered_count;
+    pthread_mutex_t tracker_mutex;
+} PipelineBatchTracker;
+
+// Adaptive pipeline configuration
+typedef struct {
+    int current_batch_size;
+    int pipeline_depth;
+    double target_latency;
+    double communication_ratio;
+    long last_adjustment_time;
+} PipelineConfig;
+
+// Thread argument structures for asynchronous processing
+typedef struct {
+    NetworkStage* stage;
+    PipelineBuffer* buffer;
+    PipelineBatchTracker* tracker;
+    int forward_socket;
+    int* training_active;
+    PipelineConfig* config;
+} AsyncForwardArgs;
+
+typedef struct {
+    NetworkStage* stage;
+    PipelineBuffer* buffer;
+    PipelineBatchTracker* tracker;
+    int backward_socket;
+    int* training_active;
+    PipelineConfig* config;
+} AsyncBackwardArgs;
+
 // Function declarations
 // Buffer management
 int initialize_buffer(PipelineBuffer* buffer);
@@ -109,6 +166,8 @@ int send_forward_activations(int sockfd, ForwardMessage* msg);
 ForwardMessage* receive_forward_activations(int sockfd);
 int send_backward_gradients(int sockfd, BackwardMessage* msg);
 BackwardMessage* receive_backward_gradients(int sockfd);
+BackwardMessage* receive_backward_gradients_timeout(int sockfd, int timeout_ms);
+BackwardMessage* receive_backward_gradients_nonblocking(int sockfd);
 int send_control_message(int sockfd, ControlMessage* msg);
 ControlMessage* receive_control_message(int sockfd);
 
@@ -144,5 +203,28 @@ double calculate_pipeline_loss(Matrix* predictions, int* labels, int count);
 int calculate_pipeline_accuracy(Matrix* predictions, int* labels, int count);
 PipelineStats collect_pipeline_stats(void);
 int calculate_optimal_batch_size(PipelineStats* stats);
+
+// Pipeline management functions
+int initialize_batch_tracker(PipelineBatchTracker* tracker);
+int add_pending_batch(PipelineBatchTracker* tracker, int batch_id, Matrix* activations, Matrix* inputs);
+int process_pending_gradients(PipelineBatchTracker* tracker, int backward_client);
+void cleanup_batch_tracker(PipelineBatchTracker* tracker);
+long get_current_timestamp(void);
+
+// Phase 2: Asynchronous processing functions
+void* async_forward_processor(void* args);
+void* async_backward_processor(void* args);
+
+// Phase 3: Dynamic load balancing functions
+void update_pipeline_config(PipelineConfig* config, PipelineStats* stats);
+int calculate_adaptive_batch_size(PipelineStats* stats, PipelineConfig* config);
+void adjust_pipeline_depth(PipelineConfig* config, PipelineStats* stats);
+
+// Pipeline gradient processing functions
+int apply_single_gradient(NetworkStage* stage, PipelineBatchTracker* tracker, BackwardMessage* bwd_msg);
+int apply_gradient_to_pending_batch(NetworkStage* stage, PipelineBatchTracker* tracker, BackwardMessage* bwd_msg);
+int process_available_gradients_nonblocking(PipelineBatchTracker* tracker, NetworkStage* stage, int backward_client);
+int process_gradients_with_pipeline_control(PipelineBatchTracker* tracker, NetworkStage* stage, 
+                                           int backward_client, int max_pipeline_depth);
 
 #endif 
