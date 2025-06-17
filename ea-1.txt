@@ -1,0 +1,717 @@
+master-1  | EASGD initialized: α=0.100, β=0.010
+master-1  | [master] EASGD enabled: α=0.100, β=0.010
+master-1  | [MASTER] Starting on port 12345
+master-1  | [Master] Elastic center initialized
+master-1  | Allowed CPU cores: 0 
+slaver-1  | EASGD initialized: α=0.100, β=0.010
+slaver-1  | [slaver] EASGD enabled: α=0.100, β=0.010
+slaver-1  | Allowed CPU cores: 1 
+master-1  | [master] Allowed CPU cores: 1
+master-1  | [Master] Server started. Waiting for connection...
+master-1  | [Master] Connection accepted.
+master-1  | [Master] Slaver has 1 cores
+master-1  | [Master] Processing images from 0 to 30000
+slaver-1  | [slaver] Allowed CPU cores: 1
+slaver-1  | [SLAVER] Connecting to 172.31.0.2:12345
+slaver-1  | [Slaver] Connected to master.
+slaver-1  | [Slaver] Processing images from 30000 to 60000
+master-1  | *** Average loss after 0 images: 4.730085 ***
+slaver-1  | *** Average loss after 30000 images: 3.931045 ***
+slaver-1  | *** After 30000 images: 13.30% accuracy ***
+master-1  | *** After 0 images: 10.10% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 30999
+master-1  | [Master] Received weights from slaver at img 999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 2)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.005685, sequential EASGD: 0.044380, send: 0.001036 seconds at img 999
+master-1  | [Master] total symmetric EASGD sync took 0.050225 seconds at img 999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.226459, recv: 0.029327, EASGD: 0.021648 seconds at img 30999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.277656 seconds at img 30999
+master-1  | *** Average loss after 1000 images: 0.378000 ***
+slaver-1  | *** Average loss after 31000 images: 0.420346 ***
+slaver-1  | *** After 31000 images: 82.90% accuracy ***
+master-1  | *** After 1000 images: 75.10% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 31999
+master-1  | [Master] Received weights from slaver at img 1999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 4)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001304, recv: 0.025706, EASGD: 0.014641 seconds at img 31999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.041819 seconds at img 31999
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.284390, sequential EASGD: 0.043057, send: 0.000894 seconds at img 1999
+master-1  | [Master] total symmetric EASGD sync took 0.327634 seconds at img 1999
+slaver-1  | *** Average loss after 32000 images: 0.297308 ***
+master-1  | *** Average loss after 2000 images: 0.259494 ***
+slaver-1  | *** After 32000 images: 83.70% accuracy ***
+master-1  | *** After 2000 images: 82.70% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 32999
+master-1  | [Master] Received weights from slaver at img 2999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 6)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.096000, sequential EASGD: 0.048024, send: 0.001075 seconds at img 2999
+master-1  | [Master] total symmetric EASGD sync took 0.144177 seconds at img 2999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.002118, recv: 0.035054, EASGD: 0.018899 seconds at img 32999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.056246 seconds at img 32999
+master-1  | *** Average loss after 3000 images: 0.203602 ***
+slaver-1  | *** Average loss after 33000 images: 0.257849 ***
+master-1  | *** After 3000 images: 86.40% accuracy ***
+slaver-1  | *** After 33000 images: 87.50% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 33999
+master-1  | [Master] Received weights from slaver at img 3999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 8)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.001213, sequential EASGD: 0.035116, send: 0.000910 seconds at img 3999
+master-1  | [Master] total symmetric EASGD sync took 0.036613 seconds at img 3999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.000795, recv: 0.036723, EASGD: 0.015641 seconds at img 33999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.053547 seconds at img 33999
+master-1  | *** Average loss after 4000 images: 0.186836 ***
+slaver-1  | *** Average loss after 34000 images: 0.194212 ***
+master-1  | *** After 4000 images: 86.80% accuracy ***
+slaver-1  | *** After 34000 images: 89.50% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 34999
+master-1  | [Master] Received weights from slaver at img 4999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 10)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.002357, recv: 0.029788, EASGD: 0.016043 seconds at img 34999
+master-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.048460 seconds at img 34999
+master-1  | [Master] recv: 0.046821, sequential EASGD: 0.046570, send: 0.001207 seconds at img 4999
+master-1  | [Master] total symmetric EASGD sync took 0.093441 seconds at img 4999
+slaver-1  | *** Average loss after 35000 images: 0.203873 ***
+master-1  | *** Average loss after 5000 images: 0.182350 ***
+master-1  | *** After 5000 images: 88.10% accuracy ***
+slaver-1  | *** After 35000 images: 86.80% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 35999
+master-1  | [Master] Received weights from slaver at img 5999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 12)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.205589, sequential EASGD: 0.033665, send: 0.000640 seconds at img 5999
+master-1  | [Master] total symmetric EASGD sync took 0.239404 seconds at img 5999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.002323, recv: 0.024490, EASGD: 0.013849 seconds at img 35999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.040892 seconds at img 35999
+master-1  | *** Average loss after 6000 images: 0.186028 ***
+slaver-1  | *** Average loss after 36000 images: 0.188726 ***
+master-1  | *** After 6000 images: 89.00% accuracy ***
+slaver-1  | *** After 36000 images: 85.40% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 36999
+master-1  | [Master] Received weights from slaver at img 6999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 14)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.304220, sequential EASGD: 0.035591, send: 0.002181 seconds at img 6999
+master-1  | [Master] total symmetric EASGD sync took 0.339932 seconds at img 6999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001045, recv: 0.022141, EASGD: 0.018013 seconds at img 36999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.041365 seconds at img 36999
+master-1  | *** Average loss after 7000 images: 0.155499 ***
+slaver-1  | *** Average loss after 37000 images: 0.165256 ***
+master-1  | *** After 7000 images: 87.70% accuracy ***
+slaver-1  | *** After 37000 images: 88.60% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 37999
+master-1  | [Master] Received weights from slaver at img 7999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 16)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001324, recv: 0.026031, EASGD: 0.020922 seconds at img 37999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.048517 seconds at img 37999
+master-1  | [Master] recv: 0.247591, sequential EASGD: 0.043529, send: 0.001384 seconds at img 7999
+master-1  | [Master] total symmetric EASGD sync took 0.291277 seconds at img 7999
+slaver-1  | *** Average loss after 38000 images: 0.214681 ***
+master-1  | *** Average loss after 8000 images: 0.195163 ***
+slaver-1  | *** After 38000 images: 88.50% accuracy ***
+master-1  | *** After 8000 images: 87.50% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 38999
+master-1  | [Master] Received weights from slaver at img 8999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 18)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.225489, sequential EASGD: 0.044802, send: 0.000898 seconds at img 8999
+master-1  | [Master] total symmetric EASGD sync took 0.270435 seconds at img 8999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.003795, recv: 0.029994, EASGD: 0.016459 seconds at img 38999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.050394 seconds at img 38999
+master-1  | *** Average loss after 9000 images: 0.203310 ***
+slaver-1  | *** Average loss after 39000 images: 0.172810 ***
+master-1  | *** After 9000 images: 87.60% accuracy ***
+slaver-1  | *** After 39000 images: 84.20% accuracy ***
+master-1  | [Master] Received weights from slaver at img 9999
+slaver-1  | [Slaver] Sent weights to master at img 39999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 20)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001606, recv: 0.037040, EASGD: 0.027343 seconds at img 39999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.066211 seconds at img 39999
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.521922, sequential EASGD: 0.072410, send: 0.003010 seconds at img 9999
+master-1  | [Master] total symmetric EASGD sync took 0.594670 seconds at img 9999
+master-1  | *** Average loss after 10000 images: 0.151700 ***
+slaver-1  | *** Average loss after 40000 images: 0.187774 ***
+slaver-1  | *** After 40000 images: 84.40% accuracy ***
+master-1  | *** After 10000 images: 89.70% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 40999
+master-1  | [Master] Received weights from slaver at img 10999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 22)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.000399, sequential EASGD: 0.046863, send: 0.001408 seconds at img 10999
+master-1  | [Master] total symmetric EASGD sync took 0.047458 seconds at img 10999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.000973, recv: 0.201830, EASGD: 0.021674 seconds at img 40999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.224628 seconds at img 40999
+master-1  | *** Average loss after 11000 images: 0.144162 ***
+slaver-1  | *** Average loss after 41000 images: 0.150281 ***
+slaver-1  | *** After 41000 images: 88.40% accuracy ***
+master-1  | *** After 11000 images: 87.70% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 41999
+master-1  | [Master] Received weights from slaver at img 11999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 24)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.003160, recv: 0.026699, EASGD: 0.012642 seconds at img 41999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.042707 seconds at img 41999
+slaver-1  | *** Average loss after 42000 images: 0.184105 ***
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.031350, sequential EASGD: 0.057366, send: 0.001560 seconds at img 11999
+master-1  | [Master] total symmetric EASGD sync took 0.088857 seconds at img 11999
+master-1  | *** Average loss after 12000 images: 0.169376 ***
+slaver-1  | *** After 42000 images: 86.90% accuracy ***
+master-1  | *** After 12000 images: 88.20% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 42999
+master-1  | [Master] Received weights from slaver at img 12999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 26)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.013736, sequential EASGD: 0.087773, send: 0.002525 seconds at img 12999
+master-1  | [Master] total symmetric EASGD sync took 0.101589 seconds at img 12999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001532, recv: 0.057560, EASGD: 0.033395 seconds at img 42999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.092584 seconds at img 42999
+master-1  | *** Average loss after 13000 images: 0.184658 ***
+slaver-1  | *** Average loss after 43000 images: 0.191245 ***
+slaver-1  | *** After 43000 images: 89.10% accuracy ***
+master-1  | *** After 13000 images: 88.20% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 43999
+master-1  | [Master] Received weights from slaver at img 13999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 28)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.000564, sequential EASGD: 0.058213, send: 0.001028 seconds at img 13999
+master-1  | [Master] total symmetric EASGD sync took 0.058994 seconds at img 13999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001485, recv: 0.255184, EASGD: 0.023043 seconds at img 43999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.280045 seconds at img 43999
+master-1  | *** Average loss after 14000 images: 0.185240 ***
+slaver-1  | *** Average loss after 44000 images: 0.145757 ***
+slaver-1  | *** After 44000 images: 88.20% accuracy ***
+master-1  | *** After 14000 images: 86.10% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 44999
+master-1  | [Master] Received weights from slaver at img 14999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 30)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.002078, recv: 0.060415, EASGD: 0.026576 seconds at img 44999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.089408 seconds at img 44999
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.001402, sequential EASGD: 0.094513, send: 0.001797 seconds at img 14999
+master-1  | [Master] total symmetric EASGD sync took 0.096163 seconds at img 14999
+slaver-1  | *** Average loss after 45000 images: 0.164579 ***
+master-1  | *** Average loss after 15000 images: 0.189096 ***
+slaver-1  | *** After 45000 images: 90.10% accuracy ***
+master-1  | *** After 15000 images: 89.30% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 45999
+master-1  | [Master] Received weights from slaver at img 15999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 32)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.039762, sequential EASGD: 0.057249, send: 0.001345 seconds at img 15999
+master-1  | [Master] total symmetric EASGD sync took 0.097167 seconds at img 15999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.002869, recv: 0.037274, EASGD: 0.024589 seconds at img 45999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.065007 seconds at img 45999
+master-1  | *** Average loss after 16000 images: 0.174040 ***
+slaver-1  | *** Average loss after 46000 images: 0.183499 ***
+master-1  | *** After 16000 images: 89.50% accuracy ***
+slaver-1  | *** After 46000 images: 89.80% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 46999
+master-1  | [Master] Received weights from slaver at img 16999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 34)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.003281, sequential EASGD: 0.056809, send: 0.000982 seconds at img 16999
+master-1  | [Master] total symmetric EASGD sync took 0.060289 seconds at img 16999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001443, recv: 0.037902, EASGD: 0.020176 seconds at img 46999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.059844 seconds at img 46999
+master-1  | *** Average loss after 17000 images: 0.156445 ***
+slaver-1  | *** Average loss after 47000 images: 0.169429 ***
+slaver-1  | *** After 47000 images: 90.10% accuracy ***
+master-1  | *** After 17000 images: 89.10% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 47999
+master-1  | [Master] Received weights from slaver at img 17999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 36)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.000713, recv: 0.028735, EASGD: 0.013905 seconds at img 47999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.043533 seconds at img 47999
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.066356, sequential EASGD: 0.047477, send: 0.001066 seconds at img 17999
+master-1  | [Master] total symmetric EASGD sync took 0.113973 seconds at img 17999
+slaver-1  | *** Average loss after 48000 images: 0.161727 ***
+master-1  | *** Average loss after 18000 images: 0.171813 ***
+slaver-1  | *** After 48000 images: 90.40% accuracy ***
+master-1  | *** After 18000 images: 90.50% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 48999
+master-1  | [Master] Received weights from slaver at img 18999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 38)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001031, recv: 0.030688, EASGD: 0.019099 seconds at img 48999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.051035 seconds at img 48999
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.101268, sequential EASGD: 0.052953, send: 0.001023 seconds at img 18999
+master-1  | [Master] total symmetric EASGD sync took 0.154485 seconds at img 18999
+slaver-1  | *** Average loss after 49000 images: 0.145733 ***
+master-1  | *** Average loss after 19000 images: 0.126036 ***
+master-1  | *** After 19000 images: 90.70% accuracy ***
+slaver-1  | *** After 49000 images: 91.70% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 49999
+master-1  | [Master] Received weights from slaver at img 19999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 40)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.000881, recv: 0.101945, EASGD: 0.021621 seconds at img 49999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.124709 seconds at img 49999
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.000661, sequential EASGD: 0.072119, send: 0.001369 seconds at img 19999
+master-1  | [Master] total symmetric EASGD sync took 0.072898 seconds at img 19999
+slaver-1  | *** Average loss after 50000 images: 0.176419 ***
+master-1  | *** Average loss after 20000 images: 0.132107 ***
+slaver-1  | *** After 50000 images: 89.60% accuracy ***
+master-1  | *** After 20000 images: 90.40% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 50999
+master-1  | [Master] Received weights from slaver at img 20999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 42)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.000510, sequential EASGD: 0.036965, send: 0.001114 seconds at img 20999
+master-1  | [Master] total symmetric EASGD sync took 0.037668 seconds at img 20999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001094, recv: 0.301376, EASGD: 0.016866 seconds at img 50999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.319551 seconds at img 50999
+master-1  | *** Average loss after 21000 images: 0.158861 ***
+slaver-1  | *** Average loss after 51000 images: 0.163635 ***
+slaver-1  | *** After 51000 images: 90.70% accuracy ***
+master-1  | *** After 21000 images: 90.30% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 51999
+master-1  | [Master] Received weights from slaver at img 21999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 44)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.000789, sequential EASGD: 0.110166, send: 0.002028 seconds at img 21999
+master-1  | [Master] total symmetric EASGD sync took 0.111239 seconds at img 21999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001480, recv: 0.250887, EASGD: 0.052390 seconds at img 51999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.304991 seconds at img 51999
+slaver-1  | *** Average loss after 52000 images: 0.124554 ***
+master-1  | *** Average loss after 22000 images: 0.127781 ***
+slaver-1  | *** After 52000 images: 91.10% accuracy ***
+master-1  | *** After 22000 images: 90.30% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 52999
+master-1  | [Master] Received weights from slaver at img 22999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 46)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.003116, sequential EASGD: 0.046749, send: 0.001286 seconds at img 22999
+master-1  | [Master] total symmetric EASGD sync took 0.050011 seconds at img 22999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.003295, recv: 0.316721, EASGD: 0.029802 seconds at img 52999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.350203 seconds at img 52999
+master-1  | *** Average loss after 23000 images: 0.164453 ***
+slaver-1  | *** Average loss after 53000 images: 0.182912 ***
+master-1  | *** After 23000 images: 90.80% accuracy ***
+slaver-1  | *** After 53000 images: 91.00% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 53999
+master-1  | [Master] Received weights from slaver at img 23999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 48)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.124215, sequential EASGD: 0.042570, send: 0.002104 seconds at img 23999
+master-1  | [Master] total symmetric EASGD sync took 0.166933 seconds at img 23999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.002540, recv: 0.029911, EASGD: 0.015978 seconds at img 53999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.048649 seconds at img 53999
+master-1  | *** Average loss after 24000 images: 0.153139 ***
+slaver-1  | *** Average loss after 54000 images: 0.146860 ***
+master-1  | *** After 24000 images: 92.00% accuracy ***
+slaver-1  | *** After 54000 images: 90.10% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 54999
+master-1  | [Master] Received weights from slaver at img 24999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 50)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.092820, sequential EASGD: 0.054986, send: 0.002285 seconds at img 24999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001241, recv: 0.037168, EASGD: 0.020507 seconds at img 54999
+master-1  | [Master] total symmetric EASGD sync took 0.147997 seconds at img 24999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.059156 seconds at img 54999
+master-1  | *** Average loss after 25000 images: 0.152561 ***
+slaver-1  | *** Average loss after 55000 images: 0.143942 ***
+master-1  | *** After 25000 images: 90.70% accuracy ***
+slaver-1  | *** After 55000 images: 91.60% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 55999
+master-1  | [Master] Received weights from slaver at img 25999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 52)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.000387, sequential EASGD: 0.047018, send: 0.001370 seconds at img 25999
+master-1  | [Master] total symmetric EASGD sync took 0.047559 seconds at img 25999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.003381, recv: 0.276241, EASGD: 0.028237 seconds at img 55999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.308178 seconds at img 55999
+master-1  | *** Average loss after 26000 images: 0.123719 ***
+slaver-1  | *** Average loss after 56000 images: 0.119400 ***
+slaver-1  | *** After 56000 images: 90.20% accuracy ***
+master-1  | *** After 26000 images: 90.40% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 56999
+master-1  | [Master] Received weights from slaver at img 26999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 54)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.000679, sequential EASGD: 0.046066, send: 0.000956 seconds at img 26999
+master-1  | [Master] total symmetric EASGD sync took 0.047363 seconds at img 26999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001717, recv: 0.104176, EASGD: 0.019185 seconds at img 56999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.125280 seconds at img 56999
+master-1  | *** Average loss after 27000 images: 0.150491 ***
+slaver-1  | *** Average loss after 57000 images: 0.125577 ***
+master-1  | *** After 27000 images: 90.90% accuracy ***
+slaver-1  | *** After 57000 images: 90.60% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 57999
+master-1  | [Master] Received weights from slaver at img 27999
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 56)
+master-1  | [Master] Sent elastic center to slaver
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.077283, sequential EASGD: 0.039944, send: 0.001407 seconds at img 27999
+master-1  | [Master] total symmetric EASGD sync took 0.117376 seconds at img 27999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001370, recv: 0.026493, EASGD: 0.016338 seconds at img 57999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.044397 seconds at img 57999
+master-1  | *** Average loss after 28000 images: 0.142835 ***
+slaver-1  | *** Average loss after 58000 images: 0.122703 ***
+master-1  | *** After 28000 images: 89.70% accuracy ***
+slaver-1  | *** After 58000 images: 90.70% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 58999
+master-1  | [Master] Received weights from slaver at img 28999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 58)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.209204, sequential EASGD: 0.048609, send: 0.001345 seconds at img 28999
+master-1  | [Master] total symmetric EASGD sync took 0.258007 seconds at img 28999
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.001758, recv: 0.028635, EASGD: 0.024248 seconds at img 58999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.054873 seconds at img 58999
+master-1  | *** Average loss after 29000 images: 0.126223 ***
+slaver-1  | *** Average loss after 59000 images: 0.073891 ***
+slaver-1  | *** After 59000 images: 91.00% accuracy ***
+master-1  | *** After 29000 images: 90.50% accuracy ***
+slaver-1  | [Slaver] Sent weights to master at img 59999
+master-1  | [Master] Received weights from slaver at img 29999
+master-1  | [Master] Updating elastic center sequentially...
+master-1  | [Master] Center updated with master weights
+master-1  | [Master] Center updated with slaver weights
+master-1  | [Master] Sequential elastic center update completed (round 60)
+master-1  | [Master] Sent elastic center to slaver
+slaver-1  | [Slaver] Received elastic center from master
+slaver-1  | [Worker] Applied elastic averaging with α=0.100
+slaver-1  | [Slaver] send: 0.000725, recv: 0.028211, EASGD: 0.015466 seconds at img 59999
+slaver-1  | [Slaver] total symmetric EASGD sync took 0.044531 seconds at img 59999
+slaver-1  | [Slaver] Epoch 1/1 done.
+master-1  | [Worker] Applied elastic averaging with α=0.100
+master-1  | [Master] recv: 0.277585, sequential EASGD: 0.043453, send: 0.000930 seconds at img 29999
+master-1  | [Master] total symmetric EASGD sync took 0.321134 seconds at img 29999
+master-1  | [Master] Epoch 1/1 done.
+slaver-1  | [slaver] Training took 478.37 seconds.
+slaver-1  | 
+slaver-1  | Image 0 - True label: 7
+slaver-1  | Raw sigmoid outputs:
+slaver-1  |   Class 0: 0.0855
+slaver-1  |   Class 1: 0.0852
+slaver-1  |   Class 2: 0.0859
+slaver-1  |   Class 3: 0.0861
+slaver-1  |   Class 4: 0.0852
+slaver-1  |   Class 5: 0.0853
+slaver-1  |   Class 6: 0.0852
+slaver-1  |   Class 7: 0.2306
+slaver-1  |   Class 8: 0.0853
+slaver-1  |   Class 9: 0.0856
+slaver-1  | Predicted: 7 (confidence: 0.2306)
+slaver-1  | Correct: YES
+slaver-1  | 
+slaver-1  | Image 1 - True label: 2
+slaver-1  | Raw sigmoid outputs:
+slaver-1  |   Class 0: 0.0912
+slaver-1  |   Class 1: 0.0905
+slaver-1  |   Class 2: 0.1635
+slaver-1  |   Class 3: 0.1011
+slaver-1  |   Class 4: 0.0904
+slaver-1  |   Class 5: 0.0911
+slaver-1  |   Class 6: 0.1002
+slaver-1  |   Class 7: 0.0904
+slaver-1  |   Class 8: 0.0912
+slaver-1  |   Class 9: 0.0904
+slaver-1  | Predicted: 2 (confidence: 0.1635)
+slaver-1  | Correct: YES
+slaver-1  | 
+slaver-1  | Image 2 - True label: 1
+slaver-1  | Raw sigmoid outputs:
+slaver-1  |   Class 0: 0.0851
+slaver-1  |   Class 1: 0.2292
+slaver-1  |   Class 2: 0.0857
+slaver-1  |   Class 3: 0.0864
+slaver-1  |   Class 4: 0.0853
+slaver-1  |   Class 5: 0.0857
+slaver-1  |   Class 6: 0.0858
+slaver-1  |   Class 7: 0.0860
+slaver-1  |   Class 8: 0.0853
+slaver-1  |   Class 9: 0.0854
+slaver-1  | Predicted: 1 (confidence: 0.2292)
+slaver-1  | Correct: YES
+slaver-1  | 
+slaver-1  | Image 3 - True label: 0
+slaver-1  | Raw sigmoid outputs:
+slaver-1  |   Class 0: 0.2248
+slaver-1  |   Class 1: 0.0858
+slaver-1  |   Class 2: 0.0860
+slaver-1  |   Class 3: 0.0859
+slaver-1  |   Class 4: 0.0858
+slaver-1  |   Class 5: 0.0858
+slaver-1  |   Class 6: 0.0874
+slaver-1  |   Class 7: 0.0864
+slaver-1  |   Class 8: 0.0859
+slaver-1  |   Class 9: 0.0861
+slaver-1  | Predicted: 0 (confidence: 0.2248)
+slaver-1  | Correct: YES
+slaver-1  | 
+slaver-1  | Image 4 - True label: 4
+slaver-1  | Raw sigmoid outputs:
+slaver-1  |   Class 0: 0.0907
+slaver-1  |   Class 1: 0.0906
+slaver-1  |   Class 2: 0.0938
+slaver-1  |   Class 3: 0.0906
+slaver-1  |   Class 4: 0.1648
+slaver-1  |   Class 5: 0.0906
+slaver-1  |   Class 6: 0.0920
+slaver-1  |   Class 7: 0.0917
+slaver-1  |   Class 8: 0.0906
+slaver-1  |   Class 9: 0.1045
+slaver-1  | Predicted: 4 (confidence: 0.1648)
+slaver-1  | Correct: YES
+master-1  | [master] Training took 478.98 seconds.
+master-1  | Successfully saved matrix to hidden
+master-1  | Successfully saved matrix to output
+master-1  | Successfully written to 'testing_net'
+master-1  | [Master] Elastic center cleaned up
+master-1  | 
+master-1  | Image 0 - True label: 7
+master-1  | Raw sigmoid outputs:
+master-1  |   Class 0: 0.0854
+master-1  |   Class 1: 0.0850
+master-1  |   Class 2: 0.0853
+master-1  |   Class 3: 0.0883
+master-1  |   Class 4: 0.0850
+master-1  |   Class 5: 0.0851
+master-1  |   Class 6: 0.0850
+master-1  |   Class 7: 0.2297
+master-1  |   Class 8: 0.0850
+master-1  |   Class 9: 0.0863
+master-1  | Predicted: 7 (confidence: 0.2297)
+master-1  | Correct: YES
+master-1  | 
+master-1  | Image 1 - True label: 2
+master-1  | Raw sigmoid outputs:
+master-1  |   Class 0: 0.0879
+master-1  |   Class 1: 0.0853
+master-1  |   Class 2: 0.2122
+master-1  |   Class 3: 0.0920
+master-1  |   Class 4: 0.0852
+master-1  |   Class 5: 0.0858
+master-1  |   Class 6: 0.0952
+master-1  |   Class 7: 0.0852
+master-1  |   Class 8: 0.0860
+master-1  |   Class 9: 0.0852
+master-1  | Predicted: 2 (confidence: 0.2122)
+master-1  | Correct: YES
+master-1  | 
+master-1  | Image 2 - True label: 1
+master-1  | Raw sigmoid outputs:
+master-1  |   Class 0: 0.0846
+master-1  |   Class 1: 0.2271
+master-1  |   Class 2: 0.0851
+master-1  |   Class 3: 0.0928
+master-1  |   Class 4: 0.0846
+master-1  |   Class 5: 0.0850
+master-1  |   Class 6: 0.0850
+master-1  |   Class 7: 0.0856
+master-1  |   Class 8: 0.0851
+master-1  |   Class 9: 0.0852
+master-1  | Predicted: 1 (confidence: 0.2271)
+master-1  | Correct: YES
+master-1  | 
+master-1  | Image 3 - True label: 0
+master-1  | Raw sigmoid outputs:
+master-1  |   Class 0: 0.2293
+master-1  |   Class 1: 0.0853
+master-1  |   Class 2: 0.0854
+master-1  |   Class 3: 0.0855
+master-1  |   Class 4: 0.0853
+master-1  |   Class 5: 0.0854
+master-1  |   Class 6: 0.0864
+master-1  |   Class 7: 0.0860
+master-1  |   Class 8: 0.0855
+master-1  |   Class 9: 0.0859
+master-1  | Predicted: 0 (confidence: 0.2293)
+master-1  | Correct: YES
+master-1  | 
+master-1  | Image 4 - True label: 4
+master-1  | Raw sigmoid outputs:
+master-1  |   Class 0: 0.0866
+master-1  |   Class 1: 0.0865
+master-1  |   Class 2: 0.0872
+master-1  |   Class 3: 0.0865
+master-1  |   Class 4: 0.2145
+master-1  |   Class 5: 0.0866
+master-1  |   Class 6: 0.0870
+master-1  |   Class 7: 0.0877
+master-1  |   Class 8: 0.0870
+master-1  |   Class 9: 0.0904
+master-1  | Predicted: 4 (confidence: 0.2145)
+master-1  | Correct: YES
+[Kslaver-1 exited with code 0
+[Kmaster-1 exited with code 0
