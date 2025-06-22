@@ -8,7 +8,8 @@
 #include "../socket/socket_utils.h"
 
 void sync_with_parameter_server(NeuralNetwork* net, int worker_id, 
-                               const char* server_ip, int server_port, int sync_count);
+                               const char* server_ip, int server_port, int sync_count,
+                               double current_loss);
 
 int main(int argc, char** argv) {
     if (argc < 4) {
@@ -20,12 +21,10 @@ int main(int argc, char** argv) {
     const char* server_ip = argv[2];
     int server_port = atoi(argv[3]);
     
-    printf("[Worker %d] Starting, server: %s:%d\n", worker_id, server_ip, server_port);
+    printf("[Worker %d] Starting with ALPHA-based EASGD variant, server: %s:%d\n", worker_id, server_ip, server_port);
     fflush(stdout);
     
-    srand(time(NULL) + worker_id);  // Different seed per worker
-    
-    // Wait a bit for parameter server to start
+    srand(time(NULL) + worker_id);
     sleep(2);
     
     // Load data
@@ -42,17 +41,18 @@ int main(int argc, char** argv) {
            worker_id, start_index, end_index-1, end_index - start_index);
     fflush(stdout);
     
-    // Initialize network
+    // CHANGE: Initialize network WITH EASGD (alpha for local elastic force)
     NeuralNetwork* net = network_create(784, 300, 10, 0.1);
-    network_easgd_init(net, 0.01, 0.001);  // α=0.1, β=0.01
+    network_easgd_init(net, 0.01, 0.0);  // α=0.01 (local elastic), β=0.0 (not used by worker)
     
-    printf("[Worker %d] Network initialized with EASGD: α=0.01, β=0.001\n", worker_id);
+    printf("[Worker %d] Network initialized with α=0.01 (local elastic force)\n", worker_id);
     fflush(stdout);
     
     // Training loop
     double loss_sum = 0.0;
     int loss_count = 0;
     int sync_count = 0;
+    double current_batch_loss = 0.0;
     
     double start_time = time_in_socket_seconds();
     
@@ -67,26 +67,23 @@ int main(int argc, char** argv) {
             Matrix* output = matrix_create(10, 1);
             output->entries[cur_img->label][0] = 1;
 
-            double loss = network_train(net, input, output);
+            double loss = network_train(net, input, output);  // SGD + elastic force (if center available)
             loss_sum += loss;
             loss_count++;
+            current_batch_loss = loss_sum / loss_count;
 
             // Async sync every 1000 images
             if ((i - start_index + 1) % 1000 == 0) {
-                sync_with_parameter_server(net, worker_id, server_ip, server_port, ++sync_count);
+                sync_with_parameter_server(net, worker_id, server_ip, server_port, 
+                                         ++sync_count, current_batch_loss);
                 
                 // Test accuracy after sync
                 double acc = network_predict_imgs(net, test_imgs, 1000);
-                printf("[Worker %d] After %d images: accuracy=%.2f%%\n", 
-                       worker_id, i - start_index + 1, acc * 100);
+                printf("[Worker %d] After %d images: accuracy=%.2f%%, avg_loss=%.6f\n", 
+                       worker_id, i - start_index + 1, acc * 100, current_batch_loss);
                 fflush(stdout);
-            }
-
-            // Logging
-            if ((i - start_index + 1) % 1000 == 0 && loss_count > 0) {
-                printf("[Worker %d] After %d images: avg_loss=%.6f\n", 
-                       worker_id, i - start_index + 1, loss_sum / loss_count);
-                fflush(stdout);
+                
+                // Reset loss tracking after sync
                 loss_sum = 0;
                 loss_count = 0;
             }
@@ -123,7 +120,8 @@ int main(int argc, char** argv) {
 }
 
 void sync_with_parameter_server(NeuralNetwork* net, int worker_id, 
-                               const char* server_ip, int server_port, int sync_count) {
+                               const char* server_ip, int server_port, int sync_count,
+                               double current_loss) {
     double sync_start = time_in_socket_seconds();
     double comm_start_1, comm_end_1;
     double comm_start_2, comm_end_2;
@@ -142,10 +140,16 @@ void sync_with_parameter_server(NeuralNetwork* net, int worker_id,
         return;
     }
     
+    // Send current loss
+    if (send_all(sockfd, &current_loss, sizeof(double)) != sizeof(double)) {
+        printf("[Worker %d] Failed to send loss\n", worker_id);
+        close(sockfd);
+        return;
+    }
+    
     // Send weights
     int weight_count;
     double* weights = network_get_weights(net, &weight_count);
-
 
     // === TIMING: Send weights ===
     comm_start_1 = time_in_socket_seconds();
@@ -157,7 +161,8 @@ void sync_with_parameter_server(NeuralNetwork* net, int worker_id,
         return;
     }
     comm_end_1 = time_in_socket_seconds();
-    printf("[Worker %d] Sent %d weights in %.3fms\n", worker_id, weight_count, (comm_end_1 - comm_start_1)*1000);
+    printf("[Worker %d] Sent %d weights + loss=%.6f in %.3fms\n", 
+           worker_id, weight_count, current_loss, (comm_end_1 - comm_start_1)*1000);
     fflush(stdout);
     
     // Receive elastic center
@@ -170,7 +175,7 @@ void sync_with_parameter_server(NeuralNetwork* net, int worker_id,
     }
     
     // === TIMING: Receive center weights ===
-    comm_start_1 = time_in_socket_seconds();
+    comm_start_2 = time_in_socket_seconds();
     double* center_weights = malloc(sizeof(double) * center_count);
     if (recv_all(sockfd, center_weights, sizeof(double) * center_count) != sizeof(double) * center_count) {
         printf("[Worker %d] Failed to receive center weights\n", worker_id);
@@ -179,18 +184,19 @@ void sync_with_parameter_server(NeuralNetwork* net, int worker_id,
         close(sockfd);
         return;
     }
-    comm_end_1 = time_in_socket_seconds();
+    comm_end_2 = time_in_socket_seconds();
     printf("[Worker %d] Received %d center weights in %.3fms\n", 
-           worker_id, center_count, (comm_end_1 - comm_start_1)*1000);
+           worker_id, center_count, (comm_end_2 - comm_start_2)*1000);
     fflush(stdout);
     
-    // Apply elastic averaging: wᵢ ← wᵢ + α(w̄ - wᵢ)
+    // CHANGE: Back to traditional elastic averaging θᵢ ← θᵢ - α(θᵢ - θ̄)
     network_apply_elastic_averaging(net, center_weights, center_count);
     
     double sync_end = time_in_socket_seconds();
-    printf("[Worker %d] Sync #%d completed in %.3fms (total), comm overhead: %.1f%%\n", 
+    double total_comm_time = (comm_end_1 - comm_start_1) + (comm_end_2 - comm_start_2);
+    printf("[Worker %d] Sync #%d completed in %.3fms (α-elastic), comm overhead: %.1f%%\n", 
            worker_id, sync_count, (sync_end - sync_start)*1000,
-           (((comm_end_2 - comm_start_2) + (comm_end_1 - comm_start_1)) / (sync_end - sync_start)) * 100);
+           (total_comm_time / (sync_end - sync_start)) * 100);
     fflush(stdout);
     
     // Cleanup

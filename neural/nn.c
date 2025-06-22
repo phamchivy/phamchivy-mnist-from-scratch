@@ -605,6 +605,137 @@ void network_apply_elastic_averaging(NeuralNetwork* net, double* center_weights,
     printf("[Worker] Applied elastic averaging with α=%.3f\n", net->alpha);
 }
 
+// NEW: Worker interpolation with center weights: θᵢ = factor*(θᵢ) + (1-factor)*(θ̄)
+// For your idea: factor = 0.5 → θᵢ = ½(θᵢ + θ̄)
+void network_interpolate_with_center(NeuralNetwork* net, double* center_weights, 
+                                    int center_count, double interpolation_factor) {
+    if (!center_weights || center_count <= 0) {
+        printf("[Worker] Invalid center weights for interpolation\n");
+        return;
+    }
+    
+    // Convert center weights array to matrices
+    Matrix* center_hidden = matrix_create(net->hidden_weights->rows, net->hidden_weights->cols);
+    Matrix* center_output = matrix_create(net->output_weights->rows, net->output_weights->cols);
+    
+    int idx = 0;
+    // Fill center hidden weights
+    for (int i = 0; i < center_hidden->rows; i++) {
+        for (int j = 0; j < center_hidden->cols; j++) {
+            center_hidden->entries[i][j] = center_weights[idx++];
+        }
+    }
+    // Fill center output weights
+    for (int i = 0; i < center_output->rows; i++) {
+        for (int j = 0; j < center_output->cols; j++) {
+            center_output->entries[i][j] = center_weights[idx++];
+        }
+    }
+    
+    // Interpolation: θᵢ = factor * θᵢ + (1-factor) * θ̄
+    // For your case: factor = 0.5 → θᵢ = 0.5 * θᵢ + 0.5 * θ̄ = ½(θᵢ + θ̄)
+    
+    // Hidden layer interpolation
+    Matrix* scaled_local_hidden = scale(interpolation_factor, net->hidden_weights);
+    Matrix* scaled_center_hidden = scale(1.0 - interpolation_factor, center_hidden);
+    Matrix* new_hidden = add(scaled_local_hidden, scaled_center_hidden);
+    
+    matrix_free(net->hidden_weights);
+    net->hidden_weights = new_hidden;
+    
+    // Output layer interpolation  
+    Matrix* scaled_local_output = scale(interpolation_factor, net->output_weights);
+    Matrix* scaled_center_output = scale(1.0 - interpolation_factor, center_output);
+    Matrix* new_output = add(scaled_local_output, scaled_center_output);
+    
+    matrix_free(net->output_weights);
+    net->output_weights = new_output;
+    
+    printf("[Worker] Interpolated with center (factor=%.2f): θᵢ = %.2f*θᵢ + %.2f*θ̄\n", 
+           interpolation_factor, interpolation_factor, 1.0 - interpolation_factor);
+    
+    // Cleanup
+    matrix_free(center_hidden);
+    matrix_free(center_output);
+    matrix_free(scaled_local_hidden);
+    matrix_free(scaled_center_hidden);
+    matrix_free(scaled_local_output);
+    matrix_free(scaled_center_output);
+}
+
+// NEW: Weighted elastic center update with loss-based weighting
+// θ̄ ← θ̄ + β * worker_weight * (θᵢ - θ̄)
+void elastic_center_weighted_update(NeuralNetwork* template_net, double* worker_weights, 
+                                   int weight_count, double worker_weight) {
+    if (!template_net->easgd_enabled) {
+        printf("[PS] EASGD not enabled for weighted update\n");
+        return;
+    }
+    
+    if (!elastic_center.initialized) {
+        printf("[PS] Elastic center not initialized, initializing...\n");
+        elastic_center_init(template_net);
+        return;
+    }
+    
+    if (worker_weight <= 0.0) {
+        printf("[PS] Invalid worker weight %.6f, skipping update\n", worker_weight);
+        return;
+    }
+    
+    // Convert worker weights array to matrices
+    Matrix* worker_hidden = matrix_create(template_net->hidden_weights->rows, 
+                                         template_net->hidden_weights->cols);
+    Matrix* worker_output = matrix_create(template_net->output_weights->rows, 
+                                         template_net->output_weights->cols);
+    
+    int idx = 0;
+    // Fill worker hidden weights
+    for (int i = 0; i < worker_hidden->rows; i++) {
+        for (int j = 0; j < worker_hidden->cols; j++) {
+            worker_hidden->entries[i][j] = worker_weights[idx++];
+        }
+    }
+    // Fill worker output weights
+    for (int i = 0; i < worker_output->rows; i++) {
+        for (int j = 0; j < worker_output->cols; j++) {
+            worker_output->entries[i][j] = worker_weights[idx++];
+        }
+    }
+    
+    // Weighted elastic center update: θ̄ ← θ̄ + β * w_i * (θᵢ - θ̄)
+    double effective_beta = template_net->beta * worker_weight;
+    
+    // Hidden layer weighted update
+    Matrix* hidden_diff = subtract(worker_hidden, elastic_center.center_hidden_weights);
+    Matrix* hidden_weighted_update = scale(effective_beta, hidden_diff);
+    Matrix* new_center_hidden = add(elastic_center.center_hidden_weights, hidden_weighted_update);
+    
+    matrix_free(elastic_center.center_hidden_weights);
+    elastic_center.center_hidden_weights = new_center_hidden;
+    
+    // Output layer weighted update
+    Matrix* output_diff = subtract(worker_output, elastic_center.center_output_weights);
+    Matrix* output_weighted_update = scale(effective_beta, output_diff);
+    Matrix* new_center_output = add(elastic_center.center_output_weights, output_weighted_update);
+    
+    matrix_free(elastic_center.center_output_weights);
+    elastic_center.center_output_weights = new_center_output;
+    
+    elastic_center.update_count++;
+    
+    printf("[PS] Weighted elastic update: β=%.6f, w_i=%.3f, effective_β=%.6f (update #%d)\n", 
+           template_net->beta, worker_weight, effective_beta, elastic_center.update_count);
+    
+    // Cleanup
+    matrix_free(worker_hidden);
+    matrix_free(worker_output);
+    matrix_free(hidden_diff);
+    matrix_free(hidden_weighted_update);
+    matrix_free(output_diff);
+    matrix_free(output_weighted_update);
+}
+
 // UNCHANGED: elastic_center_cleanup function
 void elastic_center_cleanup(void) {
     if (elastic_center.initialized) {

@@ -1,0 +1,1002 @@
+parameter_server-1  | [Parameter Server] Starting NEW EASGD variant on port 12345
+parameter_server-1  | EASGD initialized: α=0.000, β=0.001
+parameter_server-1  | [Master] Elastic center initialized
+parameter_server-1  | [Parameter Server] Elastic center initialized (β=0.001, loss-weighted aggregation)
+parameter_server-1  | [Parameter Server] Server socket ready, waiting for workers...
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #1), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.420529) in 8.632ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.420529 -> inv_weight=2.378
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #1)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 36.624ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 2.763ms
+parameter_server-1  | [Parameter Server] Request #1: 52.040ms total (recv=8.632ms, weighted_update=36.624ms, send=2.763ms)
+parameter_server-1  | [Parameter Server] Communication: 21.9%, Computation: 70.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #2), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.388277) in 11.177ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.388277 -> inv_weight=2.575
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #2)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.534ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 8.438ms
+parameter_server-1  | [Parameter Server] Request #2: 49.507ms total (recv=11.177ms, weighted_update=12.534ms, send=8.438ms)
+parameter_server-1  | [Parameter Server] Communication: 39.6%, Computation: 25.3% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #3), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.392862) in 4.014ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.392862 -> inv_weight=2.545
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #3)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 10.889ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 6.799ms
+parameter_server-1  | [Parameter Server] Request #3: 25.982ms total (recv=4.014ms, weighted_update=10.889ms, send=6.799ms)
+parameter_server-1  | [Parameter Server] Communication: 41.6%, Computation: 41.9% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #4), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.354963) in 11.234ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.354963 -> inv_weight=2.817
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #4)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 13.160ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 8.998ms
+parameter_server-1  | [Parameter Server] Request #4: 40.891ms total (recv=11.234ms, weighted_update=13.160ms, send=8.998ms)
+parameter_server-1  | [Parameter Server] Communication: 49.5%, Computation: 32.2% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Starting with new EASGD variant, server: 172.31.0.10:12345
+worker1-1           | [Worker 1] Loading MNIST data...
+worker1-1           | [Worker 1] Processing images 0 to 29999 (30000 total)
+worker1-1           | [Worker 1] Network initialized with simple SGD (no elastic at worker)
+worker1-1           | [Worker 1] Starting epoch 1
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.388277 in 14.389ms
+worker1-1           | [Worker 1] Received 238200 center weights in 8.551ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #1 completed in 84.948ms (total), comm overhead: 27.0%
+worker1-1           | [Worker 1] After 1000 images: accuracy=59.60%, avg_loss=0.388277
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.354963 in 11.311ms
+worker1-1           | [Worker 1] Received 238200 center weights in 9.387ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #2 completed in 80.550ms (total), comm overhead: 25.7%
+worker2-1           | [Worker 2] Starting with new EASGD variant, server: 172.31.0.10:12345
+worker2-1           | [Worker 2] Loading MNIST data...
+worker2-1           | [Worker 2] Processing images 30000 to 59999 (30000 total)
+worker2-1           | [Worker 2] Network initialized with simple SGD (no elastic at worker)
+worker2-1           | [Worker 2] Starting epoch 1
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.420529 in 7.714ms
+worker2-1           | [Worker 2] Received 238200 center weights in 3.550ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #1 completed in 83.786ms (total), comm overhead: 13.4%
+worker2-1           | [Worker 2] After 1000 images: accuracy=67.80%, avg_loss=0.420529
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.392862 in 4.069ms
+worker2-1           | [Worker 2] Received 238200 center weights in 10.301ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #2 completed in 62.505ms (total), comm overhead: 23.0%
+worker2-1           | [Worker 2] After 2000 images: accuracy=65.60%, avg_loss=0.392862
+worker1-1           | [Worker 1] After 2000 images: accuracy=78.30%, avg_loss=0.354963
+parameter_server-1  | [Parameter Server] Worker connected (request #5), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.358945) in 4.128ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.358945 -> inv_weight=2.786
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.358945 in 4.155ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #5)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.664ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 2.976ms
+parameter_server-1  | [Parameter Server] Request #5: 26.253ms total (recv=4.128ms, weighted_update=12.664ms, send=2.976ms)
+parameter_server-1  | [Parameter Server] Communication: 27.1%, Computation: 48.2% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 4.101ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #3 completed in 44.028ms (total), comm overhead: 18.8%
+parameter_server-1  | [Parameter Server] Worker connected (request #6), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.312054) in 4.512ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.312054 -> inv_weight=3.205
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.312054 in 4.622ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #6)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 13.197ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 10.718ms
+parameter_server-1  | [Parameter Server] Request #6: 33.285ms total (recv=4.512ms, weighted_update=13.197ms, send=10.718ms)
+parameter_server-1  | [Parameter Server] Communication: 45.8%, Computation: 39.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 15.177ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #3 completed in 61.578ms (total), comm overhead: 32.2%
+worker2-1           | [Worker 2] After 3000 images: accuracy=80.10%, avg_loss=0.358945
+worker1-1           | [Worker 1] After 3000 images: accuracy=79.90%, avg_loss=0.312054
+parameter_server-1  | [Parameter Server] Worker connected (request #7), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.291784 in 1.736ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.291784) in 1.594ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.291784 -> inv_weight=3.427
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #7)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 11.127ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 3.137ms
+parameter_server-1  | [Parameter Server] Request #7: 18.997ms total (recv=1.594ms, weighted_update=11.127ms, send=3.137ms)
+parameter_server-1  | [Parameter Server] Communication: 24.9%, Computation: 58.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 3.948ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #4 completed in 36.886ms (total), comm overhead: 15.4%
+parameter_server-1  | [Parameter Server] Worker connected (request #8), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.298689) in 3.783ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.298689 -> inv_weight=3.348
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.298689 in 4.070ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #8)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.027ms
+worker1-1           | [Worker 1] Received 238200 center weights in 3.432ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.371ms
+parameter_server-1  | [Parameter Server] Request #8: 23.064ms total (recv=3.783ms, weighted_update=12.027ms, send=2.371ms)
+parameter_server-1  | [Parameter Server] Communication: 26.7%, Computation: 52.1% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #4 completed in 38.841ms (total), comm overhead: 19.3%
+worker2-1           | [Worker 2] After 4000 images: accuracy=80.00%, avg_loss=0.291784
+worker1-1           | [Worker 1] After 4000 images: accuracy=73.00%, avg_loss=0.298689
+parameter_server-1  | [Parameter Server] Worker connected (request #9), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.308541 in 3.605ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.308541) in 3.453ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.308541 -> inv_weight=3.241
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #9)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 26.816ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 1.393ms
+parameter_server-1  | [Parameter Server] Request #9: 37.291ms total (recv=3.453ms, weighted_update=26.816ms, send=1.393ms)
+parameter_server-1  | [Parameter Server] Communication: 13.0%, Computation: 71.9% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 5.441ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #5 completed in 62.975ms (total), comm overhead: 14.4%
+parameter_server-1  | [Parameter Server] Worker connected (request #10), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.288620 in 1.818ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.288620) in 1.905ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.288620 -> inv_weight=3.465
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #10)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 11.655ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.326ms
+parameter_server-1  | [Parameter Server] Request #10: 19.548ms total (recv=1.905ms, weighted_update=11.655ms, send=2.326ms)
+parameter_server-1  | [Parameter Server] Communication: 21.6%, Computation: 59.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] === Processed 10 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 3.530ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #5 completed in 38.014ms (total), comm overhead: 14.1%
+worker2-1           | [Worker 2] After 5000 images: accuracy=77.30%, avg_loss=0.308541
+worker1-1           | [Worker 1] After 5000 images: accuracy=81.20%, avg_loss=0.288620
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.297276 in 1.325ms
+parameter_server-1  | [Parameter Server] Worker connected (request #11), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.297276) in 3.823ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.297276 -> inv_weight=3.364
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #11)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 14.739ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 3.290ms
+parameter_server-1  | [Parameter Server] Request #11: 26.116ms total (recv=3.823ms, weighted_update=14.739ms, send=3.290ms)
+parameter_server-1  | [Parameter Server] Communication: 27.2%, Computation: 56.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 3.939ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #6 completed in 42.836ms (total), comm overhead: 12.3%
+parameter_server-1  | [Parameter Server] Worker connected (request #12), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.283092 in 1.559ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.283092) in 1.984ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.283092 -> inv_weight=3.532
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #12)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.112ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 5.312ms
+parameter_server-1  | [Parameter Server] Request #12: 22.198ms total (recv=1.984ms, weighted_update=12.112ms, send=5.312ms)
+parameter_server-1  | [Parameter Server] Communication: 32.9%, Computation: 54.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 2.240ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #6 completed in 38.937ms (total), comm overhead: 9.8%
+worker2-1           | [Worker 2] After 6000 images: accuracy=74.40%, avg_loss=0.297276
+worker1-1           | [Worker 1] After 6000 images: accuracy=77.70%, avg_loss=0.283092
+parameter_server-1  | [Parameter Server] Worker connected (request #13), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.281110 in 14.613ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.281110) in 14.672ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.281110 -> inv_weight=3.557
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #13)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 23.058ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 2.318ms
+parameter_server-1  | [Parameter Server] Request #13: 43.960ms total (recv=14.672ms, weighted_update=23.058ms, send=2.318ms)
+parameter_server-1  | [Parameter Server] Communication: 38.6%, Computation: 52.5% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 3.667ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #7 completed in 80.874ms (total), comm overhead: 22.6%
+parameter_server-1  | [Parameter Server] Worker connected (request #14), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.254053 in 4.251ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.254053) in 4.074ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.254053 -> inv_weight=3.936
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #14)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.752ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 5.012ms
+parameter_server-1  | [Parameter Server] Request #14: 25.688ms total (recv=4.074ms, weighted_update=12.752ms, send=5.012ms)
+parameter_server-1  | [Parameter Server] Communication: 35.4%, Computation: 49.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 6.252ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #7 completed in 50.257ms (total), comm overhead: 20.9%
+worker2-1           | [Worker 2] After 7000 images: accuracy=81.50%, avg_loss=0.281110
+worker1-1           | [Worker 1] After 7000 images: accuracy=81.50%, avg_loss=0.254053
+parameter_server-1  | [Parameter Server] Worker connected (request #15), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.321753 in 1.458ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.321753) in 1.591ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.321753 -> inv_weight=3.108
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #15)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 11.504ms
+worker2-1           | [Worker 2] Received 238200 center weights in 5.702ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 4.776ms
+parameter_server-1  | [Parameter Server] Request #15: 22.025ms total (recv=1.591ms, weighted_update=11.504ms, send=4.776ms)
+parameter_server-1  | [Parameter Server] Communication: 28.9%, Computation: 52.2% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #8 completed in 42.229ms (total), comm overhead: 17.0%
+parameter_server-1  | [Parameter Server] Worker connected (request #16), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.319128) in 2.684ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.319128 -> inv_weight=3.134
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.319128 in 2.738ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #16)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 11.513ms
+worker1-1           | [Worker 1] Received 238200 center weights in 4.850ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 4.460ms
+parameter_server-1  | [Parameter Server] Request #16: 21.738ms total (recv=2.684ms, weighted_update=11.513ms, send=4.460ms)
+parameter_server-1  | [Parameter Server] Communication: 32.9%, Computation: 53.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #8 completed in 38.541ms (total), comm overhead: 19.7%
+worker2-1           | [Worker 2] After 8000 images: accuracy=82.90%, avg_loss=0.321753
+worker1-1           | [Worker 1] After 8000 images: accuracy=80.00%, avg_loss=0.319128
+parameter_server-1  | [Parameter Server] Worker connected (request #17), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.290741 in 1.754ms
+worker2-1           | [Worker 2] Received 238200 center weights in 5.500ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.290741) in 1.947ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.290741 -> inv_weight=3.439
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #17)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.040ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 4.703ms
+parameter_server-1  | [Parameter Server] Request #17: 22.537ms total (recv=1.947ms, weighted_update=12.040ms, send=4.703ms)
+parameter_server-1  | [Parameter Server] Communication: 29.5%, Computation: 53.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #9 completed in 39.791ms (total), comm overhead: 18.2%
+parameter_server-1  | [Parameter Server] Worker connected (request #18), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.311509) in 6.690ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.311509 -> inv_weight=3.210
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.311509 in 6.629ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #18)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.891ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 4.316ms
+parameter_server-1  | [Parameter Server] Request #18: 32.955ms total (recv=6.690ms, weighted_update=12.891ms, send=4.316ms)
+parameter_server-1  | [Parameter Server] Communication: 33.4%, Computation: 39.1% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 6.083ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #9 completed in 70.271ms (total), comm overhead: 18.1%
+worker2-1           | [Worker 2] After 9000 images: accuracy=73.40%, avg_loss=0.290741
+worker1-1           | [Worker 1] After 9000 images: accuracy=80.00%, avg_loss=0.311509
+parameter_server-1  | [Parameter Server] Worker connected (request #19), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.307778) in 1.825ms
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.307778 in 1.956ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.307778 -> inv_weight=3.249
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #19)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 13.737ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 2.420ms
+parameter_server-1  | [Parameter Server] Request #19: 25.424ms total (recv=1.825ms, weighted_update=13.737ms, send=2.420ms)
+parameter_server-1  | [Parameter Server] Communication: 16.7%, Computation: 54.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 3.651ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #10 completed in 46.714ms (total), comm overhead: 12.0%
+parameter_server-1  | [Parameter Server] Worker connected (request #20), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.247075 in 4.693ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.247075) in 1.847ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.247075 -> inv_weight=4.047
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #20)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 15.358ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 4.618ms
+parameter_server-1  | [Parameter Server] Request #20: 30.334ms total (recv=1.847ms, weighted_update=15.358ms, send=4.618ms)
+parameter_server-1  | [Parameter Server] Communication: 21.3%, Computation: 50.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] === Processed 20 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 5.789ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #10 completed in 48.987ms (total), comm overhead: 21.4%
+worker2-1           | [Worker 2] After 10000 images: accuracy=67.60%, avg_loss=0.307778
+worker1-1           | [Worker 1] After 10000 images: accuracy=80.20%, avg_loss=0.247075
+parameter_server-1  | [Parameter Server] Worker connected (request #21), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.269375) in 1.819ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.269375 in 1.386ms
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.269375 -> inv_weight=3.712
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #21)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 13.474ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 1.556ms
+parameter_server-1  | [Parameter Server] Request #21: 21.450ms total (recv=1.819ms, weighted_update=13.474ms, send=1.556ms)
+parameter_server-1  | [Parameter Server] Communication: 15.7%, Computation: 62.8% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 4.367ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #11 completed in 41.352ms (total), comm overhead: 13.9%
+parameter_server-1  | [Parameter Server] Worker connected (request #22), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.252506 in 1.386ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.252506) in 1.709ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.252506 -> inv_weight=3.960
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #22)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.158ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 1.954ms
+parameter_server-1  | [Parameter Server] Request #22: 19.967ms total (recv=1.709ms, weighted_update=12.158ms, send=1.954ms)
+parameter_server-1  | [Parameter Server] Communication: 18.3%, Computation: 60.9% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 3.168ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #11 completed in 37.535ms (total), comm overhead: 12.1%
+worker2-1           | [Worker 2] After 11000 images: accuracy=78.00%, avg_loss=0.269375
+worker1-1           | [Worker 1] After 11000 images: accuracy=80.10%, avg_loss=0.252506
+parameter_server-1  | [Parameter Server] Worker connected (request #23), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.318381 in 2.607ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.318381) in 2.551ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.318381 -> inv_weight=3.141
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #23)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.350ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 4.445ms
+parameter_server-1  | [Parameter Server] Request #23: 22.385ms total (recv=2.551ms, weighted_update=12.350ms, send=4.445ms)
+parameter_server-1  | [Parameter Server] Communication: 31.3%, Computation: 55.2% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 2.682ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #12 completed in 39.619ms (total), comm overhead: 13.3%
+parameter_server-1  | [Parameter Server] Worker connected (request #24), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.287114 in 1.020ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.287114) in 1.671ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.287114 -> inv_weight=3.483
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #24)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 11.602ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.849ms
+parameter_server-1  | [Parameter Server] Request #24: 20.016ms total (recv=1.671ms, weighted_update=11.602ms, send=2.849ms)
+parameter_server-1  | [Parameter Server] Communication: 22.6%, Computation: 58.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 5.027ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #12 completed in 38.944ms (total), comm overhead: 15.5%
+worker2-1           | [Worker 2] After 12000 images: accuracy=76.60%, avg_loss=0.318381
+worker1-1           | [Worker 1] After 12000 images: accuracy=80.10%, avg_loss=0.287114
+parameter_server-1  | [Parameter Server] Worker connected (request #25), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.307061) in 3.941ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.307061 -> inv_weight=3.257
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.307061 in 4.077ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #25)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.714ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 1.540ms
+parameter_server-1  | [Parameter Server] Request #25: 23.736ms total (recv=3.941ms, weighted_update=12.714ms, send=1.540ms)
+parameter_server-1  | [Parameter Server] Communication: 23.1%, Computation: 53.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 3.250ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #13 completed in 43.143ms (total), comm overhead: 17.0%
+parameter_server-1  | [Parameter Server] Worker connected (request #26), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.302598 in 1.455ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.302598) in 2.163ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.302598 -> inv_weight=3.305
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #26)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.591ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 1.216ms
+parameter_server-1  | [Parameter Server] Request #26: 21.644ms total (recv=2.163ms, weighted_update=12.591ms, send=1.216ms)
+parameter_server-1  | [Parameter Server] Communication: 15.6%, Computation: 58.2% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 3.363ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #13 completed in 39.308ms (total), comm overhead: 12.3%
+worker2-1           | [Worker 2] After 13000 images: accuracy=81.00%, avg_loss=0.307061
+worker1-1           | [Worker 1] After 13000 images: accuracy=76.50%, avg_loss=0.302598
+parameter_server-1  | [Parameter Server] Worker connected (request #27), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.272181 in 1.469ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.272181) in 1.470ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.272181 -> inv_weight=3.674
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #27)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 14.604ms
+worker2-1           | [Worker 2] Received 238200 center weights in 2.207ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 1.778ms
+parameter_server-1  | [Parameter Server] Request #27: 22.900ms total (recv=1.470ms, weighted_update=14.604ms, send=1.778ms)
+parameter_server-1  | [Parameter Server] Communication: 14.2%, Computation: 63.8% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #14 completed in 45.316ms (total), comm overhead: 8.1%
+parameter_server-1  | [Parameter Server] Worker connected (request #28), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.307138) in 1.353ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.307138 -> inv_weight=3.256
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.307138 in 1.263ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #28)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 8.537ms
+worker1-1           | [Worker 1] Received 238200 center weights in 2.159ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.143ms
+parameter_server-1  | [Parameter Server] Request #28: 15.568ms total (recv=1.353ms, weighted_update=8.537ms, send=2.143ms)
+parameter_server-1  | [Parameter Server] Communication: 22.5%, Computation: 54.8% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #14 completed in 31.673ms (total), comm overhead: 10.8%
+worker2-1           | [Worker 2] After 14000 images: accuracy=76.70%, avg_loss=0.272181
+worker1-1           | [Worker 1] After 14000 images: accuracy=71.20%, avg_loss=0.307138
+parameter_server-1  | [Parameter Server] Worker connected (request #29), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.297539) in 2.703ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.297539 -> inv_weight=3.361
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.297539 in 5.479ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #29)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.909ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 6.317ms
+parameter_server-1  | [Parameter Server] Request #29: 28.433ms total (recv=2.703ms, weighted_update=12.909ms, send=6.317ms)
+parameter_server-1  | [Parameter Server] Communication: 31.7%, Computation: 45.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 2.996ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #15 completed in 48.628ms (total), comm overhead: 17.4%
+parameter_server-1  | [Parameter Server] Worker connected (request #30), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.325981) in 1.290ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.325981 -> inv_weight=3.068
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.325981 in 1.554ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #30)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 14.206ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 1.813ms
+parameter_server-1  | [Parameter Server] Request #30: 24.253ms total (recv=1.290ms, weighted_update=14.206ms, send=1.813ms)
+parameter_server-1  | [Parameter Server] Communication: 12.8%, Computation: 58.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] === Processed 30 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 2.566ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #15 completed in 43.453ms (total), comm overhead: 9.5%
+worker2-1           | [Worker 2] After 15000 images: accuracy=77.70%, avg_loss=0.297539
+worker1-1           | [Worker 1] After 15000 images: accuracy=78.40%, avg_loss=0.325981
+parameter_server-1  | [Parameter Server] Worker connected (request #31), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.303225 in 2.638ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.303225) in 2.304ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.303225 -> inv_weight=3.298
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #31)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 15.398ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 5.850ms
+parameter_server-1  | [Parameter Server] Request #31: 27.820ms total (recv=2.304ms, weighted_update=15.398ms, send=5.850ms)
+parameter_server-1  | [Parameter Server] Communication: 29.3%, Computation: 55.3% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 6.617ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #16 completed in 57.717ms (total), comm overhead: 16.0%
+parameter_server-1  | [Parameter Server] Worker connected (request #32), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.298550 in 1.587ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.298550) in 6.544ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.298550 -> inv_weight=3.350
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #32)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 17.526ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 3.991ms
+parameter_server-1  | [Parameter Server] Request #32: 34.335ms total (recv=6.544ms, weighted_update=17.526ms, send=3.991ms)
+parameter_server-1  | [Parameter Server] Communication: 30.7%, Computation: 51.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 5.114ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #16 completed in 58.137ms (total), comm overhead: 11.5%
+worker2-1           | [Worker 2] After 16000 images: accuracy=84.00%, avg_loss=0.303225
+worker1-1           | [Worker 1] After 16000 images: accuracy=80.60%, avg_loss=0.298550
+parameter_server-1  | [Parameter Server] Worker connected (request #33), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.297787 in 2.350ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.297787) in 4.548ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.297787 -> inv_weight=3.358
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #33)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 28.712ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 4.747ms
+parameter_server-1  | [Parameter Server] Request #33: 56.007ms total (recv=4.548ms, weighted_update=28.712ms, send=4.747ms)
+parameter_server-1  | [Parameter Server] Communication: 16.6%, Computation: 51.3% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 10.157ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #17 completed in 94.207ms (total), comm overhead: 13.3%
+parameter_server-1  | [Parameter Server] Worker connected (request #34), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.295943 in 2.221ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.295943) in 2.989ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.295943 -> inv_weight=3.379
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #34)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 21.409ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 6.068ms
+parameter_server-1  | [Parameter Server] Request #34: 38.618ms total (recv=2.989ms, weighted_update=21.409ms, send=6.068ms)
+parameter_server-1  | [Parameter Server] Communication: 23.5%, Computation: 55.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 5.673ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #17 completed in 64.117ms (total), comm overhead: 12.3%
+worker2-1           | [Worker 2] After 17000 images: accuracy=76.40%, avg_loss=0.297787
+worker1-1           | [Worker 1] After 17000 images: accuracy=80.20%, avg_loss=0.295943
+parameter_server-1  | [Parameter Server] Worker connected (request #35), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.293878 in 1.494ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.293878) in 1.426ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.293878 -> inv_weight=3.403
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #35)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 16.772ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 3.479ms
+parameter_server-1  | [Parameter Server] Request #35: 27.241ms total (recv=1.426ms, weighted_update=16.772ms, send=3.479ms)
+parameter_server-1  | [Parameter Server] Communication: 18.0%, Computation: 61.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 5.147ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #18 completed in 48.032ms (total), comm overhead: 13.8%
+parameter_server-1  | [Parameter Server] Worker connected (request #36), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.311650 in 1.900ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.311650) in 1.508ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.311650 -> inv_weight=3.209
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #36)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 13.686ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 4.186ms
+parameter_server-1  | [Parameter Server] Request #36: 26.986ms total (recv=1.508ms, weighted_update=13.686ms, send=4.186ms)
+parameter_server-1  | [Parameter Server] Communication: 21.1%, Computation: 50.7% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 4.233ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #18 completed in 49.785ms (total), comm overhead: 12.3%
+worker2-1           | [Worker 2] After 18000 images: accuracy=82.20%, avg_loss=0.293878
+worker1-1           | [Worker 1] After 18000 images: accuracy=78.60%, avg_loss=0.311650
+parameter_server-1  | [Parameter Server] Worker connected (request #37), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.269972 in 3.691ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.269972) in 3.595ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.269972 -> inv_weight=3.704
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #37)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 19.930ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 2.471ms
+parameter_server-1  | [Parameter Server] Request #37: 32.847ms total (recv=3.595ms, weighted_update=19.930ms, send=2.471ms)
+parameter_server-1  | [Parameter Server] Communication: 18.5%, Computation: 60.7% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 9.732ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #19 completed in 61.233ms (total), comm overhead: 21.9%
+parameter_server-1  | [Parameter Server] Worker connected (request #38), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.251712 in 3.936ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.251712) in 3.835ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.251712 -> inv_weight=3.973
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #38)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 15.131ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.236ms
+parameter_server-1  | [Parameter Server] Request #38: 26.214ms total (recv=3.835ms, weighted_update=15.131ms, send=2.236ms)
+parameter_server-1  | [Parameter Server] Communication: 23.2%, Computation: 57.7% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 3.476ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #19 completed in 46.254ms (total), comm overhead: 16.0%
+worker2-1           | [Worker 2] After 19000 images: accuracy=82.00%, avg_loss=0.269972
+worker1-1           | [Worker 1] After 19000 images: accuracy=85.30%, avg_loss=0.251712
+parameter_server-1  | [Parameter Server] Worker connected (request #39), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.332723 in 1.426ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.332723) in 1.405ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.332723 -> inv_weight=3.005
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #39)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 14.374ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 2.410ms
+parameter_server-1  | [Parameter Server] Request #39: 25.881ms total (recv=1.405ms, weighted_update=14.374ms, send=2.410ms)
+parameter_server-1  | [Parameter Server] Communication: 14.7%, Computation: 55.5% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 3.571ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #20 completed in 44.694ms (total), comm overhead: 11.2%
+parameter_server-1  | [Parameter Server] Worker connected (request #40), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.270649 in 1.433ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.270649) in 1.347ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.270649 -> inv_weight=3.695
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #40)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 13.947ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 3.177ms
+parameter_server-1  | [Parameter Server] Request #40: 25.368ms total (recv=1.347ms, weighted_update=13.947ms, send=3.177ms)
+parameter_server-1  | [Parameter Server] Communication: 17.8%, Computation: 55.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] === Processed 40 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 4.359ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #20 completed in 46.236ms (total), comm overhead: 12.5%
+worker2-1           | [Worker 2] After 20000 images: accuracy=82.90%, avg_loss=0.332723
+worker1-1           | [Worker 1] After 20000 images: accuracy=80.30%, avg_loss=0.270649
+parameter_server-1  | [Parameter Server] Worker connected (request #41), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.287829) in 1.634ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.287829 -> inv_weight=3.474
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.287829 in 3.160ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #41)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 12.983ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 4.233ms
+parameter_server-1  | [Parameter Server] Request #41: 23.983ms total (recv=1.634ms, weighted_update=12.983ms, send=4.233ms)
+parameter_server-1  | [Parameter Server] Communication: 24.5%, Computation: 54.1% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 4.070ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #21 completed in 50.397ms (total), comm overhead: 14.3%
+parameter_server-1  | [Parameter Server] Worker connected (request #42), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.300653) in 3.023ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.300653 -> inv_weight=3.326
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.300653 in 3.129ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #42)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 16.595ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.427ms
+parameter_server-1  | [Parameter Server] Request #42: 26.951ms total (recv=3.023ms, weighted_update=16.595ms, send=2.427ms)
+parameter_server-1  | [Parameter Server] Communication: 20.2%, Computation: 61.6% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 2.623ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #21 completed in 58.357ms (total), comm overhead: 9.9%
+worker2-1           | [Worker 2] After 21000 images: accuracy=83.20%, avg_loss=0.287829
+worker1-1           | [Worker 1] After 21000 images: accuracy=78.40%, avg_loss=0.300653
+parameter_server-1  | [Parameter Server] Worker connected (request #43), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.254616 in 2.953ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.254616) in 3.012ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.254616 -> inv_weight=3.927
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #43)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 21.541ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 8.508ms
+parameter_server-1  | [Parameter Server] Request #43: 43.820ms total (recv=3.012ms, weighted_update=21.541ms, send=8.508ms)
+parameter_server-1  | [Parameter Server] Communication: 26.3%, Computation: 49.2% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 6.650ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #22 completed in 71.083ms (total), comm overhead: 13.5%
+parameter_server-1  | [Parameter Server] Worker connected (request #44), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.244222 in 2.823ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.244222) in 2.965ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.244222 -> inv_weight=4.095
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #44)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 18.249ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 4.401ms
+parameter_server-1  | [Parameter Server] Request #44: 41.156ms total (recv=2.965ms, weighted_update=18.249ms, send=4.401ms)
+parameter_server-1  | [Parameter Server] Communication: 17.9%, Computation: 44.3% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 6.304ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #22 completed in 66.774ms (total), comm overhead: 13.7%
+worker2-1           | [Worker 2] After 22000 images: accuracy=83.00%, avg_loss=0.254616
+worker1-1           | [Worker 1] After 22000 images: accuracy=79.00%, avg_loss=0.244222
+parameter_server-1  | [Parameter Server] Worker connected (request #45), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.308363 in 2.296ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.308363) in 2.604ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.308363 -> inv_weight=3.243
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #45)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 23.114ms
+worker2-1           | [Worker 2] Received 238200 center weights in 8.833ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 7.986ms
+parameter_server-1  | [Parameter Server] Request #45: 47.321ms total (recv=2.604ms, weighted_update=23.114ms, send=7.986ms)
+parameter_server-1  | [Parameter Server] Communication: 22.4%, Computation: 48.8% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #23 completed in 87.488ms (total), comm overhead: 12.7%
+parameter_server-1  | [Parameter Server] Worker connected (request #46), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.305614 in 13.154ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.305614) in 13.030ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.305614 -> inv_weight=3.272
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #46)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 18.735ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 20.909ms
+parameter_server-1  | [Parameter Server] Request #46: 60.487ms total (recv=13.030ms, weighted_update=18.735ms, send=20.909ms)
+parameter_server-1  | [Parameter Server] Communication: 56.1%, Computation: 31.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 21.942ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #23 completed in 97.815ms (total), comm overhead: 35.9%
+worker2-1           | [Worker 2] After 23000 images: accuracy=82.00%, avg_loss=0.308363
+worker1-1           | [Worker 1] After 23000 images: accuracy=81.20%, avg_loss=0.305614
+parameter_server-1  | [Parameter Server] Worker connected (request #47), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.278654) in 3.097ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.278654 -> inv_weight=3.589
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.278654 in 3.208ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #47)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 26.398ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 5.643ms
+parameter_server-1  | [Parameter Server] Request #47: 46.385ms total (recv=3.097ms, weighted_update=26.398ms, send=5.643ms)
+parameter_server-1  | [Parameter Server] Communication: 18.8%, Computation: 56.9% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 8.845ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #24 completed in 78.377ms (total), comm overhead: 15.4%
+parameter_server-1  | [Parameter Server] Worker connected (request #48), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.290448) in 5.356ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.290448 -> inv_weight=3.443
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.290448 in 5.454ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #48)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 24.650ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 8.671ms
+parameter_server-1  | [Parameter Server] Request #48: 53.125ms total (recv=5.356ms, weighted_update=24.650ms, send=8.671ms)
+parameter_server-1  | [Parameter Server] Communication: 26.4%, Computation: 46.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 8.745ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #24 completed in 78.011ms (total), comm overhead: 18.2%
+worker2-1           | [Worker 2] After 24000 images: accuracy=77.50%, avg_loss=0.278654
+worker1-1           | [Worker 1] After 24000 images: accuracy=81.80%, avg_loss=0.290448
+parameter_server-1  | [Parameter Server] Worker connected (request #49), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.281066 in 4.392ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.281066) in 4.132ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.281066 -> inv_weight=3.558
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #49)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 20.882ms
+worker2-1           | [Worker 2] Received 238200 center weights in 7.142ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 5.860ms
+parameter_server-1  | [Parameter Server] Request #49: 40.218ms total (recv=4.132ms, weighted_update=20.882ms, send=5.860ms)
+parameter_server-1  | [Parameter Server] Communication: 24.8%, Computation: 51.9% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #25 completed in 69.488ms (total), comm overhead: 16.6%
+parameter_server-1  | [Parameter Server] Worker connected (request #50), starting timer
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.311375) in 3.047ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.311375 -> inv_weight=3.212
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.311375 in 3.113ms
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #50)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 23.004ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.559ms
+parameter_server-1  | [Parameter Server] Request #50: 40.591ms total (recv=3.047ms, weighted_update=23.004ms, send=2.559ms)
+parameter_server-1  | [Parameter Server] Communication: 13.8%, Computation: 56.7% (loss-weighted)
+parameter_server-1  | [Parameter Server] Saving elastic center after 50 requests...
+worker1-1           | [Worker 1] Received 238200 center weights in 4.102ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #25 completed in 79.904ms (total), comm overhead: 9.0%
+parameter_server-1  | Successfully saved matrix to hidden
+parameter_server-1  | Successfully saved matrix to output
+parameter_server-1  | Successfully written to 'elastic_center_checkpoint_50'
+parameter_server-1  | [Parameter Server] Checkpoint saved to elastic_center_checkpoint_50
+parameter_server-1  | [Parameter Server] === Processed 50 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] After 25000 images: accuracy=81.30%, avg_loss=0.281066
+worker1-1           | [Worker 1] After 25000 images: accuracy=81.40%, avg_loss=0.311375
+parameter_server-1  | [Parameter Server] Worker connected (request #51), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.245245 in 3.790ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.245245) in 3.730ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.245245 -> inv_weight=4.078
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #51)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 19.839ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 3.779ms
+parameter_server-1  | [Parameter Server] Request #51: 36.732ms total (recv=3.730ms, weighted_update=19.839ms, send=3.779ms)
+parameter_server-1  | [Parameter Server] Communication: 20.4%, Computation: 54.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 4.927ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #26 completed in 58.385ms (total), comm overhead: 14.9%
+parameter_server-1  | [Parameter Server] Worker connected (request #52), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.255181 in 5.493ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.255181) in 5.454ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.255181 -> inv_weight=3.919
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #52)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 19.809ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 15.806ms
+parameter_server-1  | [Parameter Server] Request #52: 48.202ms total (recv=5.454ms, weighted_update=19.809ms, send=15.806ms)
+parameter_server-1  | [Parameter Server] Communication: 44.1%, Computation: 41.1% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 16.472ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #26 completed in 70.360ms (total), comm overhead: 31.2%
+worker2-1           | [Worker 2] After 26000 images: accuracy=79.80%, avg_loss=0.245245
+worker1-1           | [Worker 1] After 26000 images: accuracy=83.40%, avg_loss=0.255181
+parameter_server-1  | [Parameter Server] Worker connected (request #53), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.274803 in 2.094ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.274803) in 2.125ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.274803 -> inv_weight=3.639
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #53)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 26.815ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 23.614ms
+parameter_server-1  | [Parameter Server] Request #53: 65.191ms total (recv=2.125ms, weighted_update=26.815ms, send=23.614ms)
+parameter_server-1  | [Parameter Server] Communication: 39.5%, Computation: 41.1% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 24.087ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #27 completed in 102.428ms (total), comm overhead: 25.6%
+parameter_server-1  | [Parameter Server] Worker connected (request #54), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.292586 in 4.232ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.292586) in 4.175ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.292586 -> inv_weight=3.418
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #54)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 21.605ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 2.499ms
+parameter_server-1  | [Parameter Server] Request #54: 36.093ms total (recv=4.175ms, weighted_update=21.605ms, send=2.499ms)
+parameter_server-1  | [Parameter Server] Communication: 18.5%, Computation: 59.9% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 6.242ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #27 completed in 71.094ms (total), comm overhead: 14.7%
+worker2-1           | [Worker 2] After 27000 images: accuracy=77.70%, avg_loss=0.274803
+worker1-1           | [Worker 1] After 27000 images: accuracy=79.40%, avg_loss=0.292586
+parameter_server-1  | [Parameter Server] Worker connected (request #55), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.271227 in 2.563ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.271227) in 2.377ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.271227 -> inv_weight=3.687
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #55)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 24.879ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 5.539ms
+parameter_server-1  | [Parameter Server] Request #55: 44.980ms total (recv=2.377ms, weighted_update=24.879ms, send=5.539ms)
+parameter_server-1  | [Parameter Server] Communication: 17.6%, Computation: 55.3% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker 2] Received 238200 center weights in 5.476ms
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #28 completed in 84.622ms (total), comm overhead: 9.5%
+parameter_server-1  | [Parameter Server] Worker connected (request #56), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.275374 in 4.208ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.275374) in 5.212ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.275374 -> inv_weight=3.631
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #56)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 15.756ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 9.381ms
+parameter_server-1  | [Parameter Server] Request #56: 41.656ms total (recv=5.212ms, weighted_update=15.756ms, send=9.381ms)
+parameter_server-1  | [Parameter Server] Communication: 35.0%, Computation: 37.8% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 5.000ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #28 completed in 75.264ms (total), comm overhead: 12.2%
+worker2-1           | [Worker 2] After 28000 images: accuracy=80.70%, avg_loss=0.271227
+worker1-1           | [Worker 1] After 28000 images: accuracy=80.50%, avg_loss=0.275374
+parameter_server-1  | [Parameter Server] Worker connected (request #57), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.174685 in 2.406ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.174685) in 2.286ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.174685 -> inv_weight=5.725
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #57)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 19.133ms
+worker2-1           | [Worker 2] Received 238200 center weights in 9.153ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 9.349ms
+parameter_server-1  | [Parameter Server] Request #57: 34.574ms total (recv=2.286ms, weighted_update=19.133ms, send=9.349ms)
+parameter_server-1  | [Parameter Server] Communication: 33.7%, Computation: 55.3% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #29 completed in 62.712ms (total), comm overhead: 18.4%
+worker2-1           | [Worker 2] After 29000 images: accuracy=79.10%, avg_loss=0.174685
+parameter_server-1  | [Parameter Server] Worker connected (request #58), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.270784 in 3.269ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.270784) in 4.413ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.270784 -> inv_weight=3.693
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #58)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 33.107ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 1.904ms
+parameter_server-1  | [Parameter Server] Request #58: 47.733ms total (recv=4.413ms, weighted_update=33.107ms, send=1.904ms)
+parameter_server-1  | [Parameter Server] Communication: 13.2%, Computation: 69.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 3.359ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #29 completed in 78.107ms (total), comm overhead: 8.5%
+worker1-1           | [Worker 1] After 29000 images: accuracy=78.50%, avg_loss=0.270784
+parameter_server-1  | [Parameter Server] Worker connected (request #59), starting timer
+worker2-1           | [Worker 2] Sent 238200 weights + loss=0.177947 in 2.302ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 2 (loss=0.177947) in 2.215ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 2: loss=0.177947 -> inv_weight=5.620
+parameter_server-1  | [Parameter Server] Normalized weights: w2=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #59)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 25.452ms
+worker2-1           | [Worker 2] Received 238200 center weights in 4.813ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 2 in 3.922ms
+parameter_server-1  | [Parameter Server] Request #59: 42.154ms total (recv=2.215ms, weighted_update=25.452ms, send=3.922ms)
+parameter_server-1  | [Parameter Server] Communication: 14.6%, Computation: 60.4% (loss-weighted)
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker2-1           | [Worker 2] Sync #30 completed in 79.214ms (total), comm overhead: 9.0%
+worker2-1           | [Worker 2] After 30000 images: accuracy=71.70%, avg_loss=0.177947
+worker2-1           | [Worker 2] Epoch 1 completed
+worker2-1           | [Worker 2] Training completed in 423.01 seconds, total syncs: 30
+parameter_server-1  | [Parameter Server] Worker connected (request #60), starting timer
+worker1-1           | [Worker 1] Sent 238200 weights + loss=0.325829 in 3.404ms
+parameter_server-1  | [Parameter Server] Received 238200 weights from worker 1 (loss=0.325829) in 3.259ms
+parameter_server-1  | [Parameter Server] Computing loss weights for 1 workers:
+parameter_server-1  | [Parameter Server]   Worker 1: loss=0.325829 -> inv_weight=3.069
+parameter_server-1  | [Parameter Server] Normalized weights: w1=1.000 
+parameter_server-1  | [PS] Weighted elastic update: β=0.001000, w_i=1.000, effective_β=0.001000 (update #60)
+parameter_server-1  | [Parameter Server] Updated elastic center with weight=1.000 in 22.350ms
+parameter_server-1  | [Parameter Server] Sent 238200 center weights to worker 1 in 1.797ms
+parameter_server-1  | [Parameter Server] Request #60: 37.280ms total (recv=3.259ms, weighted_update=22.350ms, send=1.797ms)
+parameter_server-1  | [Parameter Server] Communication: 13.6%, Computation: 60.0% (loss-weighted)
+parameter_server-1  | [Parameter Server] === Processed 60 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1-1           | [Worker 1] Received 238200 center weights in 4.716ms
+worker1-1           | [Worker] Interpolated with center (factor=0.50): θᵢ = 0.50*θᵢ + 0.50*θ̄
+worker1-1           | [Worker 1] Sync #30 completed in 67.734ms (total), comm overhead: 12.0%
+worker2-1           | Successfully saved matrix to hidden
+worker2-1           | Successfully saved matrix to output
+worker2-1           | Successfully written to 'worker_2_final'
+worker2-1           | [Worker 2] Final test accuracy: 71.70%
+worker1-1           | [Worker 1] After 30000 images: accuracy=76.30%, avg_loss=0.325829
+worker1-1           | [Worker 1] Epoch 1 completed
+worker1-1           | [Worker 1] Training completed in 425.66 seconds, total syncs: 30
+[Kworker2-1 exited with code 0
+worker1-1           | Successfully saved matrix to hidden
+worker1-1           | Successfully saved matrix to output
+worker1-1           | Successfully written to 'worker_1_final'
+worker1-1           | [Worker 1] Final test accuracy: 76.30%
+[Kworker1-1 exited with code 0
+[Kparameter_server-1 exited with code 137
