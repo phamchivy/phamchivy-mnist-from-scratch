@@ -5,7 +5,10 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <sys/select.h>
+#include <sys/time.h>
 #include <errno.h>
+#include <fcntl.h>
 
 int setup_server(int port) {
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -98,4 +101,50 @@ int recv_all(int sockfd, void* buffer, int size) {
 
 void socket_close(int sockfd) {
     close(sockfd);
+}
+
+// New functions for pipeline support
+int set_socket_nonblocking(int sockfd) {
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags == -1) return -1;
+    
+    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) {
+        return -1;
+    }
+    return 0;
+}
+
+int set_socket_blocking(int sockfd) {
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags == -1) return -1;
+    
+    if (fcntl(sockfd, F_SETFL, flags & ~O_NONBLOCK) == -1) {
+        return -1;
+    }
+    return 0;
+}
+
+// Check if data is available to read without blocking
+int has_pending_data(int sockfd) {
+    fd_set readfds;
+    struct timeval timeout = {0, 0}; // No wait
+    
+    FD_ZERO(&readfds);
+    FD_SET(sockfd, &readfds);
+    
+    int result = select(sockfd + 1, &readfds, NULL, NULL, &timeout);
+    return result > 0 && FD_ISSET(sockfd, &readfds);
+}
+
+// Set socket buffer sizes for better pipeline performance
+int set_socket_buffers(int sockfd, int send_buf_size, int recv_buf_size) {
+    if (setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &send_buf_size, sizeof(send_buf_size)) < 0) {
+        return -1;
+    }
+    
+    if (setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &recv_buf_size, sizeof(recv_buf_size)) < 0) {
+        return -1;
+    }
+    
+    return 0;
 }

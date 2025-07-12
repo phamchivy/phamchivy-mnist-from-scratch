@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     libpthread-stubs0-dev \
     netcat \
     iputils-ping \
+    iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Sao chép mã nguồn vào container

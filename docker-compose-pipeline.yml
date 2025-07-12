@@ -2,7 +2,11 @@ version: "3.9"
 services:
   stage1:
     build: .
-    command: ./app_pipeline stage1 12345 12346
+    command: sh -c "
+      if [ ! -z '$NETWORK_DELAY' ]; then
+        tc qdisc add dev eth0 root netem delay $NETWORK_DELAY $NETWORK_JITTER loss $NETWORK_LOSS 2>/dev/null || true;
+      fi;
+      ./app_pipeline stage1 12345 12346"
     deploy:
       resources:
         limits:
@@ -14,10 +18,21 @@ services:
     volumes:
       - ./data:/app/data:ro
     restart: "no"
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    environment:
+      - NETWORK_DELAY=${NETWORK_DELAY:-}
+      - NETWORK_JITTER=${NETWORK_JITTER:-}
+      - NETWORK_LOSS=${NETWORK_LOSS:-}
 
   stage2:
     build: .
-    command: ./app_pipeline stage2 12345 12346 172.32.0.2
+    command: sh -c "
+      if [ ! -z '$NETWORK_DELAY' ]; then
+        tc qdisc add dev eth0 root netem delay $NETWORK_DELAY $NETWORK_JITTER loss $NETWORK_LOSS 2>/dev/null || true;
+      fi;
+      ./app_pipeline stage2 12345 12346 172.32.0.2"
     deploy:
       resources:
         limits:
@@ -31,10 +46,21 @@ services:
     volumes:
       - ./data:/app/data:ro
     restart: "no"
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    environment:
+      - NETWORK_DELAY=${NETWORK_DELAY:-}
+      - NETWORK_JITTER=${NETWORK_JITTER:-}
+      - NETWORK_LOSS=${NETWORK_LOSS:-}
 
   coordinator:
     build: .
-    command: ./app_pipeline coordinator 12345 12346
+    command: sh -c "
+      if [ ! -z '$NETWORK_DELAY' ]; then
+        tc qdisc add dev eth0 root netem delay $NETWORK_DELAY $NETWORK_JITTER loss $NETWORK_LOSS 2>/dev/null || true;
+      fi;
+      ./app_pipeline coordinator 12345 12346"
     deploy:
       resources:
         limits:
@@ -47,6 +73,29 @@ services:
       pipeline_net:
         ipv4_address: 172.32.0.4
     restart: on-failure
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    environment:
+      - NETWORK_DELAY=${NETWORK_DELAY:-}
+      - NETWORK_JITTER=${NETWORK_JITTER:-}
+      - NETWORK_LOSS=${NETWORK_LOSS:-}
+
+  # network-simulator:
+  #   image: alpine:latest
+  #   command: >
+  #     sh -c "
+  #       apk add --no-cache iproute2 &&
+  #       tc qdisc add dev eth0 root handle 1: netem delay 50ms loss 1% &&
+  #       tc qdisc add dev eth0 parent 1:1 handle 2: tbf rate 10mbit burst 32kbit latency 300ms &&
+  #       tail -f /dev/null
+  #     "
+  #   networks:
+  #     pipeline_net:
+  #       ipv4_address: 172.32.0.5
+  #   cap_add:
+  #     - NET_ADMIN
+  #   privileged: true
 
 networks:
   pipeline_net:
