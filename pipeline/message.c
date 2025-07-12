@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <sys/select.h>
 
 // Message creation functions
 ForwardMessage* create_forward_message(int batch_id, int mini_batch_id, Matrix* activations, int* labels, int label_count) {
@@ -175,39 +174,6 @@ BackwardMessage* receive_backward_gradients(int sockfd) {
     
 error:
     free_backward_message(msg);
-    return NULL;
-}
-
-// Non-blocking version of receive_backward_gradients
-BackwardMessage* receive_backward_gradients_nonblocking(int sockfd) {
-    // Check if data is available without blocking
-    if (!has_pending_data(sockfd)) {
-        return NULL; // No data available, don't block
-    }
-    
-    // Data is available, receive it normally
-    return receive_backward_gradients(sockfd);
-}
-
-// Blocking version with timeout
-BackwardMessage* receive_backward_gradients_timeout(int sockfd, int timeout_ms) {
-    fd_set readfds;
-    struct timeval timeout;
-    
-    FD_ZERO(&readfds);
-    FD_SET(sockfd, &readfds);
-    
-    timeout.tv_sec = timeout_ms / 1000;
-    timeout.tv_usec = (timeout_ms % 1000) * 1000;
-    
-    int result = select(sockfd + 1, &readfds, NULL, NULL, &timeout);
-    
-    if (result > 0 && FD_ISSET(sockfd, &readfds)) {
-        // Data is available, receive it
-        return receive_backward_gradients(sockfd);
-    }
-    
-    // Timeout or no data
     return NULL;
 }
 

@@ -17,4 +17,3 @@ docker-compose -f .\docker-compose-pipeline.yml build
 docker-compose -f .\docker-compose-pipeline.yml --env-file .\env.default up 
 
 ```
-
