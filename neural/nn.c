@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-//#include <mpi.h> 
 #include "../matrix/ops.h"
 #include "../neural/activations.h"
 #include "../socket/socket_utils.h"

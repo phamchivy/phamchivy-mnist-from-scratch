@@ -1,0 +1,27 @@
+connect: Connection timed out
+connect: Interrupted system call
+=== HYBRID PIPELINE-EASGD SYSTEM ===
+Version: 2.0
+Architecture: Pipeline Parallelism + EASGD
+Dataset: MNIST (60,000 training + 10,000 test)
+Network: 784 → 512 → 10 (2-stage pipeline)
+Network Environment: local
+=====================================
+
+[MAIN] Launching component: stage1
+[STAGE1-1] Launching worker with parameters:
+  Data partition: [0:30000] (30000 samples)
+  Alpha1 (elastic rate): 0.200
+  Expected connections: Stage2-1, Coordinator
+
+[EASGD] LOCAL parameters: α₁=0.2, α₂=0.3, β=0.5
+[STAGE1-1] Starting hybrid worker for data partition [0:30000]
+[STAGE1-1] Created worker for data partition [0:30000] with α₁=0.200
+[WEIGHT_MGMT] Loading dataset partition [0:30000] from ./data/mnist_train.csv
+[WEIGHT_MGMT] Successfully loaded 30000 images for partition [0:30000]
+[STAGE1-1] Loaded 30000 training images
+
+[MAIN] Received signal 2, initiating graceful shutdown...
+[STAGE1-1] Failed to connect to Stage2-1
+
+[MAIN] Received signal 15, initiating graceful shutdown...

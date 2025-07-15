@@ -1,0 +1,184 @@
+# Development Docker Compose for Hybrid Pipeline-EASGD System
+# Uses volume mounting to avoid rebuilding on code changes
+
+services:
+  # Stage1-1 Worker (Data partition 0-30000)
+  stage1-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: 
+      bash -c "make clean && make app_hybrid && ./start_hybrid.sh stage1 1 0 30000 ${ALPHA1:-0.2}"
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+        reservations:
+          cpus: "1.5"
+    cpuset: "0-1"
+    networks:
+      hybrid_net:
+        ipv4_address: 172.33.0.2
+    volumes:
+      # Mount source code for live development
+      - .:/app:rw
+      - ./data:/app/data:ro
+      - ./results:/app/results:rw
+      - ./logs:/app/logs:rw
+    restart: "no"
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    environment:
+      - NETWORK_TYPE=${NETWORK_TYPE:-LOCAL}
+      - NETWORK_DELAY=${NETWORK_DELAY:-}
+      - NETWORK_JITTER=${NETWORK_JITTER:-}
+      - NETWORK_LOSS=${NETWORK_LOSS:-}
+      - ALPHA1=${ALPHA1:-0.2}
+      - LOG_LEVEL=${LOG_LEVEL:-1}
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "app_hybrid"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 120s
+
+  # Stage1-2 Worker (Data partition 30000-60000)
+  stage1-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: 
+      bash -c "make clean && make app_hybrid && ./start_hybrid.sh stage1 2 30000 60000 ${ALPHA1:-0.2}"
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+        reservations:
+          cpus: "1.5"
+    cpuset: "2-3"
+    networks:
+      hybrid_net:
+        ipv4_address: 172.33.0.3
+    volumes:
+      # Mount source code for live development
+      - .:/app:rw
+      - ./data:/app/data:ro
+      - ./results:/app/results:rw
+      - ./logs:/app/logs:rw
+    restart: "no"
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    environment:
+      - NETWORK_TYPE=${NETWORK_TYPE:-LOCAL}
+      - NETWORK_DELAY=${NETWORK_DELAY:-}
+      - NETWORK_JITTER=${NETWORK_JITTER:-}
+      - NETWORK_LOSS=${NETWORK_LOSS:-}
+      - ALPHA1=${ALPHA1:-0.2}
+      - LOG_LEVEL=${LOG_LEVEL:-1}
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "app_hybrid"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 120s
+
+  # Stage2-1 Worker (Multiplexed processing)
+  stage2-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: 
+      bash -c "make clean && make app_hybrid && ./start_hybrid.sh stage2 ${ALPHA2:-0.3}"
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+        reservations:
+          cpus: "1.5"
+    cpuset: "4-5"
+    # depends_on removed to avoid startup deadlock
+    networks:
+      hybrid_net:
+        ipv4_address: 172.33.0.4
+    volumes:
+      # Mount source code for live development
+      - .:/app:rw
+      - ./results:/app/results:rw
+      - ./logs:/app/logs:rw
+    restart: "no"
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    environment:
+      - NETWORK_TYPE=${NETWORK_TYPE:-LOCAL}
+      - NETWORK_DELAY=${NETWORK_DELAY:-}
+      - NETWORK_JITTER=${NETWORK_JITTER:-}
+      - NETWORK_LOSS=${NETWORK_LOSS:-}
+      - ALPHA2=${ALPHA2:-0.3}
+      - LOG_LEVEL=${LOG_LEVEL:-1}
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "app_hybrid"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 90s
+
+  # Coordinator (EASGD Parameter Server + Statistics)
+  coordinator:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: 
+      bash -c "make clean && make app_hybrid && ./start_hybrid.sh coordinator ${BETA:-0.5}"
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+        reservations:
+          cpus: "0.5"
+    cpuset: "6"
+    # depends_on removed to avoid startup deadlock
+    networks:
+      hybrid_net:
+        ipv4_address: 172.33.0.5
+    volumes:
+      # Mount source code for live development
+      - .:/app:rw
+      - ./results:/app/results:rw
+      - ./logs:/app/logs:rw
+    restart: on-failure
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    environment:
+      - NETWORK_TYPE=${NETWORK_TYPE:-LOCAL}
+      - NETWORK_DELAY=${NETWORK_DELAY:-}
+      - NETWORK_JITTER=${NETWORK_JITTER:-}
+      - NETWORK_LOSS=${NETWORK_LOSS:-}
+      - BETA=${BETA:-0.5}
+      - LOG_LEVEL=${LOG_LEVEL:-1}
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "app_hybrid"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 120s
+
+networks:
+  hybrid_net:
+    driver: bridge
+    name: hybrid_pipeline_network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.33.0.0/16
+          gateway: 172.33.0.1
+    driver_opts:
+      com.docker.network.bridge.name: hybrid_br0
+      com.docker.network.driver.mtu: 1500
+
+volumes:
+  results:
+    driver: local 

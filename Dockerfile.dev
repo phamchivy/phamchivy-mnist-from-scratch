@@ -1,0 +1,77 @@
+# Development Dockerfile for Hybrid EASGD System
+# Uses volume mounting to avoid rebuilding on code changes
+FROM ubuntu:22.04
+
+# Avoid interactive prompts during build
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install build and runtime dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    make \
+    libc6-dev \
+    libgomp1 \
+    libpthread-stubs0-dev \
+    build-essential \
+    gdb \
+    valgrind \
+    iproute2 \
+    iputils-ping \
+    netcat-openbsd \
+    tcpdump \
+    iperf3 \
+    htop \
+    curl \
+    procps \
+    net-tools \
+    bc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app user
+RUN useradd -m -s /bin/bash appuser
+
+# Set working directory
+WORKDIR /app
+
+# Copy only essential files that don't change often
+COPY Makefile ./
+COPY start_hybrid.sh ./
+COPY health_check.sh ./
+COPY rotate_logs.sh ./
+
+# Set appropriate permissions
+RUN chmod +x /app/start_hybrid.sh /app/health_check.sh /app/rotate_logs.sh
+
+# Create directories for data and results
+RUN mkdir -p /app/data /app/results /app/logs
+
+# Install log rotation as cron job (simplified)
+RUN echo "0 */6 * * * /app/rotate_logs.sh" > /etc/crontab
+
+# Switch to app user for security
+USER appuser
+
+# Set environment variables
+ENV NETWORK_TYPE=LOCAL
+ENV LOG_LEVEL=1
+ENV ALPHA1=0.2
+ENV ALPHA2=0.3
+ENV BETA=0.5
+
+# Expose ports for the hybrid system
+# 8001-8004: Pipeline communication ports
+# 12347: Statistics collection port
+# 12348: EASGD communication port
+EXPOSE 8001 8002 8003 8004 12347 12348
+
+# Set default command
+CMD ["./start_hybrid.sh", "--help"]
+
+# Add metadata labels
+LABEL version="2.0-dev"
+LABEL description="Hybrid Pipeline-EASGD Development Environment"
+LABEL maintainer="Research Team"
+LABEL architecture="hybrid-easgd-dev"
+LABEL network.type="distributed"
+LABEL algorithm.easgd="true" 
