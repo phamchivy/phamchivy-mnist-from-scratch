@@ -261,6 +261,8 @@ void hybrid_stage2_main(double alpha2) {
     //     cleanup_stage2_worker(worker);
     //     return;
     // }
+
+    printf("[STAGE2-1] EASGD communication will be established per epoch\n");
     
     printf("[STAGE2-1] All connections established. Starting training...\n");
     
@@ -268,6 +270,52 @@ void hybrid_stage2_main(double alpha2) {
     int epochs = 5;
     
     for (int epoch = 0; epoch < epochs; epoch++) {
+
+        // === UPDATED EASGD SYNCHRONIZATION ===
+        printf("[STAGE2-1] === EPOCH %d: EASGD Synchronization ===\n", epoch + 1);
+        
+        struct timeval easgd_start, easgd_end;
+        gettimeofday(&easgd_start, NULL);
+        
+        // Connect to coordinator for this epoch
+        printf("[STAGE2-1] Connecting to coordinator for EASGD sync...\n");
+        worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+        
+        if (worker->last_easgd_socket < 0) {
+            printf("[STAGE2-1] Failed to connect to coordinator, retrying...\n");
+            for (int retry = 1; retry <= 10; retry++) {
+                sleep(2);
+                worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+                if (worker->last_easgd_socket >= 0) {
+                    printf("[STAGE2-1] Connected on retry %d\n", retry);
+                    break;
+                }
+            }
+        }
+        
+        if (worker->last_easgd_socket >= 0) {
+            // Send weights to parameter server
+            if (send_stage2_weights_to_server(worker, epoch) < 0) {
+                printf("[STAGE2-1] Failed to send weights to server\n");
+            } else {
+                // Receive master weights using same socket
+                if (receive_master_stage2_weights(worker) < 0) {
+                    printf("[STAGE2-1] Failed to receive master weights\n");
+                }
+            }
+            // Socket is closed in receive function
+        } else {
+            printf("[STAGE2-1] Skipping EASGD sync for epoch %d due to connection failure\n", 
+                   epoch + 1);
+        }
+        
+        gettimeofday(&easgd_end, NULL);
+        worker->total_easgd_comm_time += get_time_diff(easgd_start, easgd_end);
+        
+        printf("[STAGE2-1] EASGD synchronization completed for epoch %d\n", epoch + 1);
+    
+
+
         printf("[STAGE2-1] === EPOCH %d: Multiplexed Pipeline Processing ===\n", epoch + 1);
         
         // Reset epoch counters
@@ -287,7 +335,6 @@ void hybrid_stage2_main(double alpha2) {
         // EASGD synchronization phase
         printf("[STAGE2-1] === EPOCH %d: EASGD Synchronization ===\n", epoch + 1);
         
-        struct timeval easgd_start, easgd_end;
         gettimeofday(&easgd_start, NULL);
         
         // Send weights to parameter server
@@ -476,8 +523,12 @@ void send_backward_response(Stage2Worker* worker, ForwardMessage* fwd_msg, int b
     free_backward_message(bwd_msg);
 }
 
+// === Similar fixes for Stage2 send/receive functions ===
 int send_stage2_weights_to_server(Stage2Worker* worker, int epoch) {
-    if (!worker) return -1;
+    if (!worker || worker->last_easgd_socket < 0) {
+        printf("[STAGE2-1] Invalid worker or socket\n");
+        return -1;
+    }
     
     // Flatten weights
     if (flatten_stage2_weights(worker) < 0) {
@@ -501,11 +552,13 @@ int send_stage2_weights_to_server(Stage2Worker* worker, int epoch) {
     memcpy(msg->stage2_weights, worker->stage2_weights_flat, 
            sizeof(double) * worker->stage2_weight_count);
     
-    // Add performance metadata
+    // Add metadata
     msg->local_loss = worker->local_stats.total_loss / max(1, worker->local_stats.processed_batches);
     msg->local_accuracy = (double)worker->local_stats.correct_predictions / 
                          max(1, worker->local_stats.total_predictions) * 100.0;
     msg->processed_samples = worker->local_stats.total_predictions;
+    
+    printf("[STAGE2-1] Sending %d weights to coordinator...\n", worker->stage2_weight_count);
     
     if (send_easgd_message(worker->last_easgd_socket, msg) < 0) {
         printf("[STAGE2-1] Failed to send weights to parameter server\n");
@@ -513,30 +566,42 @@ int send_stage2_weights_to_server(Stage2Worker* worker, int epoch) {
         return -1;
     }
     
+    printf("[STAGE2-1] Weights sent successfully\n");
     free_easgd_message(msg);
     return 0;
 }
 
 int receive_master_stage2_weights(Stage2Worker* worker) {
-    if (!worker) return -1;
-    int sock = worker->last_easgd_socket;
-    EASGDMessage* msg = receive_easgd_message(sock);
+    if (!worker || worker->last_easgd_socket < 0) {
+        printf("[STAGE2-1] Invalid worker or socket\n");
+        return -1;
+    }
+    
+    printf("[STAGE2-1] Waiting for master weights from coordinator...\n");
+    
+    EASGDMessage* msg = receive_easgd_message(worker->last_easgd_socket);
+    
     if (!msg || msg->message_type != EASGD_MASTER_WEIGHTS) {
         printf("[STAGE2-1] Failed to receive master weights\n");
         if (msg) free_easgd_message(msg);
-        socket_close(sock);
+        socket_close(worker->last_easgd_socket);
         worker->last_easgd_socket = -1;
         return -1;
     }
+    
+    printf("[STAGE2-1] Received %d master weights\n", msg->stage2_weight_count);
+    
     if (apply_elastic_averaging_stage2(worker, msg->stage2_weights) < 0) {
         printf("[STAGE2-1] Failed to apply elastic averaging\n");
         free_easgd_message(msg);
-        socket_close(sock);
+        socket_close(worker->last_easgd_socket);
         worker->last_easgd_socket = -1;
         return -1;
     }
+    
+    printf("[STAGE2-1] Applied elastic averaging successfully\n");
     free_easgd_message(msg);
-    socket_close(sock);
+    socket_close(worker->last_easgd_socket);
     worker->last_easgd_socket = -1;
     return 0;
 }
@@ -937,6 +1002,10 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
     //     cleanup_stage1_worker(worker);
     //     return;
     // }
+
+    printf("[STAGE1-%d] EASGD communication will be established per epoch\n", worker_id);
+
+    
     
     // Start async processing threads
     AsyncForwardArgs forward_args = {
@@ -969,6 +1038,51 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
     int current_batch_id = worker_id * 100000; // Unique batch IDs per worker
     
     for (int epoch = 0; epoch < epochs; epoch++) {
+
+        // === UPDATED EASGD SYNCHRONIZATION ===
+        printf("[STAGE1-%d] === EPOCH %d: EASGD Synchronization ===\n", worker_id, epoch + 1);
+        
+        struct timeval easgd_start, easgd_end;
+        gettimeofday(&easgd_start, NULL);
+        
+        // Connect to coordinator for this epoch
+        printf("[STAGE1-%d] Connecting to coordinator for EASGD sync...\n", worker_id);
+        worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+        
+        if (worker->last_easgd_socket < 0) {
+            printf("[STAGE1-%d] Failed to connect to coordinator, retrying...\n", worker_id);
+            for (int retry = 1; retry <= 10; retry++) {
+                sleep(2);
+                worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+                if (worker->last_easgd_socket >= 0) {
+                    printf("[STAGE1-%d] Connected on retry %d\n", worker_id, retry);
+                    break;
+                }
+            }
+        }
+        
+        if (worker->last_easgd_socket >= 0) {
+            // Send weights to parameter server
+            if (send_stage1_weights_to_server(worker, epoch) < 0) {
+                printf("[STAGE1-%d] Failed to send weights to server\n", worker_id);
+            } else {
+                // Receive master weights using same socket
+                if (receive_master_stage1_weights(worker) < 0) {
+                    printf("[STAGE1-%d] Failed to receive master weights\n", worker_id);
+                }
+            }
+            // Socket is closed in receive function
+        } else {
+            printf("[STAGE1-%d] Skipping EASGD sync for epoch %d due to connection failure\n", 
+                   worker_id, epoch + 1);
+        }
+        
+        gettimeofday(&easgd_end, NULL);
+        worker->total_easgd_comm_time += get_time_diff(easgd_start, easgd_end);
+        worker->easgd_sync_count++;
+        
+        printf("[STAGE1-%d] EASGD synchronization completed for epoch %d\n", worker_id, epoch + 1);
+
         printf("[STAGE1-%d] === EPOCH %d: Pipeline Training Phase ===\n", worker_id, epoch + 1);
         
         // Pipeline training phase
@@ -1056,7 +1170,6 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
         // EASGD synchronization phase
         printf("[STAGE1-%d] === EPOCH %d: EASGD Synchronization ===\n", worker_id, epoch + 1);
         
-        struct timeval easgd_start, easgd_end;
         gettimeofday(&easgd_start, NULL);
         
         // Send weights to parameter server
@@ -1094,8 +1207,12 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
     cleanup_stage1_worker(worker);
 }
 
+// === FIX send_stage1_weights_to_server function ===
 int send_stage1_weights_to_server(Stage1Worker* worker, int epoch) {
-    if (!worker) return -1;
+    if (!worker || worker->last_easgd_socket < 0) {
+        printf("[STAGE1-%d] Invalid worker or socket\n", worker->worker_id);
+        return -1;
+    }
     
     // Flatten weights
     if (flatten_stage1_weights(worker) < 0) {
@@ -1119,36 +1236,55 @@ int send_stage1_weights_to_server(Stage1Worker* worker, int epoch) {
     memcpy(msg->stage1_weights, worker->stage1_weights_flat, 
            sizeof(double) * worker->stage1_weight_count);
     
+    // Send using the connected socket
+    printf("[STAGE1-%d] Sending %d weights to coordinator...\n", 
+           worker->worker_id, worker->stage1_weight_count);
+    
     if (send_easgd_message(worker->last_easgd_socket, msg) < 0) {
         printf("[STAGE1-%d] Failed to send weights to parameter server\n", worker->worker_id);
         free_easgd_message(msg);
         return -1;
     }
     
+    printf("[STAGE1-%d] Weights sent successfully\n", worker->worker_id);
     free_easgd_message(msg);
     return 0;
 }
 
+// === FIX receive_master_stage1_weights function ===
 int receive_master_stage1_weights(Stage1Worker* worker) {
-    if (!worker) return -1;
-    int sock = worker->last_easgd_socket;
-    EASGDMessage* msg = receive_easgd_message(sock);
+    if (!worker || worker->last_easgd_socket < 0) {
+        printf("[STAGE1-%d] Invalid worker or socket\n", worker->worker_id);
+        return -1;
+    }
+    
+    printf("[STAGE1-%d] Waiting for master weights from coordinator...\n", worker->worker_id);
+    
+    // DON'T close and reconnect, use same socket
+    EASGDMessage* msg = receive_easgd_message(worker->last_easgd_socket);
+    
     if (!msg || msg->message_type != EASGD_MASTER_WEIGHTS) {
         printf("[STAGE1-%d] Failed to receive master weights\n", worker->worker_id);
         if (msg) free_easgd_message(msg);
-        socket_close(sock);
+        socket_close(worker->last_easgd_socket);
         worker->last_easgd_socket = -1;
         return -1;
     }
+    
+    printf("[STAGE1-%d] Received %d master weights\n", 
+           worker->worker_id, msg->stage1_weight_count);
+    
     if (apply_elastic_averaging_stage1(worker, msg->stage1_weights) < 0) {
         printf("[STAGE1-%d] Failed to apply elastic averaging\n", worker->worker_id);
         free_easgd_message(msg);
-        socket_close(sock);
+        socket_close(worker->last_easgd_socket);
         worker->last_easgd_socket = -1;
         return -1;
     }
+    
+    printf("[STAGE1-%d] Applied elastic averaging successfully\n", worker->worker_id);
     free_easgd_message(msg);
-    socket_close(sock);
+    socket_close(worker->last_easgd_socket);
     worker->last_easgd_socket = -1;
     return 0;
 }

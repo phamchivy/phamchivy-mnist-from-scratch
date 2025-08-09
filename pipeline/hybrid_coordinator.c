@@ -163,6 +163,8 @@ void hybrid_coordinator_main(double beta) {
  * EASGD COORDINATION FUNCTIONS
  * ============================================================================= */
 
+// Replace the perform_easgd_coordination function with this simplified version:
+
 int perform_easgd_coordination(HybridCoordinator* coord, int epoch) {
     if (!coord) return -1;
     
@@ -171,101 +173,131 @@ int perform_easgd_coordination(HybridCoordinator* coord, int epoch) {
     struct timeval easgd_start, easgd_end;
     gettimeofday(&easgd_start, NULL);
     
-    // Step 1: Collect weights from all workers
+    // Arrays to store messages from workers
     EASGDMessage* stage1_1_msg = NULL;
     EASGDMessage* stage1_2_msg = NULL;
     EASGDMessage* stage2_1_msg = NULL;
     
-    printf("[COORDINATOR] Collecting weights from %d workers...\n", 
-           coord->num_stage1_workers + coord->num_stage2_workers);
+    int expected_workers = 3; // 2 Stage1 + 1 Stage2
+    int workers_received = 0;
     
-    // Collect from all 3 workers (2 Stage1 + 1 Stage2)
-    for (int i = 0; i < 3; i++) {
-        int client_socket = accept_client(coord->easgd_server_socket);
-        if (client_socket < 0) {
-            printf("[COORDINATOR] Failed to accept worker connection %d\n", i + 1);
+    printf("[COORDINATOR] Waiting for %d workers to connect...\n", expected_workers);
+    
+    // Set a timeout for collecting all workers
+    time_t start_time = time(NULL);
+    const int COLLECTION_TIMEOUT = 60; // 60 seconds timeout
+    
+    // Collect weights from workers (they connect when ready)
+    while (workers_received < expected_workers) {
+        // Check timeout
+        if (difftime(time(NULL), start_time) > COLLECTION_TIMEOUT) {
+            printf("[COORDINATOR] Timeout waiting for workers (received %d/%d)\n", 
+                   workers_received, expected_workers);
+            break;
+        }
+        
+        // Use select to wait for connections with timeout
+        fd_set read_fds;
+        struct timeval timeout = {2, 0}; // 2 second timeout for select
+        
+        FD_ZERO(&read_fds);
+        FD_SET(coord->easgd_server_socket, &read_fds);
+        
+        int activity = select(coord->easgd_server_socket + 1, &read_fds, NULL, NULL, &timeout);
+        
+        if (activity < 0) {
+            perror("[COORDINATOR] Select error");
+            continue;
+        } else if (activity == 0) {
+            printf("[COORDINATOR] Waiting for workers... (%d/%d connected)\n", 
+                   workers_received, expected_workers);
             continue;
         }
         
+        // Accept connection
+        struct sockaddr_in worker_addr;
+        socklen_t addr_len = sizeof(worker_addr);
+        int client_socket = accept(coord->easgd_server_socket, 
+                                  (struct sockaddr*)&worker_addr, &addr_len);
+        
+        if (client_socket < 0) {
+            perror("[COORDINATOR] Accept failed");
+            continue;
+        }
+        
+        printf("[COORDINATOR] Worker connected from port %d\n", ntohs(worker_addr.sin_port));
+        
+        // Receive EASGD message
         EASGDMessage* msg = receive_easgd_message(client_socket);
         if (msg && msg->message_type == EASGD_WEIGHT_UPDATE) {
+            printf("[COORDINATOR] Received weights from Stage%d Worker %d\n",
+                   msg->stage_type, msg->worker_id);
+            
+            // Store message based on worker type
             if (msg->stage_type == 1) {
                 if (msg->worker_id == 1) {
+                    if (stage1_1_msg) free_easgd_message(stage1_1_msg);
                     stage1_1_msg = msg;
-                    printf("[COORDINATOR] Received Stage1 weights from STAGE1-1\n");
                 } else if (msg->worker_id == 2) {
+                    if (stage1_2_msg) free_easgd_message(stage1_2_msg);
                     stage1_2_msg = msg;
-                    printf("[COORDINATOR] Received Stage1 weights from STAGE1-2\n");
                 }
             } else if (msg->stage_type == 2) {
+                if (stage2_1_msg) free_easgd_message(stage2_1_msg);
                 stage2_1_msg = msg;
-                printf("[COORDINATOR] Received Stage2 weights from STAGE2-1\n");
             }
+            
+            workers_received++;
+            
+            // DON'T close socket yet - use it to send back master weights
+            // Update master weights immediately for this worker
+            if (msg->stage_type == 1) {
+                // For Stage1, we might need to wait for both workers
+                if (stage1_1_msg && stage1_2_msg) {
+                    // Both Stage1 workers have sent weights, update master
+                    update_master_stage1_weights(coord, 
+                        stage1_1_msg->stage1_weights, 
+                        stage1_2_msg->stage1_weights);
+                }
+                
+                // Send back master weights to this Stage1 worker
+                printf("[COORDINATOR] Sending master Stage1 weights back to worker %d\n", 
+                       msg->worker_id);
+                send_master_stage1_weights(coord, client_socket, msg->worker_id);
+                
+            } else if (msg->stage_type == 2) {
+                // Update Stage2 master weights
+                update_master_stage2_weights(coord, stage2_1_msg->stage2_weights);
+                
+                // Send back master weights to Stage2 worker
+                printf("[COORDINATOR] Sending master Stage2 weights back to worker\n");
+                send_master_stage2_weights(coord, client_socket);
+            }
+            
         } else {
-            printf("[COORDINATOR] Invalid message from worker\n");
+            printf("[COORDINATOR] Invalid or unexpected message from worker\n");
             if (msg) free_easgd_message(msg);
         }
         
+        // NOW close the socket
         socket_close(client_socket);
     }
     
-    // Step 2: Validate received messages
-    if (!stage1_1_msg || !stage1_2_msg || !stage2_1_msg) {
-        printf("[COORDINATOR] Error: Missing worker weights (Stage1-1:%s, Stage1-2:%s, Stage2-1:%s)\n",
-               stage1_1_msg ? "OK" : "MISSING",
-               stage1_2_msg ? "OK" : "MISSING", 
-               stage2_1_msg ? "OK" : "MISSING");
-        
-        // Cleanup partial messages
-        if (stage1_1_msg) free_easgd_message(stage1_1_msg);
-        if (stage1_2_msg) free_easgd_message(stage1_2_msg);
-        if (stage2_1_msg) free_easgd_message(stage2_1_msg);
-        return -1;
+    // Calculate weight divergence if we have enough data
+    if (stage1_1_msg && stage1_2_msg) {
+        coord->stage1_divergence = calculate_stage1_weight_divergence(coord, 
+            stage1_1_msg, stage1_2_msg);
     }
-    
-    // Step 3: Update master weights using EASGD algorithm
-    printf("[COORDINATOR] Updating master weights using EASGD algorithm...\n");
-    
-    if (update_master_stage1_weights(coord, stage1_1_msg->stage1_weights, 
-                                   stage1_2_msg->stage1_weights) < 0) {
-        printf("[COORDINATOR] Failed to update master Stage1 weights\n");
+    if (stage2_1_msg) {
+        coord->stage2_divergence = calculate_stage2_weight_divergence(coord, stage2_1_msg);
     }
-    
-    if (update_master_stage2_weights(coord, stage2_1_msg->stage2_weights) < 0) {
-        printf("[COORDINATOR] Failed to update master Stage2 weights\n");
-    }
-    
-    // Step 4: Calculate weight divergence
-    coord->stage1_divergence = calculate_stage1_weight_divergence(coord, stage1_1_msg, stage1_2_msg);
-    coord->stage2_divergence = calculate_stage2_weight_divergence(coord, stage2_1_msg);
-    coord->total_weight_divergence = calculate_total_system_divergence(coord);
-    
-    // Step 5: Send updated master weights back to workers
-    printf("[COORDINATOR] Distributing updated master weights to workers...\n");
-    
-    // Send to Stage1 workers
-    for (int worker_id = 1; worker_id <= 2; worker_id++) {
-        int client_socket = accept_client(coord->easgd_server_socket);
-        if (client_socket >= 0) {
-            send_master_stage1_weights(coord, client_socket, worker_id);
-            socket_close(client_socket);
-            printf("[COORDINATOR] Sent master Stage1 weights to STAGE1-%d\n", worker_id);
-        }
-    }
-    
-    // Send to Stage2 worker
-    int client_socket = accept_client(coord->easgd_server_socket);
-    if (client_socket >= 0) {
-        send_master_stage2_weights(coord, client_socket);
-        socket_close(client_socket);
-        printf("[COORDINATOR] Sent master Stage2 weights to STAGE2-1\n");
-    }
+    coord->total_weight_divergence = coord->stage1_divergence + coord->stage2_divergence;
     
     gettimeofday(&easgd_end, NULL);
     double easgd_time = get_time_diff(easgd_start, easgd_end);
     coord->easgd_communication_time += easgd_time;
     
-    // Step 6: Log synchronization metrics
+    // Log synchronization metrics
     log_easgd_synchronization(coord->communication_round, coord->total_weight_divergence, easgd_time);
     coord->communication_round++;
     
@@ -274,13 +306,14 @@ int perform_easgd_coordination(HybridCoordinator* coord, int epoch) {
            coord->stage1_divergence, coord->stage2_divergence, coord->total_weight_divergence);
     
     // Cleanup messages
-    free_easgd_message(stage1_1_msg);
-    free_easgd_message(stage1_2_msg);
-    free_easgd_message(stage2_1_msg);
+    if (stage1_1_msg) free_easgd_message(stage1_1_msg);
+    if (stage1_2_msg) free_easgd_message(stage1_2_msg);
+    if (stage2_1_msg) free_easgd_message(stage2_1_msg);
     
-    return 0;
+    return workers_received > 0 ? 0 : -1;
 }
 
+// Also update the send_master functions to use existing socket:
 int send_master_stage1_weights(HybridCoordinator* coord, int client_socket, int worker_id) {
     if (!coord || client_socket < 0) return -1;
     
@@ -304,12 +337,15 @@ int send_master_stage1_weights(HybridCoordinator* coord, int client_socket, int 
         return -1;
     }
     
-    // Send message
+    // Send message through existing socket
     if (send_easgd_message(client_socket, msg) < 0) {
         printf("[COORDINATOR] Failed to send master Stage1 weights to worker %d\n", worker_id);
         free_easgd_message(msg);
         return -1;
     }
+    
+    printf("[COORDINATOR] Sent %d master Stage1 weights to worker %d\n", 
+           coord->stage1_weight_count, worker_id);
     
     free_easgd_message(msg);
     return 0;
@@ -338,12 +374,14 @@ int send_master_stage2_weights(HybridCoordinator* coord, int client_socket) {
         return -1;
     }
     
-    // Send message
+    // Send message through existing socket
     if (send_easgd_message(client_socket, msg) < 0) {
-        printf("[COORDINATOR] Failed to send master Stage2 weights to worker\n");
+        printf("[COORDINATOR] Failed to send master Stage2 weights\n");
         free_easgd_message(msg);
         return -1;
     }
+    
+    printf("[COORDINATOR] Sent %d master Stage2 weights\n", coord->stage2_weight_count);
     
     free_easgd_message(msg);
     return 0;
