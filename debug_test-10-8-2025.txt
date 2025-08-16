@@ -1,0 +1,170 @@
+phamchivy@DESKTOP-SV3DKME:/mnt/c/Users/DELL/Documents/distributed_dnn$ ./debug_hybrid.sh
+🔍 HYBRID SYSTEM DEBUG DIAGNOSTICS
+==================================
+🚀 Starting Hybrid System Debug Session...
+Checking if hybrid system is running...
+✅ Hybrid system is running. Starting diagnostics...
+
+
+🔍 HYBRID SYSTEM DEBUG MENU
+===========================
+1. Run comprehensive test
+2. Check container status
+3. Check network connectivity
+4. Analyze logs
+5. Check training progress
+6. Test EASGD communication
+7. Generate debug report
+8. Run quick fixes
+9. Monitor live logs
+0. Exit
+
+Select option (0-9): 1
+🧪 COMPREHENSIVE HYBRID SYSTEM TEST
+===================================
+📊 Container Status:
+NAME                            IMAGE                         COMMAND                  SERVICE       CREATED          STATUS                    PORTS
+distributed_dnn-coordinator-1   distributed_dnn-coordinator   "./start_hybrid.sh c…"   coordinator   45 seconds ago   Up 42 seconds (healthy)   8001-8004/tcp, 12347-12348/tcp
+distributed_dnn-stage1-1-1      distributed_dnn-stage1-1      "./start_hybrid.sh s…"   stage1-1      45 seconds ago   Up 42 seconds (healthy)   8001-8004/tcp, 12347-12348/tcp
+distributed_dnn-stage1-2-1      distributed_dnn-stage1-2      "./start_hybrid.sh s…"   stage1-2      45 seconds ago   Up 42 seconds (healthy)   8001-8004/tcp, 12347-12348/tcp
+distributed_dnn-stage2-1-1      distributed_dnn-stage2-1      "./start_hybrid.sh s…"   stage2-1      45 seconds ago   Up 42 seconds (healthy)   8001-8004/tcp, 12347-12348/tcp
+
+📁 Data Loading Check:
+Checking if MNIST data exists in containers:
+total 124952
+drwxrwxrwx 1 appuser appuser      4096 Jul 14 04:03 .
+drwxr-xr-x 1 appuser appuser      4096 Aug 10 09:13 ..
+-rwxrwxrwx 1 appuser appuser  18303648 Jul 14 04:03 mnist_test.csv
+-rwxrwxrwx 1 appuser appuser 109640199 Jul 14 04:03 mnist_train.csv
+total 124952
+drwxrwxrwx 1 appuser appuser      4096 Jul 14 04:03 .
+drwxr-xr-x 1 appuser appuser      4096 Aug 10 09:13 ..
+-rwxrwxrwx 1 appuser appuser  18303648 Jul 14 04:03 mnist_test.csv
+-rwxrwxrwx 1 appuser appuser 109640199 Jul 14 04:03 mnist_train.csv
+Checking file sizes:
+60000 /app/data/mnist_train.csv
+
+🔄 Process Status:
+Stage1-1 processes:
+appuser      1 87.1  2.1 392384 221120 ?       Rsl  09:13   0:45 ./app_hybrid stage1 1 0 30000 0.2
+Stage1-2 processes:
+appuser      1 87.8  4.1 591024 418032 ?       Ssl  09:13   0:46 ./app_hybrid stage1 2 30000 60000 0.2
+Stage2-1 processes:
+appuser      1 16.5  0.0  29032  3268 ?        Ssl  09:13   0:08 ./app_hybrid stage2 0.3
+Coordinator processes:
+appuser      1  0.3  0.1  16732 15188 ?        Ss   09:13   0:00 ./app_hybrid coordinator 0.5
+
+🔌 Socket Status:
+Stage1-1 sockets:
+tcp        0      0 0.0.0.0:8003            0.0.0.0:*               LISTEN      1/./app_hybrid
+Stage1-2 sockets:
+tcp        0      0 0.0.0.0:8004            0.0.0.0:*               LISTEN      1/./app_hybrid
+Stage2-1 sockets:
+tcp        0      0 0.0.0.0:8002            0.0.0.0:*               LISTEN      1/./app_hybrid
+tcp        0      0 0.0.0.0:8001            0.0.0.0:*               LISTEN      1/./app_hybrid
+Coordinator sockets:
+tcp        0      0 0.0.0.0:12347           0.0.0.0:*               LISTEN      1/./app_hybrid
+tcp        0      0 0.0.0.0:12348           0.0.0.0:*               LISTEN      1/./app_hybrid
+
+🌐 Network Connectivity Test:
+Testing Stage1-1 → Stage2-1:
+Connection to 172.33.0.4 8001 port [tcp/*] succeeded!
+Testing Stage1-2 → Stage2-1:
+Connection to 172.33.0.4 8002 port [tcp/*] succeeded!
+Testing Stage2-1 → Stage1-1 backward:
+Connection to 172.33.0.2 8003 port [tcp/*] succeeded!
+Testing Stage2-1 → Stage1-2 backward:
+Connection to 172.33.0.3 8004 port [tcp/*] succeeded!
+Testing Workers → Coordinator EASGD:
+Connection to 172.33.0.5 12348 port [tcp/*] succeeded!
+Connection to 172.33.0.5 12348 port [tcp/*] succeeded!
+Connection to 172.33.0.5 12348 port [tcp/*] succeeded!
+
+📡 EASGD Communication Test:
+Testing if coordinator EASGD port is accessible:
+Connection to 172.33.0.5 12348 port [tcp/*] succeeded!
+✅ EASGD port accessible
+Checking coordinator EASGD server status:
+tcp        0      0 0.0.0.0:12348           0.0.0.0:*               LISTEN      1/./app_hybrid
+✅ EASGD server listening
+
+📈 Training Progress Check:
+=== Stage1-1 Training Progress ===
+=== Stage1-2 Training Progress ===
+=== Stage2-1 Training Progress ===
+=== Coordinator Progress ===
+
+🧵 Threading Status:
+Stage1-1 thread count:
+6
+Stage2-1 thread count:
+4
+
+💾 Memory Usage:
+Stage1-1 memory:
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       2.5Gi       849Mi       5.0Mi       6.4Gi       6.9Gi
+Swap:          2.0Gi          0B       2.0Gi
+Stage1-2 memory:
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       2.5Gi       854Mi       5.0Mi       6.4Gi       6.9Gi
+Swap:          2.0Gi          0B       2.0Gi
+Stage2-1 memory:
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       2.5Gi       854Mi       5.0Mi       6.4Gi       6.9Gi
+Swap:          2.0Gi          0B       2.0Gi
+Coordinator memory:
+               total        used        free      shared  buff/cache   available
+Mem:           9.7Gi       2.5Gi       851Mi       5.0Mi       6.4Gi       6.9Gi
+Swap:          2.0Gi          0B       2.0Gi
+
+📋 Log Analysis:
+=== Recent Stage1-1 Errors ===
+No errors found
+=== Recent Stage1-2 Errors ===
+No errors found
+=== Recent Stage2-1 Errors ===
+No errors found
+=== Recent Coordinator Errors ===
+Failed to receive EASGD message header: Success
+Failed to receive EASGD message header: Invalid argument
+Failed to receive EASGD message header: Invalid argument
+Failed to receive EASGD message header: Invalid argument
+
+🩺 Issue Diagnosis:
+Checking for infinite loops (CPU usage):
+CONTAINER                       CPU %     MEM USAGE / LIMIT
+distributed_dnn-stage1-1-1      142.26%   214.8MiB / 9.717GiB
+distributed_dnn-stage1-2-1      153.73%   407.1MiB / 9.717GiB
+distributed_dnn-stage2-1-1      26.50%    1.152MiB / 9.717GiB
+distributed_dnn-coordinator-1   0.00%     12.92MiB / 9.717GiB
+Checking file descriptor usage:
+4
+Checking for socket leaks:
+3
+
+🔧 RECOMMENDED FIXES:
+===================
+1. Pipeline Training Issues:
+   - Check if data is properly loaded and partitioned
+   - Verify forward/backward thread synchronization
+   - Ensure Stage1 workers are actually processing data
+
+2. EASGD Socket Issues:
+   - Implement per-epoch socket creation/cleanup
+   - Add better timeout handling for socket operations
+   - Improve error recovery for failed connections
+
+3. Threading Problems:
+   - Verify global_training_active flag management
+   - Check thread lifecycle and cleanup
+   - Ensure proper condition variable signaling
+
+4. Immediate Actions:
+   - Restart the system: docker-compose -f docker-compose-hybrid.yml restart
+   - Clear containers: docker-compose -f docker-compose-hybrid.yml down && docker-compose -f docker-compose-hybrid.yml up
+   - Check disk space: df -h
+   - Monitor real-time: docker-compose -f docker-compose-hybrid.yml logs -f
+
+
+Press Enter to continue...

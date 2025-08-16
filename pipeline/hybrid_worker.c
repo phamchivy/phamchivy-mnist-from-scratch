@@ -11,6 +11,7 @@
 
 #include "hybrid_pipeline_easgd.h"
 #include "../socket/socket_utils.h"
+#include "../matrix/matrix.h"
 #include <stdlib.h>      // malloc, free, getenv
 #include <stdio.h>       // printf, fprintf, fopen, fclose, FILE, stdout, fflush
 #include <string.h>      // memset, strcpy, strcmp
@@ -29,6 +30,32 @@ static int global_training_active = 1;
 /* =============================================================================
  * MESSAGE QUEUE IMPLEMENTATION
  * ============================================================================= */
+
+// Add this helper function to weight_management.c or util files
+
+// Matrix* matrix_copy(Matrix* src) {
+//     if (!src) return NULL;
+    
+//     Matrix* copy = matrix_create(src->rows, src->cols);
+//     if (!copy) return NULL;
+    
+//     for (int i = 0; i < src->rows; i++) {
+//         for (int j = 0; j < src->cols; j++) {
+//             copy->entries[i][j] = src->entries[i][j];
+//         }
+//     }
+    
+//     return copy;
+// }
+
+// Also add min/max macros if not already defined
+#ifndef min
+#define min(a,b) ((a) < (b) ? (a) : (b))
+#endif
+
+#ifndef max
+#define max(a,b) ((a) > (b) ? (a) : (b))
+#endif
 
 int init_message_queue(MessageQueue* queue) {
     if (!queue) return -1;
@@ -186,7 +213,7 @@ void hybrid_stage2_main(double alpha2) {
         return;
     }
     
-    // Setup pipeline servers for both Stage1 workers
+    // Setup pipeline servers
     worker->stage1_1_forward_server = setup_server(8001);
     worker->stage1_2_forward_server = setup_server(8002);
     
@@ -208,61 +235,34 @@ void hybrid_stage2_main(double alpha2) {
         return;
     }
     
-    // Setup backward connections to Stage1 workers with retry mechanism
-    printf("[STAGE2-1] Attempting to connect to Stage1 backward sockets...\n");
+    // Setup backward connections
+    printf("[STAGE2-1] Connecting to Stage1 backward sockets...\n");
     
-    worker->stage1_1_backward_client = -1;
-    worker->stage1_2_backward_client = -1;
-    
-    // Retry connection to Stage1-1 backward server
+    // Connect to Stage1-1 backward server
     for (int retry = 0; retry < 30; retry++) {
         worker->stage1_1_backward_client = connect_to_server("172.33.0.2", 8003);
         if (worker->stage1_1_backward_client >= 0) {
-            printf("[STAGE2-1] Connected to Stage1-1 backward server on attempt %d\n", retry + 1);
+            printf("[STAGE2-1] Connected to Stage1-1 backward on attempt %d\n", retry + 1);
             break;
         }
-        printf("[STAGE2-1] Stage1-1 backward connection attempt %d failed, retrying in 2s...\n", retry + 1);
         sleep(2);
     }
     
-    // Retry connection to Stage1-2 backward server
+    // Connect to Stage1-2 backward server
     for (int retry = 0; retry < 30; retry++) {
         worker->stage1_2_backward_client = connect_to_server("172.33.0.3", 8004);
         if (worker->stage1_2_backward_client >= 0) {
-            printf("[STAGE2-1] Connected to Stage1-2 backward server on attempt %d\n", retry + 1);
+            printf("[STAGE2-1] Connected to Stage1-2 backward on attempt %d\n", retry + 1);
             break;
         }
-        printf("[STAGE2-1] Stage1-2 backward connection attempt %d failed, retrying in 2s...\n", retry + 1);
         sleep(2);
     }
     
     if (worker->stage1_1_backward_client < 0 || worker->stage1_2_backward_client < 0) {
-        printf("[STAGE2-1] Failed to connect to Stage1 backward sockets after multiple attempts\n");
+        printf("[STAGE2-1] Failed to connect to Stage1 backward sockets\n");
         cleanup_stage2_worker(worker);
         return;
     }
-    
-    // Setup EASGD connection with retry mechanism
-    printf("[STAGE2-1] Attempting to connect to parameter server...\n");
-    
-    // worker->param_server_socket = -1;
-    // for (int retry = 0; retry < 30; retry++) {
-    //     worker->param_server_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
-    //     if (worker->param_server_socket >= 0) {
-    //         printf("[STAGE2-1] Connected to parameter server on attempt %d\n", retry + 1);
-    //         break;
-    //     }
-    //     printf("[STAGE2-1] Parameter server connection attempt %d failed, retrying in 2s...\n", retry + 1);
-    //     sleep(2);
-    // }
-    
-    // if (worker->param_server_socket < 0) {
-    //     printf("[STAGE2-1] Failed to connect to parameter server after multiple attempts\n");
-    //     cleanup_stage2_worker(worker);
-    //     return;
-    // }
-
-    printf("[STAGE2-1] EASGD communication will be established per epoch\n");
     
     printf("[STAGE2-1] All connections established. Starting training...\n");
     
@@ -270,30 +270,61 @@ void hybrid_stage2_main(double alpha2) {
     int epochs = 5;
     
     for (int epoch = 0; epoch < epochs; epoch++) {
-
-        // === UPDATED EASGD SYNCHRONIZATION ===
+        printf("[STAGE2-1] === EPOCH %d: Multiplexed Pipeline Processing ===\n", epoch + 1);
+        
+        // Reset epoch counters
+        worker->messages_from_stage1_1 = 0;
+        worker->messages_from_stage1_2 = 0;
+        worker->local_stats.processed_batches = 0;
+        
+        // Process messages until both Stage1 workers complete
+        int no_message_count = 0;
+        const int NO_MESSAGE_THRESHOLD = 50; // 5 seconds of no messages
+        
+        while (global_training_active && no_message_count < NO_MESSAGE_THRESHOLD) {
+            int messages_processed = process_multiplexed_messages(worker);
+            
+            if (messages_processed > 0) {
+                no_message_count = 0; // Reset counter
+            } else {
+                no_message_count++;
+                if (no_message_count % 10 == 0) {
+                    printf("[STAGE2-1] No messages for %d iterations, total processed: S1-1=%d, S1-2=%d\n",
+                           no_message_count, worker->messages_from_stage1_1, worker->messages_from_stage1_2);
+                }
+            }
+        }
+        
+        printf("[STAGE2-1] Epoch %d pipeline phase completed: S1-1=%d msgs, S1-2=%d msgs, %d batches\n",
+               epoch + 1, worker->messages_from_stage1_1, worker->messages_from_stage1_2,
+               worker->local_stats.processed_batches);
+        
+        // EASGD synchronization
         printf("[STAGE2-1] === EPOCH %d: EASGD Synchronization ===\n", epoch + 1);
         
         struct timeval easgd_start, easgd_end;
         gettimeofday(&easgd_start, NULL);
         
-        // Connect to coordinator for this epoch
+        // Connect to coordinator for this epoch's EASGD sync
         printf("[STAGE2-1] Connecting to coordinator for EASGD sync...\n");
-        worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+        int easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
         
-        if (worker->last_easgd_socket < 0) {
+        if (easgd_socket < 0) {
             printf("[STAGE2-1] Failed to connect to coordinator, retrying...\n");
             for (int retry = 1; retry <= 10; retry++) {
                 sleep(2);
-                worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
-                if (worker->last_easgd_socket >= 0) {
+                easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+                if (easgd_socket >= 0) {
                     printf("[STAGE2-1] Connected on retry %d\n", retry);
                     break;
                 }
             }
         }
         
-        if (worker->last_easgd_socket >= 0) {
+        if (easgd_socket >= 0) {
+            // Save socket for this synchronization
+            worker->last_easgd_socket = easgd_socket;
+            
             // Send weights to parameter server
             if (send_stage2_weights_to_server(worker, epoch) < 0) {
                 printf("[STAGE2-1] Failed to send weights to server\n");
@@ -304,49 +335,9 @@ void hybrid_stage2_main(double alpha2) {
                 }
             }
             // Socket is closed in receive function
+            worker->last_easgd_socket = -1;
         } else {
-            printf("[STAGE2-1] Skipping EASGD sync for epoch %d due to connection failure\n", 
-                   epoch + 1);
-        }
-        
-        gettimeofday(&easgd_end, NULL);
-        worker->total_easgd_comm_time += get_time_diff(easgd_start, easgd_end);
-        
-        printf("[STAGE2-1] EASGD synchronization completed for epoch %d\n", epoch + 1);
-    
-
-
-        printf("[STAGE2-1] === EPOCH %d: Multiplexed Pipeline Processing ===\n", epoch + 1);
-        
-        // Reset epoch counters
-        worker->messages_from_stage1_1 = 0;
-        worker->messages_from_stage1_2 = 0;
-        
-        // Process multiplexed messages from both Stage1 workers
-        while (global_training_active) {
-            if (process_multiplexed_messages(worker) <= 0) {
-                break; // No more messages for this epoch
-            }
-        }
-        
-        printf("[STAGE2-1] Epoch %d completed: processed %d messages from Stage1-1, %d from Stage1-2\n",
-               epoch + 1, worker->messages_from_stage1_1, worker->messages_from_stage1_2);
-        
-        // EASGD synchronization phase
-        printf("[STAGE2-1] === EPOCH %d: EASGD Synchronization ===\n", epoch + 1);
-        
-        gettimeofday(&easgd_start, NULL);
-        
-        // Send weights to parameter server
-        if (send_stage2_weights_to_server(worker, epoch) < 0) {
-            printf("[STAGE2-1] Failed to send weights to server\n");
-            continue;
-        }
-        
-        // Receive master weights
-        if (receive_master_stage2_weights(worker) < 0) {
-            printf("[STAGE2-1] Failed to receive master weights\n");
-            continue;
+            printf("[STAGE2-1] Skipping EASGD sync for epoch %d due to connection failure\n", epoch + 1);
         }
         
         gettimeofday(&easgd_end, NULL);
@@ -941,13 +932,10 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
     int worker_data_size = data_end - data_start;
     printf("[STAGE1-%d] Loaded %d training images\n", worker_id, worker_data_size);
     
-    // Setup pipeline connections with retry mechanism
-    printf("[STAGE1-%d] Attempting to connect to Stage2-1...\n", worker_id);
+    // Setup pipeline connections
+    printf("[STAGE1-%d] Setting up pipeline connections...\n", worker_id);
     
-    worker->stage2_forward_socket = -1;
-    worker->stage2_backward_socket = -1;
-    
-    // Retry connection to Stage2 forward server
+    // Connect to Stage2 forward server
     for (int retry = 0; retry < 30; retry++) {
         worker->stage2_forward_socket = connect_to_server("172.33.0.4", 8001 + worker_id - 1);
         if (worker->stage2_forward_socket >= 0) {
@@ -959,13 +947,12 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
     }
     
     if (worker->stage2_forward_socket < 0) {
-        printf("[STAGE1-%d] Failed to connect to Stage2-1 after multiple attempts\n", worker_id);
+        printf("[STAGE1-%d] Failed to connect to Stage2-1\n", worker_id);
         cleanup_stage1_worker(worker);
         return;
     }
     
-    // Setup backward server for Stage2 to connect
-    printf("[STAGE1-%d] Setting up backward server on port %d...\n", worker_id, 8003 + worker_id - 1);
+    // Setup backward server
     worker->stage2_backward_server = setup_server(8003 + worker_id - 1);
     if (worker->stage2_backward_server < 0) {
         printf("[STAGE1-%d] Failed to setup backward server\n", worker_id);
@@ -977,35 +964,10 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
     printf("[STAGE1-%d] Waiting for backward connection from Stage2...\n", worker_id);
     worker->stage2_backward_socket = accept_client(worker->stage2_backward_server);
     if (worker->stage2_backward_socket < 0) {
-        printf("[STAGE1-%d] Failed to accept backward connection from Stage2\n", worker_id);
+        printf("[STAGE1-%d] Failed to accept backward connection\n", worker_id);
         cleanup_stage1_worker(worker);
         return;
     }
-    printf("[STAGE1-%d] Accepted backward connection from Stage2\n", worker_id);
-    
-    // Setup EASGD connection with retry mechanism
-    printf("[STAGE1-%d] Attempting to connect to parameter server...\n", worker_id);
-    
-    // worker->param_server_socket = -1;
-    // for (int retry = 0; retry < 30; retry++) {
-    //     worker->param_server_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
-    //     if (worker->param_server_socket >= 0) {
-    //         printf("[STAGE1-%d] Connected to parameter server on attempt %d\n", worker_id, retry + 1);
-    //         break;
-    //     }
-    //     printf("[STAGE1-%d] Parameter server connection attempt %d failed, retrying in 2s...\n", worker_id, retry + 1);
-    //     sleep(2);
-    // }
-    
-    // if (worker->param_server_socket < 0) {
-    //     printf("[STAGE1-%d] Failed to connect to parameter server after multiple attempts\n", worker_id);
-    //     cleanup_stage1_worker(worker);
-    //     return;
-    // }
-
-    printf("[STAGE1-%d] EASGD communication will be established per epoch\n", worker_id);
-
-    
     
     // Start async processing threads
     AsyncForwardArgs forward_args = {
@@ -1033,64 +995,28 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
         return;
     }
     
+    printf("[STAGE1-%d] Starting training with %d epochs\n", worker_id, 5);
+    
     // Training loop
     int epochs = 5;
     int current_batch_id = worker_id * 100000; // Unique batch IDs per worker
     
     for (int epoch = 0; epoch < epochs; epoch++) {
-
-        // === UPDATED EASGD SYNCHRONIZATION ===
-        printf("[STAGE1-%d] === EPOCH %d: EASGD Synchronization ===\n", worker_id, epoch + 1);
-        
-        struct timeval easgd_start, easgd_end;
-        gettimeofday(&easgd_start, NULL);
-        
-        // Connect to coordinator for this epoch
-        printf("[STAGE1-%d] Connecting to coordinator for EASGD sync...\n", worker_id);
-        worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
-        
-        if (worker->last_easgd_socket < 0) {
-            printf("[STAGE1-%d] Failed to connect to coordinator, retrying...\n", worker_id);
-            for (int retry = 1; retry <= 10; retry++) {
-                sleep(2);
-                worker->last_easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
-                if (worker->last_easgd_socket >= 0) {
-                    printf("[STAGE1-%d] Connected on retry %d\n", worker_id, retry);
-                    break;
-                }
-            }
-        }
-        
-        if (worker->last_easgd_socket >= 0) {
-            // Send weights to parameter server
-            if (send_stage1_weights_to_server(worker, epoch) < 0) {
-                printf("[STAGE1-%d] Failed to send weights to server\n", worker_id);
-            } else {
-                // Receive master weights using same socket
-                if (receive_master_stage1_weights(worker) < 0) {
-                    printf("[STAGE1-%d] Failed to receive master weights\n", worker_id);
-                }
-            }
-            // Socket is closed in receive function
-        } else {
-            printf("[STAGE1-%d] Skipping EASGD sync for epoch %d due to connection failure\n", 
-                   worker_id, epoch + 1);
-        }
-        
-        gettimeofday(&easgd_end, NULL);
-        worker->total_easgd_comm_time += get_time_diff(easgd_start, easgd_end);
-        worker->easgd_sync_count++;
-        
-        printf("[STAGE1-%d] EASGD synchronization completed for epoch %d\n", worker_id, epoch + 1);
-
         printf("[STAGE1-%d] === EPOCH %d: Pipeline Training Phase ===\n", worker_id, epoch + 1);
         
-        // Pipeline training phase
+        // Reset local stats for this epoch
+        worker->local_stats.processed_batches = 0;
+        
+        // Pipeline training phase - actually process data!
         for (int i = 0; i < worker_data_size; i += worker->config.current_batch_size) {
             if (!global_training_active) break;
             
             int batch_size = min(worker->config.current_batch_size, worker_data_size - i);
             Img** mini_batch = &worker_data[i];
+            
+            // Process timing
+            struct timeval process_start, process_end;
+            gettimeofday(&process_start, NULL);
             
             // Extract labels
             int* labels = (int*)malloc(sizeof(int) * batch_size);
@@ -1111,6 +1037,7 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
                 }
             }
             
+            // Actually do forward pass through Stage1
             Matrix* hidden_activations = stage1_forward(worker->stage1, mini_batch, batch_size);
             if (!hidden_activations) {
                 printf("[STAGE1-%d] Forward pass failed\n", worker_id);
@@ -1119,40 +1046,40 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
                 continue;
             }
             
-            // Add to batch tracker
-            Matrix* saved_activations = matrix_create(hidden_activations->rows, hidden_activations->cols);
-            Matrix* saved_inputs = matrix_create(input_matrix->rows, input_matrix->cols);
-            
-            for (int r = 0; r < hidden_activations->rows; r++) {
-                for (int c = 0; c < hidden_activations->cols; c++) {
-                    saved_activations->entries[r][c] = hidden_activations->entries[r][c];
-                }
-            }
-            for (int r = 0; r < input_matrix->rows; r++) {
-                for (int c = 0; c < input_matrix->cols; c++) {
-                    saved_inputs->entries[r][c] = input_matrix->entries[r][c];
-                }
-            }
+            // Save context for backward pass
+            Matrix* saved_activations = matrix_copy(hidden_activations);
+            Matrix* saved_inputs = matrix_copy(input_matrix);
             
             add_pending_batch(&worker->batch_tracker, current_batch_id, saved_activations, saved_inputs);
             
-            // Create and enqueue forward message
+            // Create forward message
             ForwardMessage* fwd_msg = create_forward_message(
                 current_batch_id, i / batch_size, hidden_activations, labels, batch_size
             );
             
+            // Enqueue for async sending
             if (enqueue_forward(&worker->pipeline_buffer, fwd_msg) < 0) {
                 printf("[STAGE1-%d] Pipeline buffer full, waiting...\n", worker_id);
-                usleep(10000); // 10ms wait
-                enqueue_forward(&worker->pipeline_buffer, fwd_msg);
+                while (enqueue_forward(&worker->pipeline_buffer, fwd_msg) < 0 && global_training_active) {
+                    usleep(10000); // 10ms wait
+                }
             }
+            
+            gettimeofday(&process_end, NULL);
+            double process_time = get_time_diff(process_start, process_end);
+            
+            // Update stats
+            pthread_mutex_lock(&stats_mutex);
+            worker->local_stats.stage1_processing_time += process_time;
+            worker->local_stats.processed_batches++;
+            pthread_mutex_unlock(&stats_mutex);
             
             current_batch_id++;
             
-            // Adaptive optimization
-            if ((i / batch_size) % 10 == 0) {
-                PipelineStats current_stats = collect_pipeline_stats();
-                update_pipeline_config(&worker->config, &current_stats);
+            // Log progress
+            if ((i / batch_size) % 100 == 0) {
+                printf("[STAGE1-%d] Processed batch %d/%d\n", 
+                       worker_id, i / batch_size, worker_data_size / batch_size);
             }
             
             // Cleanup
@@ -1160,43 +1087,86 @@ void hybrid_stage1_main(int worker_id, int data_start, int data_end, double alph
             matrix_free(input_matrix);
             free(labels);
         }
+
+        printf("[STAGE1-%d] Epoch %d: Sent all %d batches to Stage2\n", 
+            worker_id, epoch + 1, worker->local_stats.processed_batches);
         
-        // Wait for pipeline to complete epoch
-        printf("[STAGE1-%d] Waiting for pipeline completion...\n", worker_id);
-        while (worker->batch_tracker.pending_count > 0 && global_training_active) {
+        // Wait for pipeline to complete
+        printf("[STAGE1-%d] Waiting for pipeline to drain (pending: %d)...\n", 
+               worker_id, worker->batch_tracker.pending_count);
+        
+        int wait_iterations = 0;
+        while (worker->batch_tracker.pending_count > 0 && global_training_active && wait_iterations < 300) {
             usleep(100000); // 100ms wait
+            wait_iterations++;
+            if (wait_iterations % 10 == 0) {
+                printf("[STAGE1-%d] Still waiting... pending batches: %d\n", 
+                       worker_id, worker->batch_tracker.pending_count);
+            }
         }
         
-        // EASGD synchronization phase
+        if (worker->batch_tracker.pending_count > 0) {
+            printf("[STAGE1-%d] Warning: Timeout waiting for pipeline, %d batches still pending\n",
+                   worker_id, worker->batch_tracker.pending_count);
+        }
+        
+        // EASGD synchronization - ONLY ONCE per epoch
         printf("[STAGE1-%d] === EPOCH %d: EASGD Synchronization ===\n", worker_id, epoch + 1);
         
+        struct timeval easgd_start, easgd_end;
         gettimeofday(&easgd_start, NULL);
         
-        // Send weights to parameter server
-        if (send_stage1_weights_to_server(worker, epoch) < 0) {
-            printf("[STAGE1-%d] Failed to send weights to server\n", worker_id);
-            continue;
+        // Connect to coordinator for this epoch's EASGD sync
+        printf("[STAGE1-%d] Connecting to coordinator for EASGD sync...\n", worker_id);
+        int easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+        
+        if (easgd_socket < 0) {
+            printf("[STAGE1-%d] Failed to connect to coordinator, retrying...\n", worker_id);
+            for (int retry = 1; retry <= 10; retry++) {
+                sleep(2);
+                easgd_socket = connect_to_server("172.33.0.5", EASGD_COMM_PORT);
+                if (easgd_socket >= 0) {
+                    printf("[STAGE1-%d] Connected on retry %d\n", worker_id, retry);
+                    break;
+                }
+            }
         }
         
-        // Receive master weights
-        if (receive_master_stage1_weights(worker) < 0) {
-            printf("[STAGE1-%d] Failed to receive master weights\n", worker_id);
-            continue;
+        if (easgd_socket >= 0) {
+            // Save socket for this synchronization
+            worker->last_easgd_socket = easgd_socket;
+            
+            // Send weights to parameter server
+            if (send_stage1_weights_to_server(worker, epoch) < 0) {
+                printf("[STAGE1-%d] Failed to send weights to server\n", worker_id);
+            } else {
+                // Receive master weights using same socket
+                if (receive_master_stage1_weights(worker) < 0) {
+                    printf("[STAGE1-%d] Failed to receive master weights\n", worker_id);
+                }
+            }
+            // Socket is closed in receive function
+            worker->last_easgd_socket = -1;
+        } else {
+            printf("[STAGE1-%d] Skipping EASGD sync for epoch %d due to connection failure\n", 
+                   worker_id, epoch + 1);
         }
         
         gettimeofday(&easgd_end, NULL);
         worker->total_easgd_comm_time += get_time_diff(easgd_start, easgd_end);
         worker->easgd_sync_count++;
         
-        printf("[STAGE1-%d] EASGD synchronization completed for epoch %d\n", worker_id, epoch + 1);
+        printf("[STAGE1-%d] Epoch %d completed. Processed %d batches\n", 
+               worker_id, epoch + 1, worker->local_stats.processed_batches);
     }
     
     // Signal threads to stop
+    printf("[STAGE1-%d] Signaling threads to stop...\n", worker_id);
     global_training_active = 0;
     pthread_cond_broadcast(&worker->pipeline_buffer.forward_cond);
     pthread_cond_broadcast(&worker->pipeline_buffer.backward_cond);
     
-    // Wait for threads to complete
+    // Wait for threads
     pthread_join(worker->forward_thread, NULL);
     pthread_join(worker->backward_thread, NULL);
     

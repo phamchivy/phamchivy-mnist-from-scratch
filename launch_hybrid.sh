@@ -327,7 +327,7 @@ cleanup() {
 }
 
 # Trap cleanup on exit
-trap cleanup EXIT
+# trap cleanup EXIT
 
 # Main execution
 main() {

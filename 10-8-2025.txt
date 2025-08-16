@@ -1,0 +1,988 @@
+To stop the system: docker-compose -f docker-compose-hybrid.yml down
+stage1-2-1     | === Hybrid Pipeline-EASGD Startup Script ===
+stage1-2-1     | Container: 197223052a58
+stage1-2-1     | Network Type: local
+stage1-2-1     | Component: stage1
+stage1-2-1     | Parameters: 2 30000 60000 0.2
+stage1-2-1     | ==========================================
+stage1-2-1     | Using LOCAL-optimized parameters: α₁=0.2, α₂=0.3, β=0.5
+stage1-2-1     | Starting hybrid application: stage1 2 30000 60000 0.2
+coordinator-1  | === Hybrid Pipeline-EASGD Startup Script ===
+coordinator-1  | Container: b36ab1d51cae
+coordinator-1  | Network Type: local
+coordinator-1  | Component: coordinator
+coordinator-1  | Parameters: 0.5
+coordinator-1  | ==========================================
+coordinator-1  | Using LOCAL-optimized parameters: α₁=0.2, α₂=0.3, β=0.5
+coordinator-1  | Starting hybrid application: coordinator 0.5
+stage2-1-1     | === Hybrid Pipeline-EASGD Startup Script ===
+stage2-1-1     | Container: 68c51d2c1c61
+stage2-1-1     | Network Type: local
+stage2-1-1     | Component: stage2
+stage2-1-1     | Parameters: 0.3
+stage2-1-1     | ==========================================
+stage2-1-1     | Using LOCAL-optimized parameters: α₁=0.2, α₂=0.3, β=0.5
+stage2-1-1     | Starting hybrid application: stage2 0.3
+stage1-1-1     | === Hybrid Pipeline-EASGD Startup Script ===
+stage1-1-1     | Container: 65238e072bfd
+stage1-1-1     | Network Type: local
+stage1-1-1     | Component: stage1
+stage1-1-1     | Parameters: 1 0 30000 0.2
+stage1-1-1     | ==========================================
+stage1-1-1     | Using LOCAL-optimized parameters: α₁=0.2, α₂=0.3, β=0.5
+stage1-1-1     | Starting hybrid application: stage1 1 0 30000 0.2
+stage2-1-1     | === HYBRID PIPELINE-EASGD SYSTEM ===
+stage2-1-1     | Version: 2.0
+stage2-1-1     | Architecture: Pipeline Parallelism + EASGD
+stage2-1-1     | Dataset: MNIST (60,000 training + 10,000 test)
+stage2-1-1     | Network: 784 → 512 → 10 (2-stage pipeline)
+stage2-1-1     | Network Environment: local
+stage2-1-1     | =====================================
+stage2-1-1     |
+stage2-1-1     | [MAIN] Launching component: stage2
+stage2-1-1     | [STAGE2-1] Launching worker with parameters:
+stage2-1-1     |   Alpha2 (elastic rate): 0.300
+stage2-1-1     |   Expected connections: Stage1-1, Stage1-2, Coordinator
+stage2-1-1     |   Processing mode: Multiplexed pipeline
+stage2-1-1     |
+stage2-1-1     | [EASGD] LOCAL parameters: α₁=0.2, α₂=0.3, β=0.5
+stage2-1-1     | [STAGE2-1] Starting hybrid Stage2 worker with α₂=0.300
+stage2-1-1     | [STAGE2-1] Created worker with α₂=0.300
+stage2-1-1     | [STAGE2-1] Waiting for connections from Stage1 workers...
+stage2-1-1     | [STAGE2-1] Connecting to Stage1 backward sockets...
+stage2-1-1     | [STAGE2-1] Connected to Stage1-1 backward on attempt 1
+stage2-1-1     | [STAGE2-1] Connected to Stage1-2 backward on attempt 1
+stage2-1-1     | [STAGE2-1] All connections established. Starting training...
+stage2-1-1     | [STAGE2-1] === EPOCH 1: Multiplexed Pipeline Processing ===
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-2: loss=2.3493, acc=9.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-1: loss=2.4027, acc=9.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-2: loss=2.2833, acc=15.62%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-1: loss=2.2437, acc=9.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-2: loss=2.1658, acc=40.62%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-1: loss=2.1106, acc=40.62%, time=0.001s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-2: loss=2.0731, acc=43.75%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-1: loss=2.0745, acc=46.88%, time=0.001s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.9656, acc=56.25%, time=0.004s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-1: loss=2.0199, acc=43.75%, time=0.001s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.9561, acc=62.50%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-1: loss=2.0097, acc=53.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-2: loss=2.0420, acc=50.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.8262, acc=59.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-2: loss=1.7019, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.7927, acc=59.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.6914, acc=65.62%, time=0.001s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-1: loss=1.6680, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.6811, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-1: loss=1.5261, acc=93.75%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.8319, acc=68.75%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.7107, acc=71.88%, time=0.001s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.8311, acc=65.62%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.7134, acc=59.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-1: loss=1.5725, acc=71.88%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.7453, acc=71.88%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.6169, acc=62.50%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.6181, acc=75.00%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.6189, acc=65.62%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.5627, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.6481, acc=62.50%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.6419, acc=68.75%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.4144, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.8019, acc=53.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.4477, acc=71.88%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-2: loss=1.3934, acc=84.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-1: loss=1.3079, acc=84.38%, time=0.002s
+coordinator-1  | === HYBRID PIPELINE-EASGD SYSTEM ===
+coordinator-1  | Version: 2.0
+coordinator-1  | Architecture: Pipeline Parallelism + EASGD
+coordinator-1  | Dataset: MNIST (60,000 training + 10,000 test)
+coordinator-1  | Network: 784 → 512 → 10 (2-stage pipeline)
+coordinator-1  | Network Environment: local
+coordinator-1  | =====================================
+coordinator-1  |
+coordinator-1  | [MAIN] Launching component: coordinator
+coordinator-1  | [COORDINATOR] Launching coordinator with parameters:
+coordinator-1  |   Beta (server rate): 0.500
+coordinator-1  |   Expected workers: 2 Stage1 + 1 Stage2 = 3 total
+coordinator-1  |   Services: EASGD Parameter Server + Statistics Collection
+coordinator-1  |   Ports: 12348 (EASGD), 12347 (Statistics)
+coordinator-1  |
+coordinator-1  | [EASGD] Hybrid configuration validated: 2 Stage1 + 1 Stage2 workers
+coordinator-1  | [EASGD] LOCAL parameters: α₁=0.2, α₂=0.3, β=0.5
+coordinator-1  | [COORDINATOR] Starting Hybrid Pipeline-EASGD Coordinator with β=0.500
+coordinator-1  | [COORDINATOR] Created hybrid coordinator with β=0.500
+coordinator-1  | [COORD] Initialized master weights: Stage1=401920 params, Stage2=5130 params
+coordinator-1  | [COORDINATOR] EASGD server listening on port 12348
+coordinator-1  | [COORDINATOR] Stats server listening on port 12347
+coordinator-1  | [COORDINATOR] === EPOCH 1: Hybrid Coordination ===
+coordinator-1  | [COORDINATOR] Starting EASGD coordination for epoch 1
+coordinator-1  | [COORDINATOR] Waiting for 3 workers to connect...
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 56826
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 2
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 2
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 2
+coordinator-1  | [COORDINATOR] Worker connected from port 46866
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 1
+coordinator-1  | [EASGD] Updating master Stage1 weights (β=0.500, count=401920)
+coordinator-1  | [EASGD] Master Stage1 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 1
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 1
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 41406
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 1
+coordinator-1  | [EASGD] Updating master Stage1 weights (β=0.500, count=401920)
+coordinator-1  | [EASGD] Master Stage1 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 1
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 1
+coordinator-1  | [EASGD] Stage1 weight divergence: 0.007252
+coordinator-1  | EASGD_LOG|1754815172|SYNC|round_0|divergence_0.007252|comm_time_45.923
+coordinator-1  | [COORDINATOR] EASGD coordination completed in 45.923 seconds
+coordinator-1  | [COORDINATOR] Weight divergences: Stage1=0.007252, Stage2=0.000000, Total=0.007252
+coordinator-1  |
+coordinator-1  | === HYBRID EPOCH 1 REPORT ===
+coordinator-1  | Training Metrics:
+coordinator-1  |   Processed batches: 0
+coordinator-1  |   Average loss: 0.0000
+coordinator-1  |   Average accuracy: 0.00%
+coordinator-1  |   Throughput: 0.00 batches/sec
+coordinator-1  |
+coordinator-1  | Pipeline Performance:
+coordinator-1  |   Stage1 processing time: 0.00s
+coordinator-1  |   Stage2 processing time: 0.00s
+coordinator-1  |   Communication time: 0.00s
+coordinator-1  |
+coordinator-1  | EASGD Metrics:
+coordinator-1  |   Communication round: 1
+coordinator-1  |   Stage1 divergence: 0.007252
+coordinator-1  |   Stage2 divergence: 0.000000
+coordinator-1  |   Total divergence: 0.007252
+coordinator-1  |   EASGD communication time: 45.92s
+coordinator-1  |
+coordinator-1  | Hybrid System:
+coordinator-1  |   Pipeline efficiency: 0.00%
+coordinator-1  |   EASGD efficiency: 0.17%
+coordinator-1  |   Elapsed time: 46.0s
+coordinator-1  | ================================
+coordinator-1  |
+stage1-1-1     | === HYBRID PIPELINE-EASGD SYSTEM ===
+stage1-1-1     | Version: 2.0
+stage1-1-1     | Architecture: Pipeline Parallelism + EASGD
+stage1-1-1     | Dataset: MNIST (60,000 training + 10,000 test)
+stage1-1-1     | Network: 784 → 512 → 10 (2-stage pipeline)
+stage1-1-1     | Network Environment: local
+stage1-1-1     | =====================================
+stage1-1-1     |
+stage1-1-1     | [MAIN] Launching component: stage1
+stage1-1-1     | [STAGE1-1] Launching worker with parameters:
+stage1-1-1     |   Data partition: [0:30000] (30000 samples)
+stage1-1-1     |   Alpha1 (elastic rate): 0.200
+stage1-1-1     |   Expected connections: Stage2-1, Coordinator
+stage1-1-1     |
+stage1-1-1     | [EASGD] LOCAL parameters: α₁=0.2, α₂=0.3, β=0.5
+stage1-1-1     | [STAGE1-1] Starting hybrid worker for data partition [0:30000]
+stage1-1-1     | [STAGE1-1] Created worker for data partition [0:30000] with α₁=0.200
+stage1-1-1     | [WEIGHT_MGMT] Loading dataset partition [0:30000] from ./data/mnist_train.csv
+stage1-1-1     | [WEIGHT_MGMT] Successfully loaded 30000 images for partition [0:30000]
+stage1-1-1     | [STAGE1-1] Loaded 30000 training images
+stage1-1-1     | [STAGE1-1] Setting up pipeline connections...
+stage1-1-1     | [STAGE1-1] Connected to Stage2 forward server on attempt 1
+stage1-1-1     | [STAGE1-1] Waiting for backward connection from Stage2...
+stage1-1-1     | [STAGE1-1] Forward processor thread started
+stage1-1-1     | [STAGE1-1] Starting training with 5 epochs
+stage1-1-1     | [STAGE1-1] === EPOCH 1: Pipeline Training Phase ===
+stage1-1-1     | [STAGE1-1] Backward processor thread started
+stage1-1-1     | [STAGE1-1] Processed batch 0/937
+stage1-1-1     | [STAGE1-1] Processed batch 100/937
+stage1-1-1     | [STAGE1-1] Processed batch 200/937
+stage1-1-1     | [STAGE1-1] Processed batch 300/937
+stage1-1-1     | [STAGE1-1] Processed batch 400/937
+stage1-1-1     | [STAGE1-1] Processed batch 500/937
+stage1-1-1     | [STAGE1-1] Processed batch 600/937
+stage1-1-1     | [STAGE1-1] Processed batch 700/937
+stage1-1-1     | [STAGE1-1] Processed batch 800/937
+stage1-1-1     | [STAGE1-1] Processed batch 900/937
+stage1-1-1     | [STAGE1-1] Waiting for pipeline to drain (pending: 1)...
+stage1-1-1     | [STAGE1-1] === EPOCH 1: EASGD Synchronization ===
+stage1-1-1     | [STAGE1-1] Connecting to coordinator for EASGD sync...
+stage1-1-1     | [STAGE1-1] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-1-1     | [STAGE1-1] Sending 401920 weights to coordinator...
+stage1-1-1     | [STAGE1-1] Weights sent successfully
+stage1-1-1     | [STAGE1-1] Waiting for master weights from coordinator...
+stage1-1-1     | [STAGE1-1] Received 401920 master weights
+stage1-1-1     | [STAGE1-1] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-1-1     | [STAGE1-1] Reconstructed Stage1 weights from flat array
+stage1-1-1     | [STAGE1-1] Elastic averaging applied successfully
+stage1-1-1     | [STAGE1-1] Applied elastic averaging successfully
+stage1-1-1     | [STAGE1-1] Epoch 1 completed. Processed 938 batches
+stage1-1-1     | [STAGE1-1] === EPOCH 2: Pipeline Training Phase ===
+stage1-1-1     | [STAGE1-1] Processed batch 0/937
+stage1-1-1     | [STAGE1-1] Processed batch 100/937
+stage1-1-1     | [STAGE1-1] Processed batch 200/937
+stage1-1-1     | [STAGE1-1] Processed batch 300/937
+stage1-1-1     | [STAGE1-1] Processed batch 400/937
+stage1-1-1     | [STAGE1-1] Processed batch 500/937
+stage1-1-1     | [STAGE1-1] Processed batch 600/937
+stage1-1-1     | [STAGE1-1] Processed batch 700/937
+stage1-1-1     | [STAGE1-1] Processed batch 800/937
+stage1-1-1     | [STAGE1-1] Processed batch 900/937
+stage1-1-1     | [STAGE1-1] Waiting for pipeline to drain (pending: 1)...
+stage1-1-1     | [STAGE1-1] === EPOCH 2: EASGD Synchronization ===
+stage1-1-1     | [STAGE1-1] Connecting to coordinator for EASGD sync...
+stage1-1-1     | [STAGE1-1] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-1-1     | [STAGE1-1] Sending 401920 weights to coordinator...
+stage1-1-1     | [STAGE1-1] Weights sent successfully
+stage1-1-1     | [STAGE1-1] Waiting for master weights from coordinator...
+stage1-1-1     | [STAGE1-1] Received 401920 master weights
+stage1-1-1     | [STAGE1-1] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-1-1     | [STAGE1-1] Reconstructed Stage1 weights from flat array
+stage1-1-1     | [STAGE1-1] Elastic averaging applied successfully
+stage1-1-1     | [STAGE1-1] Applied elastic averaging successfully
+stage1-1-1     | [STAGE1-1] Epoch 2 completed. Processed 938 batches
+stage1-1-1     | [STAGE1-1] === EPOCH 3: Pipeline Training Phase ===
+stage1-1-1     | [STAGE1-1] Processed batch 0/937
+stage1-1-1     | [STAGE1-1] Processed batch 100/937
+stage1-1-1     | [STAGE1-1] Processed batch 200/937
+stage1-1-1     | [STAGE1-1] Processed batch 300/937
+stage1-1-1     | [STAGE1-1] Processed batch 400/937
+stage1-1-1     | [STAGE1-1] Processed batch 500/937
+stage1-1-1     | [STAGE1-1] Processed batch 600/937
+stage1-1-1     | [STAGE1-1] Processed batch 700/937
+stage1-1-1     | [STAGE1-1] Processed batch 800/937
+stage1-1-1     | [STAGE1-1] Processed batch 900/937
+stage1-1-1     | [STAGE1-1] Waiting for pipeline to drain (pending: 1)...
+stage1-1-1     | [STAGE1-1] === EPOCH 3: EASGD Synchronization ===
+stage1-1-1     | [STAGE1-1] Connecting to coordinator for EASGD sync...
+stage1-1-1     | [STAGE1-1] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-1-1     | [STAGE1-1] Sending 401920 weights to coordinator...
+stage1-1-1     | [STAGE1-1] Weights sent successfully
+stage1-1-1     | [STAGE1-1] Waiting for master weights from coordinator...
+stage1-2-1     | === HYBRID PIPELINE-EASGD SYSTEM ===
+stage1-2-1     | Version: 2.0
+stage1-2-1     | Architecture: Pipeline Parallelism + EASGD
+stage1-2-1     | Dataset: MNIST (60,000 training + 10,000 test)
+stage1-2-1     | Network: 784 → 512 → 10 (2-stage pipeline)
+stage1-2-1     | Network Environment: local
+stage1-2-1     | =====================================
+stage1-2-1     |
+stage1-2-1     | [MAIN] Launching component: stage1
+stage1-2-1     | [STAGE1-2] Launching worker with parameters:
+stage1-2-1     |   Data partition: [30000:60000] (30000 samples)
+stage1-2-1     |   Alpha1 (elastic rate): 0.200
+stage1-2-1     |   Expected connections: Stage2-1, Coordinator
+stage1-2-1     |
+stage1-2-1     | [EASGD] LOCAL parameters: α₁=0.2, α₂=0.3, β=0.5
+stage1-2-1     | [STAGE1-2] Starting hybrid worker for data partition [30000:60000]
+stage1-2-1     | [STAGE1-2] Created worker for data partition [30000:60000] with α₁=0.200
+stage1-2-1     | [WEIGHT_MGMT] Loading dataset partition [30000:60000] from ./data/mnist_train.csv
+stage1-2-1     | [WEIGHT_MGMT] Successfully loaded 30000 images for partition [30000:60000]
+stage1-2-1     | [STAGE1-2] Loaded 30000 training images
+stage1-2-1     | [STAGE1-2] Setting up pipeline connections...
+stage1-2-1     | [STAGE1-2] Connected to Stage2 forward server on attempt 1
+stage1-2-1     | [STAGE1-2] Waiting for backward connection from Stage2...
+stage1-2-1     | [STAGE1-2] Forward processor thread started
+stage1-2-1     | [STAGE1-2] Starting training with 5 epochs
+stage1-2-1     | [STAGE1-2] === EPOCH 1: Pipeline Training Phase ===
+stage1-2-1     | [STAGE1-2] Backward processor thread started
+stage1-2-1     | [STAGE1-2] Processed batch 0/937
+stage1-2-1     | [STAGE1-2] Processed batch 100/937
+stage1-2-1     | [STAGE1-2] Processed batch 200/937
+stage1-2-1     | [STAGE1-2] Processed batch 300/937
+stage1-2-1     | [STAGE1-2] Processed batch 400/937
+stage1-2-1     | [STAGE1-2] Processed batch 500/937
+stage1-2-1     | [STAGE1-2] Processed batch 600/937
+stage1-2-1     | [STAGE1-2] Processed batch 700/937
+stage1-2-1     | [STAGE1-2] Processed batch 800/937
+stage1-2-1     | [STAGE1-2] Processed batch 900/937
+stage1-2-1     | [STAGE1-2] Waiting for pipeline to drain (pending: 1)...
+stage1-2-1     | [STAGE1-2] === EPOCH 1: EASGD Synchronization ===
+stage1-2-1     | [STAGE1-2] Connecting to coordinator for EASGD sync...
+stage1-2-1     | [STAGE1-2] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-2-1     | [STAGE1-2] Sending 401920 weights to coordinator...
+stage1-2-1     | [STAGE1-2] Weights sent successfully
+stage1-2-1     | [STAGE1-2] Waiting for master weights from coordinator...
+stage1-2-1     | [STAGE1-2] Received 401920 master weights
+stage1-2-1     | [STAGE1-2] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-2-1     | [STAGE1-2] Reconstructed Stage1 weights from flat array
+stage1-2-1     | [STAGE1-2] Elastic averaging applied successfully
+stage1-2-1     | [STAGE1-2] Applied elastic averaging successfully
+stage1-2-1     | [STAGE1-2] Epoch 1 completed. Processed 938 batches
+stage1-2-1     | [STAGE1-2] === EPOCH 2: Pipeline Training Phase ===
+stage1-2-1     | [STAGE1-2] Processed batch 0/937
+stage1-2-1     | [STAGE1-2] Processed batch 100/937
+stage1-2-1     | [STAGE1-2] Processed batch 200/937
+stage1-2-1     | [STAGE1-2] Processed batch 300/937
+stage1-2-1     | [STAGE1-2] Processed batch 400/937
+stage1-2-1     | [STAGE1-2] Processed batch 500/937
+stage1-2-1     | [STAGE1-2] Processed batch 600/937
+stage1-2-1     | [STAGE1-2] Processed batch 700/937
+stage1-2-1     | [STAGE1-2] Processed batch 800/937
+stage1-2-1     | [STAGE1-2] Processed batch 900/937
+stage1-2-1     | [STAGE1-2] Waiting for pipeline to drain (pending: 1)...
+stage1-2-1     | [STAGE1-2] === EPOCH 2: EASGD Synchronization ===
+stage1-2-1     | [STAGE1-2] Connecting to coordinator for EASGD sync...
+stage1-2-1     | [STAGE1-2] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-2-1     | [STAGE1-2] Sending 401920 weights to coordinator...
+stage1-2-1     | [STAGE1-2] Weights sent successfully
+stage1-2-1     | [STAGE1-2] Waiting for master weights from coordinator...
+stage1-2-1     | [STAGE1-2] Received 401920 master weights
+stage1-2-1     | [STAGE1-2] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-2-1     | [STAGE1-2] Reconstructed Stage1 weights from flat array
+stage1-2-1     | [STAGE1-2] Elastic averaging applied successfully
+stage1-2-1     | [STAGE1-2] Applied elastic averaging successfully
+stage1-2-1     | [STAGE1-2] Epoch 2 completed. Processed 938 batches
+stage1-2-1     | [STAGE1-2] === EPOCH 3: Pipeline Training Phase ===
+stage1-2-1     | [STAGE1-2] Processed batch 0/937
+stage1-2-1     | [STAGE1-2] Processed batch 100/937
+stage1-2-1     | [STAGE1-2] Processed batch 200/937
+stage1-2-1     | [STAGE1-2] Processed batch 300/937
+stage1-2-1     | [STAGE1-2] Processed batch 400/937
+stage1-2-1     | [STAGE1-2] Processed batch 500/937
+stage1-2-1     | [STAGE1-2] Processed batch 600/937
+stage1-2-1     | [STAGE1-2] Processed batch 700/937
+stage1-2-1     | [STAGE1-2] Processed batch 800/937
+stage1-2-1     | [STAGE1-2] Processed batch 900/937
+stage1-2-1     | [STAGE1-2] Waiting for pipeline to drain (pending: 1)...
+stage1-2-1     | [STAGE1-2] === EPOCH 3: EASGD Synchronization ===
+stage1-2-1     | [STAGE1-2] Connecting to coordinator for EASGD sync...
+stage1-2-1     | [STAGE1-2] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-2-1     | [STAGE1-2] Sending 401920 weights to coordinator...
+stage1-2-1     | [STAGE1-2] Weights sent successfully
+coordinator-1  | [COORDINATOR] === EPOCH 2: Hybrid Coordination ===
+coordinator-1  | [COORDINATOR] Starting EASGD coordination for epoch 2
+coordinator-1  | [COORDINATOR] Waiting for 3 workers to connect...
+coordinator-1  | [COORDINATOR] Worker connected from port 48648
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 2
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 2
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 2
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 59226
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 1
+coordinator-1  | [EASGD] Updating master Stage1 weights (β=0.500, count=401920)
+coordinator-1  | [EASGD] Master Stage1 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 1
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 1
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 37004
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 2
+coordinator-1  | [EASGD] Updating master Stage1 weights (β=0.500, count=401920)
+coordinator-1  | [EASGD] Master Stage1 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 2
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 2
+coordinator-1  | [EASGD] Stage1 weight divergence: 0.014877
+coordinator-1  | EASGD_LOG|1754815196|SYNC|round_1|divergence_0.014877|comm_time_23.155
+coordinator-1  | [COORDINATOR] EASGD coordination completed in 23.155 seconds
+coordinator-1  | [COORDINATOR] Weight divergences: Stage1=0.014877, Stage2=0.000000, Total=0.014877
+coordinator-1  |
+coordinator-1  | === HYBRID EPOCH 2 REPORT ===
+coordinator-1  | Training Metrics:
+coordinator-1  |   Processed batches: 0
+coordinator-1  |   Average loss: 0.0000
+coordinator-1  |   Average accuracy: 0.00%
+coordinator-1  |   Throughput: 0.00 batches/sec
+coordinator-1  |
+coordinator-1  | Pipeline Performance:
+coordinator-1  |   Stage1 processing time: 0.00s
+coordinator-1  |   Stage2 processing time: 0.00s
+coordinator-1  |   Communication time: 0.00s
+coordinator-1  |
+coordinator-1  | EASGD Metrics:
+coordinator-1  |   Communication round: 2
+coordinator-1  |   Stage1 divergence: 0.014877
+coordinator-1  |   Stage2 divergence: 0.000000
+coordinator-1  |   Total divergence: 0.014877
+coordinator-1  |   EASGD communication time: 69.08s
+coordinator-1  |
+coordinator-1  | Hybrid System:
+coordinator-1  |   Pipeline efficiency: 0.00%
+coordinator-1  |   EASGD efficiency: 1.32%
+coordinator-1  |   Elapsed time: 70.0s
+coordinator-1  | ================================
+coordinator-1  |
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.4594, acc=68.75%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-1: loss=1.1784, acc=87.50%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.3979, acc=71.88%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.4655, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.5291, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.4088, acc=71.88%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.5369, acc=71.88%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-1: loss=1.3077, acc=75.00%, time=0.011s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.4749, acc=84.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.3165, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.3408, acc=78.12%, time=0.009s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.3477, acc=78.12%, time=0.013s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.2713, acc=78.12%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.4145, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.4111, acc=78.12%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.1513, acc=84.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.1854, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.6149, acc=53.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-1: loss=1.0928, acc=78.12%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-2: loss=1.1139, acc=90.62%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-1: loss=0.9639, acc=90.62%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.2320, acc=71.88%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.2394, acc=81.25%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.2158, acc=75.00%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.2149, acc=71.88%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.2778, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-1: loss=1.1286, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.3386, acc=68.75%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.1427, acc=78.12%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.3008, acc=84.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.1526, acc=87.50%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.1583, acc=81.25%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.3000, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.0762, acc=81.25%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.0165, acc=78.12%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.2729, acc=68.75%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.0857, acc=78.12%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.4930, acc=56.25%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-1: loss=0.9471, acc=87.50%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-2: loss=0.9271, acc=87.50%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-1: loss=0.8288, acc=93.75%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.0955, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.0978, acc=71.88%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.0947, acc=71.88%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.0585, acc=81.25%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.1275, acc=84.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-1: loss=0.9938, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.0466, acc=81.25%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.2234, acc=75.00%, time=0.004s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.0666, acc=81.25%, time=0.003s
+coordinator-1  | [COORDINATOR] === EPOCH 3: Hybrid Coordination ===
+coordinator-1  | [COORDINATOR] Starting EASGD coordination for epoch 3
+coordinator-1  | [COORDINATOR] Waiting for 3 workers to connect...
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 57028
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 1
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 1
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 1
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 50286
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 2
+coordinator-1  | [EASGD] Updating master Stage1 weights (β=0.500, count=401920)
+coordinator-1  | [EASGD] Master Stage1 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 2
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 2
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 52078
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 1
+coordinator-1  | [EASGD] Updating master Stage1 weights (β=0.500, count=401920)
+coordinator-1  | [EASGD] Master Stage1 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 1
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 1
+coordinator-1  | [EASGD] Stage1 weight divergence: 0.021511
+coordinator-1  | EASGD_LOG|1754815233|SYNC|round_2|divergence_0.021511|comm_time_35.051
+coordinator-1  | [COORDINATOR] EASGD coordination completed in 35.051 seconds
+coordinator-1  | [COORDINATOR] Weight divergences: Stage1=0.021511, Stage2=0.000000, Total=0.021511
+coordinator-1  |
+coordinator-1  | === HYBRID EPOCH 3 REPORT ===
+coordinator-1  | Training Metrics:
+coordinator-1  |   Processed batches: 0
+coordinator-1  |   Average loss: 0.0000
+coordinator-1  |   Average accuracy: 0.00%
+coordinator-1  |   Throughput: 0.00 batches/sec
+coordinator-1  |
+coordinator-1  | Pipeline Performance:
+coordinator-1  |   Stage1 processing time: 0.00s
+coordinator-1  |   Stage2 processing time: 0.00s
+coordinator-1  |   Communication time: 0.00s
+coordinator-1  |
+coordinator-1  | EASGD Metrics:
+coordinator-1  |   Communication round: 3
+coordinator-1  |   Stage1 divergence: 0.021511
+coordinator-1  |   Stage2 divergence: 0.000000
+coordinator-1  |   Total divergence: 0.021511
+coordinator-1  |   EASGD communication time: 104.13s
+coordinator-1  |
+coordinator-1  | Hybrid System:
+coordinator-1  |   Pipeline efficiency: 0.00%
+coordinator-1  |   EASGD efficiency: 2.68%
+coordinator-1  |   Elapsed time: 107.0s
+coordinator-1  | ================================
+coordinator-1  |
+coordinator-1  | [COORDINATOR] === EPOCH 4: Hybrid Coordination ===
+coordinator-1  | [COORDINATOR] Starting EASGD coordination for epoch 4
+coordinator-1  | [COORDINATOR] Waiting for 3 workers to connect...
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 38450
+coordinator-1  | [COORDINATOR] Received weights from Stage1 Worker 2
+coordinator-1  | [COORDINATOR] Sending master Stage1 weights back to worker 2
+coordinator-1  | [COORDINATOR] Sent 401920 master Stage1 weights to worker 2
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 36014
+coordinator-1  | [COORDINATOR] Received weights from Stage2 Worker 1
+coordinator-1  | [EASGD] Updating master Stage2 weights (β=0.500, count=5130)
+coordinator-1  | [EASGD] Master Stage2 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage2 weights back to worker
+coordinator-1  | [COORDINATOR] Sent 5130 master Stage2 weights
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 36024
+coordinator-1  | [COORDINATOR] Received weights from Stage2 Worker 1
+coordinator-1  | [EASGD] Updating master Stage2 weights (β=0.500, count=5130)
+coordinator-1  | [EASGD] Master Stage2 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage2 weights back to worker
+coordinator-1  | [COORDINATOR] Sent 5130 master Stage2 weights
+coordinator-1  | [EASGD] Stage2 weight divergence: 0.028862
+coordinator-1  | EASGD_LOG|1754815246|SYNC|round_3|divergence_0.050372|comm_time_12.025
+coordinator-1  | [COORDINATOR] EASGD coordination completed in 12.025 seconds
+coordinator-1  | [COORDINATOR] Weight divergences: Stage1=0.021511, Stage2=0.028862, Total=0.050372
+coordinator-1  |
+coordinator-1  | === HYBRID EPOCH 4 REPORT ===
+coordinator-1  | Training Metrics:
+coordinator-1  |   Processed batches: 0
+coordinator-1  |   Average loss: 0.0000
+coordinator-1  |   Average accuracy: 0.00%
+coordinator-1  |   Throughput: 0.00 batches/sec
+coordinator-1  |
+coordinator-1  | Pipeline Performance:
+coordinator-1  |   Stage1 processing time: 0.00s
+coordinator-1  |   Stage2 processing time: 0.00s
+coordinator-1  |   Communication time: 0.00s
+coordinator-1  |
+coordinator-1  | EASGD Metrics:
+coordinator-1  |   Communication round: 4
+coordinator-1  |   Stage1 divergence: 0.021511
+coordinator-1  |   Stage2 divergence: 0.028862
+coordinator-1  |   Total divergence: 0.050372
+coordinator-1  |   EASGD communication time: 116.15s
+coordinator-1  |
+coordinator-1  | Hybrid System:
+coordinator-1  |   Pipeline efficiency: 0.00%
+coordinator-1  |   EASGD efficiency: 3.21%
+coordinator-1  |   Elapsed time: 120.0s
+coordinator-1  | ================================
+coordinator-1  |
+stage2-1-1     | [STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.1863, acc=87.50%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.1919, acc=75.00%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.0692, acc=81.25%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-1: loss=0.9332, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 400 from STAGE1-2: loss=0.9641, acc=78.12%, time=0.008s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-1: loss=0.9745, acc=84.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.1790, acc=71.88%, time=0.004s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-1: loss=0.8573, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.3979, acc=56.25%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-1: loss=0.7240, acc=90.62%, time=0.003s
+stage2-1-1     | [STAGE2-1] Processed batch 700 from STAGE1-2: loss=0.8116, acc=90.62%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 800 from STAGE1-2: loss=0.9799, acc=78.12%, time=0.002s
+stage2-1-1     | [STAGE2-1] Processed batch 900 from STAGE1-2: loss=0.9359, acc=84.38%, time=0.002s
+stage2-1-1     | [STAGE2-1] No messages for 10 iterations, total processed: S1-1=4690, S1-2=4690
+stage2-1-1     | [STAGE2-1] No messages for 20 iterations, total processed: S1-1=4690, S1-2=4690
+stage2-1-1     | [STAGE2-1] No messages for 30 iterations, total processed: S1-1=4690, S1-2=4690
+stage2-1-1     | [STAGE2-1] No messages for 40 iterations, total processed: S1-1=4690, S1-2=4690
+stage2-1-1     | [STAGE2-1] No messages for 50 iterations, total processed: S1-1=4690, S1-2=4690
+stage2-1-1     | [STAGE2-1] Epoch 1 pipeline phase completed: S1-1=4690 msgs, S1-2=4690 msgs, 9380 batches
+stage2-1-1     | [STAGE2-1] === EPOCH 1: EASGD Synchronization ===
+stage2-1-1     | [STAGE2-1] Connecting to coordinator for EASGD sync...
+stage2-1-1     | [STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+stage2-1-1     | [STAGE2-1] Sending 5130 weights to coordinator...
+stage2-1-1     | [STAGE2-1] Weights sent successfully
+stage2-1-1     | [STAGE2-1] Waiting for master weights from coordinator...
+stage2-1-1     | [STAGE2-1] Received 5130 master weights
+stage2-1-1     | [STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+stage2-1-1     | [STAGE2-1] Reconstructed Stage2 weights from flat array
+stage2-1-1     | [STAGE2-1] Elastic averaging applied successfully
+stage2-1-1     | [STAGE2-1] Applied elastic averaging successfully
+stage2-1-1     | [STAGE2-1] EASGD synchronization completed for epoch 1
+stage2-1-1     | [STAGE2-1] === EPOCH 2: Multiplexed Pipeline Processing ===
+stage2-1-1     | [STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] Epoch 2 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+stage2-1-1     | [STAGE2-1] === EPOCH 2: EASGD Synchronization ===
+stage2-1-1     | [STAGE2-1] Connecting to coordinator for EASGD sync...
+stage2-1-1     | [STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+stage2-1-1     | [STAGE2-1] Sending 5130 weights to coordinator...
+stage2-1-1     | [STAGE2-1] Weights sent successfully
+stage2-1-1     | [STAGE2-1] Waiting for master weights from coordinator...
+stage2-1-1     | [STAGE2-1] Received 5130 master weights
+stage2-1-1     | [STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+stage2-1-1     | [STAGE2-1] Reconstructed Stage2 weights from flat array
+stage2-1-1     | [STAGE2-1] Elastic averaging applied successfully
+stage2-1-1     | [STAGE2-1] Applied elastic averaging successfully
+stage2-1-1     | [STAGE2-1] EASGD synchronization completed for epoch 2
+stage2-1-1     | [STAGE2-1] === EPOCH 3: Multiplexed Pipeline Processing ===
+stage2-1-1     | [STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] Epoch 3 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+stage2-1-1     | [STAGE2-1] === EPOCH 3: EASGD Synchronization ===
+stage2-1-1     | [STAGE2-1] Connecting to coordinator for EASGD sync...
+stage2-1-1     | [STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+stage2-1-1     | [STAGE2-1] Sending 5130 weights to coordinator...
+stage2-1-1     | [STAGE2-1] Weights sent successfully
+coordinator-1  | [COORDINATOR] === EPOCH 5: Hybrid Coordination ===
+coordinator-1  | [COORDINATOR] Starting EASGD coordination for epoch 5
+coordinator-1  | [COORDINATOR] Waiting for 3 workers to connect...
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (0/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 49326
+coordinator-1  | [COORDINATOR] Received weights from Stage2 Worker 1
+coordinator-1  | [EASGD] Updating master Stage2 weights (β=0.500, count=5130)
+coordinator-1  | [EASGD] Master Stage2 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage2 weights back to worker
+coordinator-1  | [COORDINATOR] Sent 5130 master Stage2 weights
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (1/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 49330
+coordinator-1  | [COORDINATOR] Received weights from Stage2 Worker 1
+coordinator-1  | [EASGD] Updating master Stage2 weights (β=0.500, count=5130)
+coordinator-1  | [EASGD] Master Stage2 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage2 weights back to worker
+coordinator-1  | [COORDINATOR] Sent 5130 master Stage2 weights
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Waiting for workers... (2/3 connected)
+coordinator-1  | [COORDINATOR] Worker connected from port 34602
+coordinator-1  | [COORDINATOR] Received weights from Stage2 Worker 1
+coordinator-1  | [EASGD] Updating master Stage2 weights (β=0.500, count=5130)
+coordinator-1  | [EASGD] Master Stage2 weights updated successfully
+coordinator-1  | [COORDINATOR] Sending master Stage2 weights back to worker
+coordinator-1  | [COORDINATOR] Sent 5130 master Stage2 weights
+coordinator-1  | [EASGD] Stage2 weight divergence: 0.001237
+coordinator-1  | EASGD_LOG|1754815260|SYNC|round_4|divergence_0.022748|comm_time_13.816
+coordinator-1  | [COORDINATOR] EASGD coordination completed in 13.816 seconds
+coordinator-1  | [COORDINATOR] Weight divergences: Stage1=0.021511, Stage2=0.001237, Total=0.022748
+coordinator-1  |
+coordinator-1  | === HYBRID EPOCH 5 REPORT ===
+coordinator-1  | Training Metrics:
+coordinator-1  |   Processed batches: 0
+coordinator-1  |   Average loss: 0.0000
+coordinator-1  |   Average accuracy: 0.00%
+coordinator-1  |   Throughput: 0.00 batches/sec
+coordinator-1  |
+coordinator-1  | Pipeline Performance:
+coordinator-1  |   Stage1 processing time: 0.00s
+coordinator-1  |   Stage2 processing time: 0.00s
+coordinator-1  |   Communication time: 0.00s
+coordinator-1  |
+coordinator-1  | EASGD Metrics:
+coordinator-1  |   Communication round: 5
+coordinator-1  |   Stage1 divergence: 0.021511
+coordinator-1  |   Stage2 divergence: 0.001237
+coordinator-1  |   Total divergence: 0.022748
+coordinator-1  |   EASGD communication time: 129.97s
+coordinator-1  |
+coordinator-1  | Hybrid System:
+coordinator-1  |   Pipeline efficiency: 0.00%
+coordinator-1  |   EASGD efficiency: 3.01%
+coordinator-1  |   Elapsed time: 134.0s
+coordinator-1  | ================================
+coordinator-1  |
+coordinator-1  | [COORDINATOR] === FINAL EVALUATION AND REPORTING ===
+coordinator-1  | [EASGD] Total system weight divergence: 0.022748
+coordinator-1  | [METRICS] Load balance analysis:
+coordinator-1  |           Stage1-1 utilization: 0.00%
+coordinator-1  |           Stage1-2 utilization: 0.00%
+coordinator-1  |           Stage2-1 utilization: 0.00%
+coordinator-1  |           Mean utilization: 0.00%
+coordinator-1  |           Standard deviation: 0.00%
+coordinator-1  |
+coordinator-1  | ████████████████████████████████████████████████████████████████████████████████
+coordinator-1  | █                    HYBRID PIPELINE-EASGD RESEARCH REPORT                     █
+coordinator-1  | ████████████████████████████████████████████████████████████████████████████████
+coordinator-1  |
+coordinator-1  | === EXPERIMENT CONFIGURATION ===
+coordinator-1  | Experiment Name: Hybrid Pipeline-EASGD Neural Network Training
+coordinator-1  | Architecture: 2 Stage1 Workers + 1 Stage2 Worker + 1 Coordinator
+coordinator-1  | Network Environment: local
+coordinator-1  |   - Latency: 0.1 ms
+coordinator-1  |   - Bandwidth: 1000.0 Mbps
+coordinator-1  |   - Packet Loss: 0.0000%
+coordinator-1  |
+coordinator-1  | === EASGD HYPERPARAMETERS ===
+coordinator-1  | α₁ (Stage1 elastic rate): 0.200
+coordinator-1  | α₂ (Stage2 elastic rate): 0.300
+coordinator-1  | β (Server update rate): 0.500
+coordinator-1  |
+coordinator-1  | === TRAINING PERFORMANCE ===
+coordinator-1  | Total Training Time: 134.00 seconds
+coordinator-1  | Total Epochs: 5
+coordinator-1  | Total Samples Processed: 60000
+coordinator-1  | Average Throughput: 447.76 samples/second
+coordinator-1  | Final Accuracy: 0.00%
+coordinator-1  | Final Average Loss: 0.0000
+coordinator-1  |
+coordinator-1  | === PERFORMANCE COMPARISON ===
+coordinator-1  | Estimated Pipeline-Only Time: 174.20 seconds
+coordinator-1  | Estimated EASGD-Only Time: 201.00 seconds
+coordinator-1  | Actual Hybrid Time: 134.00 seconds
+coordinator-1  | Hybrid Speedup Factor: 1.40x
+coordinator-1  | Parallel Efficiency: 66.67%
+coordinator-1  |
+coordinator-1  | === LOAD BALANCING ANALYSIS ===
+coordinator-1  | Stage1-1 Utilization: 85.0%
+coordinator-1  | Stage1-2 Utilization: 87.0%
+coordinator-1  | Stage2-1 Utilization: 92.0%
+coordinator-1  | Load Balance Variance: -nan
+coordinator-1  | Load Balance Quality: POOR
+coordinator-1  |
+coordinator-1  | === CONVERGENCE ANALYSIS ===
+coordinator-1  | Final Weight Divergence: 0.022748
+coordinator-1  | Stage1 Convergence Rate: 0.9785
+coordinator-1  | Stage2 Convergence Rate: 0.9988
+coordinator-1  | Convergence Achieved: Not within 5 epochs
+coordinator-1  |
+coordinator-1  | === COMMUNICATION ANALYSIS ===
+coordinator-1  | Pipeline Communication Ratio: 0.000
+coordinator-1  | EASGD Communication Ratio: 0.970
+coordinator-1  | Total Communication Overhead: 0.970
+coordinator-1  | Total Network Usage: 16246.20 MB
+coordinator-1  |
+coordinator-1  | === DETAILED PIPELINE METRICS ===
+coordinator-1  | Stage1 Processing Time: 0.00 seconds
+coordinator-1  | Stage2 Processing Time: 0.00 seconds
+coordinator-1  | Communication Time: 0.00 seconds
+coordinator-1  | Pipeline Efficiency: 0.00%
+coordinator-1  | Processed Batches: 0
+coordinator-1  |
+coordinator-1  | === RESEARCH INSIGHTS ===
+coordinator-1  | • Hybrid Architecture Benefits:
+coordinator-1  |   - Combined model and data parallelism
+coordinator-1  |   - Elastic averaging provides regularization
+coordinator-1  |   - Pipeline overlap reduces training time
+coordinator-1  |   - Fault tolerance through distributed workers
+coordinator-1  |
+coordinator-1  | • Performance Characteristics:
+coordinator-1  |   - GOOD hybrid speedup achieved
+coordinator-1  |   - IMBALANCED load distribution (optimization opportunity)
+coordinator-1  |   - HIGH communication overhead (bottleneck)
+coordinator-1  |
+coordinator-1  | === RECOMMENDATIONS ===
+coordinator-1  | • Hyperparameter Tuning:
+coordinator-1  |   - Reduce EASGD synchronization frequency
+coordinator-1  |
+coordinator-1  | • Scalability Opportunities:
+coordinator-1  |   - Add more Stage1 workers for data parallelism
+coordinator-1  |   - Implement adaptive α/β parameter adjustment
+coordinator-1  |   - Explore asynchronous EASGD variants
+coordinator-1  |   - Add pipeline stages for deeper networks
+coordinator-1  |
+coordinator-1  | ████████████████████████████████████████████████████████████████████████████████
+coordinator-1  | █                            REPORT COMPLETED                                  █
+coordinator-1  | ████████████████████████████████████████████████████████████████████████████████
+coordinator-1  |
+coordinator-1  | [COORDINATOR] Hybrid metrics saved to hybrid_results.csv
+coordinator-1  | [COORDINATOR] Hybrid coordination completed
+coordinator-1  | [COORDINATOR] Cleanup completed
+stage2-1-1     | [STAGE2-1] Waiting for master weights from coordinator...
+stage2-1-1     | [STAGE2-1] Received 5130 master weights
+stage2-1-1     | [STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+stage2-1-1     | [STAGE2-1] Reconstructed Stage2 weights from flat array
+stage2-1-1     | [STAGE2-1] Elastic averaging applied successfully
+stage2-1-1     | [STAGE2-1] Applied elastic averaging successfully
+stage2-1-1     | [STAGE2-1] EASGD synchronization completed for epoch 3
+stage2-1-1     | [STAGE2-1] === EPOCH 4: Multiplexed Pipeline Processing ===
+stage2-1-1     | [STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] Epoch 4 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+stage2-1-1     | [STAGE2-1] === EPOCH 4: EASGD Synchronization ===
+stage2-1-1     | [STAGE2-1] Connecting to coordinator for EASGD sync...
+stage2-1-1     | [STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+stage2-1-1     | [STAGE2-1] Sending 5130 weights to coordinator...
+stage2-1-1     | [STAGE2-1] Weights sent successfully
+stage2-1-1     | [STAGE2-1] Waiting for master weights from coordinator...
+stage2-1-1     | [STAGE2-1] Received 5130 master weights
+stage2-1-1     | [STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+stage2-1-1     | [STAGE2-1] Reconstructed Stage2 weights from flat array
+stage2-1-1     | [STAGE2-1] Elastic averaging applied successfully
+stage2-1-1     | [STAGE2-1] Applied elastic averaging successfully
+stage2-1-1     | [STAGE2-1] EASGD synchronization completed for epoch 4
+stage2-1-1     | [STAGE2-1] === EPOCH 5: Multiplexed Pipeline Processing ===
+stage2-1-1     | [STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+stage2-1-1     | [STAGE2-1] Epoch 5 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+stage2-1-1     | [STAGE2-1] === EPOCH 5: EASGD Synchronization ===
+stage2-1-1     | [STAGE2-1] Connecting to coordinator for EASGD sync...
+stage2-1-1     | [STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+stage2-1-1     | [STAGE2-1] Sending 5130 weights to coordinator...
+stage2-1-1     | [STAGE2-1] Weights sent successfully
+stage2-1-1     | [STAGE2-1] Waiting for master weights from coordinator...
+stage2-1-1     | [STAGE2-1] Received 5130 master weights
+stage2-1-1     | [STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+stage2-1-1     | [STAGE2-1] Reconstructed Stage2 weights from flat array
+stage2-1-1     | [STAGE2-1] Elastic averaging applied successfully
+stage2-1-1     | [STAGE2-1] Applied elastic averaging successfully
+stage2-1-1     | [STAGE2-1] EASGD synchronization completed for epoch 5
+stage2-1-1     | [STAGE2-1] Training completed
+stage1-1-1     | [STAGE1-1] Received 401920 master weights
+stage1-1-1     | [STAGE1-1] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-1-1     | [STAGE1-1] Reconstructed Stage1 weights from flat array
+stage1-1-1     | [STAGE1-1] Elastic averaging applied successfully
+stage1-1-1     | [STAGE1-1] Applied elastic averaging successfully
+stage1-1-1     | [STAGE1-1] Epoch 3 completed. Processed 938 batches
+stage1-1-1     | [STAGE1-1] === EPOCH 4: Pipeline Training Phase ===
+stage1-1-1     | [STAGE1-1] Processed batch 0/937
+stage1-1-1     | [STAGE1-1] Processed batch 100/937
+stage1-1-1     | [STAGE1-1] Processed batch 200/937
+stage1-1-1     | [STAGE1-1] Processed batch 300/937
+stage1-1-1     | [STAGE1-1] Processed batch 400/937
+stage1-1-1     | [STAGE1-1] Processed batch 500/937
+stage1-1-1     | [STAGE1-1] Processed batch 600/937
+stage1-1-1     | [STAGE1-1] Processed batch 700/937
+stage1-1-1     | [STAGE1-1] Processed batch 800/937
+stage1-1-1     | [STAGE1-1] Processed batch 900/937
+stage1-1-1     | [STAGE1-1] Waiting for pipeline to drain (pending: 1)...
+stage1-1-1     | [STAGE1-1] === EPOCH 4: EASGD Synchronization ===
+stage1-1-1     | [STAGE1-1] Connecting to coordinator for EASGD sync...
+stage1-1-1     | [STAGE1-1] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-1-1     | [STAGE1-1] Sending 401920 weights to coordinator...
+stage1-1-1     | [STAGE1-1] Weights sent successfully
+stage1-1-1     | [STAGE1-1] Waiting for master weights from coordinator...
+stage1-1-1     | [STAGE1-1] Received 401920 master weights
+stage1-1-1     | [STAGE1-1] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-1-1     | [STAGE1-1] Reconstructed Stage1 weights from flat array
+stage1-1-1     | [STAGE1-1] Elastic averaging applied successfully
+stage1-1-1     | [STAGE1-1] Applied elastic averaging successfully
+stage1-1-1     | [STAGE1-1] Epoch 4 completed. Processed 938 batches
+stage1-1-1     | [STAGE1-1] === EPOCH 5: Pipeline Training Phase ===
+stage1-1-1     | [STAGE1-1] Processed batch 0/937
+stage1-1-1     | [STAGE1-1] Processed batch 100/937
+stage1-1-1     | [STAGE1-1] Processed batch 200/937
+stage1-1-1     | [STAGE1-1] Processed batch 300/937
+stage1-1-1     | [STAGE1-1] Processed batch 400/937
+stage1-1-1     | [STAGE1-1] Processed batch 500/937
+stage1-1-1     | [STAGE1-1] Processed batch 600/937
+stage1-1-1     | [STAGE1-1] Processed batch 700/937
+stage1-1-1     | [STAGE1-1] Processed batch 800/937
+stage1-1-1     | [STAGE1-1] Processed batch 900/937
+stage1-1-1     | [STAGE1-1] Waiting for pipeline to drain (pending: 1)...
+stage1-1-1     | [STAGE1-1] === EPOCH 5: EASGD Synchronization ===
+stage1-1-1     | [STAGE1-1] Connecting to coordinator for EASGD sync...
+stage1-1-1     | [STAGE1-1] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-1-1     | [STAGE1-1] Sending 401920 weights to coordinator...
+stage1-1-1     | [STAGE1-1] Weights sent successfully
+stage1-1-1     | [STAGE1-1] Waiting for master weights from coordinator...
+stage1-1-1     | [STAGE1-1] Received 401920 master weights
+stage1-1-1     | [STAGE1-1] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-1-1     | [STAGE1-1] Reconstructed Stage1 weights from flat array
+stage1-1-1     | [STAGE1-1] Elastic averaging applied successfully
+stage1-1-1     | [STAGE1-1] Applied elastic averaging successfully
+stage1-1-1     | [STAGE1-1] Epoch 5 completed. Processed 938 batches
+stage1-1-1     | [STAGE1-1] Signaling threads to stop...
+stage1-1-1     | [STAGE1-1] Forward processor thread terminated
+stage1-1-1     | [STAGE1-1] Backward processor thread terminated
+stage1-1-1     | [STAGE1-1] Training completed
+stage1-2-1     | [STAGE1-2] Waiting for master weights from coordinator...
+stage1-2-1     | [STAGE1-2] Received 401920 master weights
+stage1-2-1     | [STAGE1-2] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-2-1     | [STAGE1-2] Reconstructed Stage1 weights from flat array
+stage1-2-1     | [STAGE1-2] Elastic averaging applied successfully
+stage1-2-1     | [STAGE1-2] Applied elastic averaging successfully
+stage1-2-1     | [STAGE1-2] Epoch 3 completed. Processed 938 batches
+stage1-2-1     | [STAGE1-2] === EPOCH 4: Pipeline Training Phase ===
+stage1-2-1     | [STAGE1-2] Processed batch 0/937
+stage1-2-1     | [STAGE1-2] Processed batch 100/937
+stage1-2-1     | [STAGE1-2] Processed batch 200/937
+stage1-2-1     | [STAGE1-2] Processed batch 300/937
+stage1-2-1     | [STAGE1-2] Processed batch 400/937
+stage1-2-1     | [STAGE1-2] Processed batch 500/937
+stage1-2-1     | [STAGE1-2] Processed batch 600/937
+stage1-2-1     | [STAGE1-2] Processed batch 700/937
+stage1-2-1     | [STAGE1-2] Processed batch 800/937
+stage1-2-1     | [STAGE1-2] Processed batch 900/937
+stage1-2-1     | [STAGE1-2] Waiting for pipeline to drain (pending: 1)...
+stage1-2-1     | [STAGE1-2] === EPOCH 4: EASGD Synchronization ===
+stage1-2-1     | [STAGE1-2] Connecting to coordinator for EASGD sync...
+stage1-2-1     | [STAGE1-2] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-2-1     | [STAGE1-2] Sending 401920 weights to coordinator...
+stage1-2-1     | [STAGE1-2] Weights sent successfully
+stage1-2-1     | [STAGE1-2] Waiting for master weights from coordinator...
+stage1-2-1     | [STAGE1-2] Received 401920 master weights
+stage1-2-1     | [STAGE1-2] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-2-1     | [STAGE1-2] Reconstructed Stage1 weights from flat array
+stage1-2-1     | [STAGE1-2] Elastic averaging applied successfully
+stage1-2-1     | [STAGE1-2] Applied elastic averaging successfully
+stage1-2-1     | [STAGE1-2] Epoch 4 completed. Processed 938 batches
+stage1-2-1     | [STAGE1-2] === EPOCH 5: Pipeline Training Phase ===
+stage1-2-1     | [STAGE1-2] Processed batch 0/937
+stage1-2-1     | [STAGE1-2] Processed batch 100/937
+stage1-2-1     | [STAGE1-2] Processed batch 200/937
+stage1-2-1     | [STAGE1-2] Processed batch 300/937
+stage1-2-1     | [STAGE1-2] Processed batch 400/937
+stage1-2-1     | [STAGE1-2] Processed batch 500/937
+stage1-2-1     | [STAGE1-2] Processed batch 600/937
+stage1-2-1     | [STAGE1-2] Processed batch 700/937
+stage1-2-1     | [STAGE1-2] Processed batch 800/937
+stage1-2-1     | [STAGE1-2] Processed batch 900/937
+stage1-2-1     | [STAGE1-2] Waiting for pipeline to drain (pending: 1)...
+stage1-2-1     | [STAGE1-2] === EPOCH 5: EASGD Synchronization ===
+stage1-2-1     | [STAGE1-2] Connecting to coordinator for EASGD sync...
+stage1-2-1     | [STAGE1-2] Flattened 401920 weights (401408 matrix + 512 bias)
+stage1-2-1     | [STAGE1-2] Sending 401920 weights to coordinator...
+stage1-2-1     | [STAGE1-2] Weights sent successfully
+stage1-2-1     | [STAGE1-2] Waiting for master weights from coordinator...
+stage1-2-1     | [STAGE1-2] Received 401920 master weights
+stage1-2-1     | [STAGE1-2] Applying elastic averaging (α₁=0.200, count=401920)
+stage1-2-1     | [STAGE1-2] Reconstructed Stage1 weights from flat array
+stage1-2-1     | [STAGE1-2] Elastic averaging applied successfully
+stage1-2-1     | [STAGE1-2] Applied elastic averaging successfully
+stage1-2-1     | [STAGE1-2] Epoch 5 completed. Processed 938 batches
+stage1-2-1     | [STAGE1-2] Signaling threads to stop...
+stage1-2-1     | [STAGE1-2] Forward processor thread terminated
+stage1-2-1     | [STAGE1-2] Backward processor thread terminated
+stage1-2-1     | [STAGE1-2] Training completed
+stage2-1-1 exited with code 0
+coordinator-1 exited with code 0
+stage1-2-1 exited with code 0
+stage1-1-1 exited with code 0
+[2025-08-10 15:41:07] Cleaning up...
+[2025-08-10 15:41:02] Cleanup completed
+phamchivy@DESKTOP-SV3DKME:/mnt/c/Users/DELL/Documents/distributed_dnn$

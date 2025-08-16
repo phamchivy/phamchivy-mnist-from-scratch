@@ -1,0 +1,226 @@
+=== Hybrid Pipeline-EASGD Startup Script ===
+Container: 68c51d2c1c61
+Network Type: local
+Component: stage2
+Parameters: 0.3
+==========================================
+Using LOCAL-optimized parameters: α₁=0.2, α₂=0.3, β=0.5
+Starting hybrid application: stage2 0.3
+=== HYBRID PIPELINE-EASGD SYSTEM ===
+Version: 2.0
+Architecture: Pipeline Parallelism + EASGD
+Dataset: MNIST (60,000 training + 10,000 test)
+Network: 784 → 512 → 10 (2-stage pipeline)
+Network Environment: local
+=====================================
+
+[MAIN] Launching component: stage2
+[STAGE2-1] Launching worker with parameters:
+  Alpha2 (elastic rate): 0.300
+  Expected connections: Stage1-1, Stage1-2, Coordinator
+  Processing mode: Multiplexed pipeline
+
+[EASGD] LOCAL parameters: α₁=0.2, α₂=0.3, β=0.5
+[STAGE2-1] Starting hybrid Stage2 worker with α₂=0.300
+[STAGE2-1] Created worker with α₂=0.300
+[STAGE2-1] Waiting for connections from Stage1 workers...
+[STAGE2-1] Connecting to Stage1 backward sockets...
+[STAGE2-1] Connected to Stage1-1 backward on attempt 1
+[STAGE2-1] Connected to Stage1-2 backward on attempt 1
+[STAGE2-1] All connections established. Starting training...
+[STAGE2-1] === EPOCH 1: Multiplexed Pipeline Processing ===
+[STAGE2-1] Processed batch 0 from STAGE1-2: loss=2.3493, acc=9.38%, time=0.002s
+[STAGE2-1] Processed batch 0 from STAGE1-1: loss=2.4027, acc=9.38%, time=0.002s
+[STAGE2-1] Processed batch 100 from STAGE1-2: loss=2.2833, acc=15.62%, time=0.002s
+[STAGE2-1] Processed batch 100 from STAGE1-1: loss=2.2437, acc=9.38%, time=0.002s
+[STAGE2-1] Processed batch 200 from STAGE1-2: loss=2.1658, acc=40.62%, time=0.002s
+[STAGE2-1] Processed batch 200 from STAGE1-1: loss=2.1106, acc=40.62%, time=0.001s
+[STAGE2-1] Processed batch 300 from STAGE1-2: loss=2.0731, acc=43.75%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-1: loss=2.0745, acc=46.88%, time=0.001s
+[STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.9656, acc=56.25%, time=0.004s
+[STAGE2-1] Processed batch 400 from STAGE1-1: loss=2.0199, acc=43.75%, time=0.001s
+[STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.9561, acc=62.50%, time=0.002s
+[STAGE2-1] Processed batch 500 from STAGE1-1: loss=2.0097, acc=53.12%, time=0.002s
+[STAGE2-1] Processed batch 600 from STAGE1-2: loss=2.0420, acc=50.00%, time=0.002s
+[STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.8262, acc=59.38%, time=0.002s
+[STAGE2-1] Processed batch 700 from STAGE1-2: loss=1.7019, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.7927, acc=59.38%, time=0.002s
+[STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.6914, acc=65.62%, time=0.001s
+[STAGE2-1] Processed batch 800 from STAGE1-1: loss=1.6680, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.6811, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 900 from STAGE1-1: loss=1.5261, acc=93.75%, time=0.002s
+[STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.8319, acc=68.75%, time=0.002s
+[STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.7107, acc=71.88%, time=0.001s
+[STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.8311, acc=65.62%, time=0.003s
+[STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.7134, acc=59.38%, time=0.002s
+[STAGE2-1] Processed batch 200 from STAGE1-1: loss=1.5725, acc=71.88%, time=0.003s
+[STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.7453, acc=71.88%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.6169, acc=62.50%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.6181, acc=75.00%, time=0.003s
+[STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.6189, acc=65.62%, time=0.002s
+[STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.5627, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.6481, acc=62.50%, time=0.002s
+[STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.6419, acc=68.75%, time=0.003s
+[STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.4144, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.8019, acc=53.12%, time=0.002s
+[STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.4477, acc=71.88%, time=0.002s
+[STAGE2-1] Processed batch 700 from STAGE1-2: loss=1.3934, acc=84.38%, time=0.002s
+[STAGE2-1] Processed batch 800 from STAGE1-1: loss=1.3079, acc=84.38%, time=0.002s
+[STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.4594, acc=68.75%, time=0.003s
+[STAGE2-1] Processed batch 900 from STAGE1-1: loss=1.1784, acc=87.50%, time=0.002s
+[STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.3979, acc=71.88%, time=0.003s
+[STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.4655, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.5291, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.4088, acc=71.88%, time=0.002s
+[STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.5369, acc=71.88%, time=0.003s
+[STAGE2-1] Processed batch 200 from STAGE1-1: loss=1.3077, acc=75.00%, time=0.011s
+[STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.4749, acc=84.38%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.3165, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.3408, acc=78.12%, time=0.009s
+[STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.3477, acc=78.12%, time=0.013s
+[STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.2713, acc=78.12%, time=0.003s
+[STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.4145, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.4111, acc=78.12%, time=0.003s
+[STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.1513, acc=84.38%, time=0.002s
+[STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.1854, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.6149, acc=53.12%, time=0.002s
+[STAGE2-1] Processed batch 800 from STAGE1-1: loss=1.0928, acc=78.12%, time=0.003s
+[STAGE2-1] Processed batch 700 from STAGE1-2: loss=1.1139, acc=90.62%, time=0.002s
+[STAGE2-1] Processed batch 900 from STAGE1-1: loss=0.9639, acc=90.62%, time=0.002s
+[STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.2320, acc=71.88%, time=0.002s
+[STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.2394, acc=81.25%, time=0.003s
+[STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.2158, acc=75.00%, time=0.003s
+[STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.2149, acc=71.88%, time=0.003s
+[STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.2778, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 200 from STAGE1-1: loss=1.1286, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.3386, acc=68.75%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.1427, acc=78.12%, time=0.003s
+[STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.3008, acc=84.38%, time=0.002s
+[STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.1526, acc=87.50%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.1583, acc=81.25%, time=0.003s
+[STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.3000, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 400 from STAGE1-2: loss=1.0762, acc=81.25%, time=0.003s
+[STAGE2-1] Processed batch 600 from STAGE1-1: loss=1.0165, acc=78.12%, time=0.003s
+[STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.2729, acc=68.75%, time=0.002s
+[STAGE2-1] Processed batch 700 from STAGE1-1: loss=1.0857, acc=78.12%, time=0.003s
+[STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.4930, acc=56.25%, time=0.003s
+[STAGE2-1] Processed batch 800 from STAGE1-1: loss=0.9471, acc=87.50%, time=0.002s
+[STAGE2-1] Processed batch 700 from STAGE1-2: loss=0.9271, acc=87.50%, time=0.003s
+[STAGE2-1] Processed batch 900 from STAGE1-1: loss=0.8288, acc=93.75%, time=0.003s
+[STAGE2-1] Processed batch 0 from STAGE1-1: loss=1.0955, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 800 from STAGE1-2: loss=1.0978, acc=71.88%, time=0.002s
+[STAGE2-1] Processed batch 100 from STAGE1-1: loss=1.0947, acc=71.88%, time=0.003s
+[STAGE2-1] Processed batch 900 from STAGE1-2: loss=1.0585, acc=81.25%, time=0.003s
+[STAGE2-1] Processed batch 0 from STAGE1-2: loss=1.1275, acc=84.38%, time=0.002s
+[STAGE2-1] Processed batch 200 from STAGE1-1: loss=0.9938, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-1: loss=1.0466, acc=81.25%, time=0.003s
+[STAGE2-1] Processed batch 100 from STAGE1-2: loss=1.2234, acc=75.00%, time=0.004s
+[STAGE2-1] Processed batch 400 from STAGE1-1: loss=1.0666, acc=81.25%, time=0.003s
+[STAGE2-1] Processed batch 200 from STAGE1-2: loss=1.1863, acc=87.50%, time=0.003s
+[STAGE2-1] Processed batch 500 from STAGE1-1: loss=1.1919, acc=75.00%, time=0.002s
+[STAGE2-1] Processed batch 300 from STAGE1-2: loss=1.0692, acc=81.25%, time=0.003s
+[STAGE2-1] Processed batch 600 from STAGE1-1: loss=0.9332, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 400 from STAGE1-2: loss=0.9641, acc=78.12%, time=0.008s
+[STAGE2-1] Processed batch 700 from STAGE1-1: loss=0.9745, acc=84.38%, time=0.002s
+[STAGE2-1] Processed batch 500 from STAGE1-2: loss=1.1790, acc=71.88%, time=0.004s
+[STAGE2-1] Processed batch 800 from STAGE1-1: loss=0.8573, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 600 from STAGE1-2: loss=1.3979, acc=56.25%, time=0.002s
+[STAGE2-1] Processed batch 900 from STAGE1-1: loss=0.7240, acc=90.62%, time=0.003s
+[STAGE2-1] Processed batch 700 from STAGE1-2: loss=0.8116, acc=90.62%, time=0.002s
+[STAGE2-1] Processed batch 800 from STAGE1-2: loss=0.9799, acc=78.12%, time=0.002s
+[STAGE2-1] Processed batch 900 from STAGE1-2: loss=0.9359, acc=84.38%, time=0.002s
+[STAGE2-1] No messages for 10 iterations, total processed: S1-1=4690, S1-2=4690
+[STAGE2-1] No messages for 20 iterations, total processed: S1-1=4690, S1-2=4690
+[STAGE2-1] No messages for 30 iterations, total processed: S1-1=4690, S1-2=4690
+[STAGE2-1] No messages for 40 iterations, total processed: S1-1=4690, S1-2=4690
+[STAGE2-1] No messages for 50 iterations, total processed: S1-1=4690, S1-2=4690
+[STAGE2-1] Epoch 1 pipeline phase completed: S1-1=4690 msgs, S1-2=4690 msgs, 9380 batches
+[STAGE2-1] === EPOCH 1: EASGD Synchronization ===
+[STAGE2-1] Connecting to coordinator for EASGD sync...
+[STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+[STAGE2-1] Sending 5130 weights to coordinator...
+[STAGE2-1] Weights sent successfully
+[STAGE2-1] Waiting for master weights from coordinator...
+[STAGE2-1] Received 5130 master weights
+[STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+[STAGE2-1] Reconstructed Stage2 weights from flat array
+[STAGE2-1] Elastic averaging applied successfully
+[STAGE2-1] Applied elastic averaging successfully
+[STAGE2-1] EASGD synchronization completed for epoch 1
+[STAGE2-1] === EPOCH 2: Multiplexed Pipeline Processing ===
+[STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] Epoch 2 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+[STAGE2-1] === EPOCH 2: EASGD Synchronization ===
+[STAGE2-1] Connecting to coordinator for EASGD sync...
+[STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+[STAGE2-1] Sending 5130 weights to coordinator...
+[STAGE2-1] Weights sent successfully
+[STAGE2-1] Waiting for master weights from coordinator...
+[STAGE2-1] Received 5130 master weights
+[STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+[STAGE2-1] Reconstructed Stage2 weights from flat array
+[STAGE2-1] Elastic averaging applied successfully
+[STAGE2-1] Applied elastic averaging successfully
+[STAGE2-1] EASGD synchronization completed for epoch 2
+[STAGE2-1] === EPOCH 3: Multiplexed Pipeline Processing ===
+[STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] Epoch 3 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+[STAGE2-1] === EPOCH 3: EASGD Synchronization ===
+[STAGE2-1] Connecting to coordinator for EASGD sync...
+[STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+[STAGE2-1] Sending 5130 weights to coordinator...
+[STAGE2-1] Weights sent successfully
+[STAGE2-1] Waiting for master weights from coordinator...
+[STAGE2-1] Received 5130 master weights
+[STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+[STAGE2-1] Reconstructed Stage2 weights from flat array
+[STAGE2-1] Elastic averaging applied successfully
+[STAGE2-1] Applied elastic averaging successfully
+[STAGE2-1] EASGD synchronization completed for epoch 3
+[STAGE2-1] === EPOCH 4: Multiplexed Pipeline Processing ===
+[STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] Epoch 4 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+[STAGE2-1] === EPOCH 4: EASGD Synchronization ===
+[STAGE2-1] Connecting to coordinator for EASGD sync...
+[STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+[STAGE2-1] Sending 5130 weights to coordinator...
+[STAGE2-1] Weights sent successfully
+[STAGE2-1] Waiting for master weights from coordinator...
+[STAGE2-1] Received 5130 master weights
+[STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+[STAGE2-1] Reconstructed Stage2 weights from flat array
+[STAGE2-1] Elastic averaging applied successfully
+[STAGE2-1] Applied elastic averaging successfully
+[STAGE2-1] EASGD synchronization completed for epoch 4
+[STAGE2-1] === EPOCH 5: Multiplexed Pipeline Processing ===
+[STAGE2-1] No messages for 10 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 20 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 30 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 40 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] No messages for 50 iterations, total processed: S1-1=0, S1-2=0
+[STAGE2-1] Epoch 5 pipeline phase completed: S1-1=0 msgs, S1-2=0 msgs, 0 batches
+[STAGE2-1] === EPOCH 5: EASGD Synchronization ===
+[STAGE2-1] Connecting to coordinator for EASGD sync...
+[STAGE2-1] Flattened 5130 weights (5120 matrix + 10 bias)
+[STAGE2-1] Sending 5130 weights to coordinator...
+[STAGE2-1] Weights sent successfully
+[STAGE2-1] Waiting for master weights from coordinator...
+[STAGE2-1] Received 5130 master weights
+[STAGE2-1] Applying elastic averaging (α₂=0.300, count=5130)
+[STAGE2-1] Reconstructed Stage2 weights from flat array
+[STAGE2-1] Elastic averaging applied successfully
+[STAGE2-1] Applied elastic averaging successfully
+[STAGE2-1] EASGD synchronization completed for epoch 5
+[STAGE2-1] Training completed
