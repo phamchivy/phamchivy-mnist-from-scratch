@@ -126,9 +126,10 @@ int main(int argc, char** argv) {
     fflush(stdout);
     
     // Save final model
-    char model_name[256];
-    sprintf(model_name, "stage2_group_%d_final", group_id);
-    // pipeline_stage_save(stage2, model_name);  // Implement if needed
+    // THAY THẾ đoạn save cuối file worker_stage2.c:
+    // Save final model  
+    pipeline_stage_save(stage2, "stage2", group_id);
+    printf("[Stage2 Group %d] Final model saved\n", group_id);
     
     // Cleanup
     pipeline_stage_free(stage2);

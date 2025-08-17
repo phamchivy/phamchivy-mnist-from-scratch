@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <errno.h>
+#include "../neural/nn.h"
 
 int setup_activation_server(int port) {
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);

@@ -108,3 +108,7 @@ void separate_elastic_center_update_output(double* worker_weights, int weight_co
 double* separate_elastic_center_get_hidden_weights(int* count_out);
 double* separate_elastic_center_get_output_weights(int* count_out);
 void separate_elastic_center_cleanup(void);
+
+// Network save functions for hybrid parallelism
+void network_save_hybrid_final(const char* model_name);
+void pipeline_stage_save(PipelineStage* stage, const char* stage_name, int group_id);

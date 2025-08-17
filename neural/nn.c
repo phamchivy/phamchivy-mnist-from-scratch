@@ -645,3 +645,99 @@ void separate_elastic_center_cleanup(void) {
         printf("[Parameter Server] Output elastic center cleaned up\n");
     }
 }
+
+// THÊM VÀO CUỐI FILE neural/nn.c
+
+// Save final hybrid model from parameter server
+void network_save_hybrid_final(const char* model_name) {
+    if (!separate_center.hidden_initialized || !separate_center.output_initialized) {
+        printf("[Parameter Server] Cannot save: centers not initialized\n");
+        return;
+    }
+    
+    // Create directory
+    mkdir(model_name, 0777);
+    chdir(model_name);
+    
+    // Write descriptor file
+    FILE* descriptor = fopen("descriptor", "w");
+    fprintf(descriptor, "%d\n", 784);  // input
+    fprintf(descriptor, "%d\n", 300);  // hidden  
+    fprintf(descriptor, "%d\n", 10);   // output
+    fprintf(descriptor, "# Hybrid EASGD Final Model\n");
+    fprintf(descriptor, "# Hidden updates: %d\n", separate_center.hidden_update_count);
+    fprintf(descriptor, "# Output updates: %d\n", separate_center.output_update_count);
+    fclose(descriptor);
+    
+    // Save hidden weights (300x784)
+    matrix_save(separate_center.center_hidden_weights, "hidden");
+    
+    // Save output weights (10x300)
+    matrix_save(separate_center.center_output_weights, "output");
+    
+    // Save metadata
+    FILE* metadata = fopen("metadata.txt", "w");
+    fprintf(metadata, "Model Type: Hybrid EASGD Final\n");
+    fprintf(metadata, "Architecture: 784 -> 300 -> 10\n");
+    fprintf(metadata, "Hidden Weights: %dx%d = %d parameters\n", 
+            separate_center.center_hidden_weights->rows, 
+            separate_center.center_hidden_weights->cols,
+            separate_center.center_hidden_weights->rows * separate_center.center_hidden_weights->cols);
+    fprintf(metadata, "Output Weights: %dx%d = %d parameters\n",
+            separate_center.center_output_weights->rows,
+            separate_center.center_output_weights->cols, 
+            separate_center.center_output_weights->rows * separate_center.center_output_weights->cols);
+    fprintf(metadata, "Total Parameters: %d\n", 
+            (separate_center.center_hidden_weights->rows * separate_center.center_hidden_weights->cols) +
+            (separate_center.center_output_weights->rows * separate_center.center_output_weights->cols));
+    fprintf(metadata, "Hidden Center Updates: %d\n", separate_center.hidden_update_count);
+    fprintf(metadata, "Output Center Updates: %d\n", separate_center.output_update_count);
+    fclose(metadata);
+    
+    printf("[Parameter Server] Successfully saved hybrid final model to '%s'\n", model_name);
+    printf("[Parameter Server] Hidden weights: %dx%d, Output weights: %dx%d\n",
+           separate_center.center_hidden_weights->rows, separate_center.center_hidden_weights->cols,
+           separate_center.center_output_weights->rows, separate_center.center_output_weights->cols);
+    
+    chdir("-");  // Go back to original directory
+}
+
+// Save individual pipeline stage
+void pipeline_stage_save(PipelineStage* stage, const char* stage_name, int group_id) {
+    char full_name[256];
+    sprintf(full_name, "%s_group_%d", stage_name, group_id);
+    
+    // Create directory
+    mkdir(full_name, 0777);
+    chdir(full_name);
+    
+    // Write descriptor
+    FILE* descriptor = fopen("descriptor", "w");
+    fprintf(descriptor, "%d\n", stage->input_size);
+    fprintf(descriptor, "%d\n", stage->output_size);
+    fprintf(descriptor, "%.6f\n", stage->learning_rate);
+    fprintf(descriptor, "%.6f\n", stage->alpha);
+    fprintf(descriptor, "%.6f\n", stage->beta);
+    fprintf(descriptor, "%d\n", stage->easgd_enabled ? 1 : 0);
+    fclose(descriptor);
+    
+    // Save weights
+    matrix_save(stage->weights, "weights");
+    
+    // Save metadata
+    FILE* metadata = fopen("metadata.txt", "w");
+    fprintf(metadata, "Stage: %s\n", stage_name);
+    fprintf(metadata, "Group: %d\n", group_id);
+    fprintf(metadata, "Architecture: %d -> %d\n", stage->input_size, stage->output_size);
+    fprintf(metadata, "Learning Rate: %.6f\n", stage->learning_rate);
+    fprintf(metadata, "EASGD Alpha: %.6f\n", stage->alpha);
+    fprintf(metadata, "EASGD Beta: %.6f\n", stage->beta);
+    fprintf(metadata, "EASGD Enabled: %s\n", stage->easgd_enabled ? "Yes" : "No");
+    fprintf(metadata, "Weight Matrix: %dx%d = %d parameters\n", 
+            stage->weights->rows, stage->weights->cols,
+            stage->weights->rows * stage->weights->cols);
+    fclose(metadata);
+    
+    printf("[Worker] Saved %s to '%s'\n", stage_name, full_name);
+    chdir("-");
+}

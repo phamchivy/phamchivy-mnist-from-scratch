@@ -25,15 +25,12 @@ UTIL_OBJS = $(UTIL_SRCS:.c=.o)
 COMMON_OBJS = $(MATRIX_OBJS) $(NEURAL_OBJS) $(SOCKET_OBJS) $(UTIL_OBJS)
 
 # Targets
-all: setup parameter_server worker app
+all: setup parameter_server app
 
 # Parameter server
 parameter_server: $(COMMON_OBJS) $(APPS_DIR)/parameter_server.o
 	$(CC) $^ -o $@ $(LDFLAGS)
 
-# Worker
-worker: $(COMMON_OBJS) $(APPS_DIR)/worker.o  
-	$(CC) $^ -o $@ $(LDFLAGS)
 
 # THÊM VÀO CUỐI FILE Makefile
 
@@ -77,6 +74,4 @@ clean_hybrid:
 setup:
 	mkdir -p results/server_logs results/worker1_results results/worker2_results
 
-.PHONY: all server worker clean setup
-
-.PHONY: worker_stage1 worker_stage2 clean_hybrid
+.PHONY: all server worker clean setup worker_stage1 worker_stage2 clean_hybrid

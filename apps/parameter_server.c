@@ -141,6 +141,15 @@ int main(int argc, char** argv) {
         }
     }
     
+    // Save final hybrid model after all training completed
+    printf("[Parameter Server] Training completed, saving final model...\n");
+    fflush(stdout);
+    
+    network_save_hybrid_final("server_logs/hybrid_final_model");
+    
+    printf("[Parameter Server] Final hybrid model saved successfully!\n");
+    fflush(stdout);
+    
     // Cleanup
     separate_elastic_center_cleanup();
     return 0;
