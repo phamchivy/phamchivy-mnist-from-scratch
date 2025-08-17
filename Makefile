@@ -35,6 +35,24 @@ parameter_server: $(COMMON_OBJS) $(APPS_DIR)/parameter_server.o
 worker: $(COMMON_OBJS) $(APPS_DIR)/worker.o  
 	$(CC) $^ -o $@ $(LDFLAGS)
 
+# THÊM VÀO CUỐI FILE Makefile
+
+# Hybrid Pipeline targets
+worker_stage1: apps/worker_stage1.o $(COMMON_OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+worker_stage2: apps/worker_stage2.o $(COMMON_OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+socket/pipeline_socket.o: socket/pipeline_socket.c socket/pipeline_socket.h
+	$(CC) -c socket/pipeline_socket.c -o socket/pipeline_socket.o $(CFLAGS)
+
+neural/pipeline_utils.o: neural/pipeline_utils.c neural/pipeline_utils.h
+	$(CC) -c neural/pipeline_utils.c -o neural/pipeline_utils.o $(CFLAGS)
+
+# Build all hybrid components
+hybrid: worker_stage1 worker_stage2 server
+
 # Legacy app (for backward compatibility)
 app: $(COMMON_OBJS) train.o
 	$(CC) $^ -o $@ $(LDFLAGS)
@@ -51,8 +69,14 @@ clean:
 	rm -f $(COMMON_OBJS) $(APPS_DIR)/*.o train.o
 	rm -f parameter_server worker app
 
+# Clean hybrid targets
+clean_hybrid:
+	rm -f worker_stage1 worker_stage2 socket/pipeline_socket.o neural/pipeline_utils.o
+
 # Create results directories
 setup:
 	mkdir -p results/server_logs results/worker1_results results/worker2_results
 
 .PHONY: all server worker clean setup
+
+.PHONY: worker_stage1 worker_stage2 clean_hybrid

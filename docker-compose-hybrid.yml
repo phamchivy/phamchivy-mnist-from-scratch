@@ -1,0 +1,112 @@
+version: "3.9"
+services:
+  parameter_server:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.server
+    command: ["12345"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+    cpuset: "4"
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./results/server_logs:/app/logs
+    networks:
+      hybrid_net:
+        ipv4_address: 172.32.0.10
+    environment:
+      - SERVER_PORT=12345
+
+  # Pipeline Group 1 (Data 0-29999)
+  worker1_stage1:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage1
+    command: ["1", "172.32.0.12", "13001", "172.32.0.10", "12345"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+    cpuset: "0"
+    depends_on:
+      - parameter_server
+      - worker1_stage2
+    volumes:
+      - ./results/worker1_stage1:/app/stage1_results
+    networks:
+      hybrid_net:
+        ipv4_address: 172.32.0.11
+    restart: on-failure
+
+  worker1_stage2:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage2
+    command: ["1", "13001", "172.32.0.10", "12345"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+    cpuset: "1"
+    depends_on:
+      - parameter_server
+    volumes:
+      - ./results/worker1_stage2:/app/stage2_results
+    networks:
+      hybrid_net:
+        ipv4_address: 172.32.0.12
+    ports:
+      - "13001:13001"
+    restart: on-failure
+
+  # Pipeline Group 2 (Data 30000-59999)
+  worker2_stage1:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage1
+    command: ["2", "172.32.0.14", "13002", "172.32.0.10", "12345"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+    cpuset: "2"
+    depends_on:
+      - parameter_server
+      - worker2_stage2
+    volumes:
+      - ./results/worker2_stage1:/app/stage1_results
+    networks:
+      hybrid_net:
+        ipv4_address: 172.32.0.13
+    restart: on-failure
+
+  worker2_stage2:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage2
+    command: ["2", "13002", "172.32.0.10", "12345"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+    cpuset: "3"
+    depends_on:
+      - parameter_server
+    volumes:
+      - ./results/worker2_stage2:/app/stage2_results
+    networks:
+      hybrid_net:
+        ipv4_address: 172.32.0.14
+    ports:
+      - "13002:13002"
+    restart: on-failure
+
+networks:
+  hybrid_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.32.0.0/16

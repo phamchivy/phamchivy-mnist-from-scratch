@@ -1,0 +1,23 @@
+FROM gcc:9
+
+RUN apt-get update && apt-get install -y \
+    make \
+    gdb \
+    valgrind \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy source code
+COPY data/ ./data/
+COPY matrix/ ./matrix/
+COPY neural/ ./neural/
+COPY socket/ ./socket/
+COPY util/ ./util/
+COPY apps/ ./apps/
+COPY Makefile .
+
+# Build worker stage 2
+RUN make worker_stage2
+
+ENTRYPOINT ["./worker_stage2"]

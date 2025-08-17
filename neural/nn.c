@@ -493,3 +493,155 @@ void network_free(NeuralNetwork *net) {
 	free(net);
 	net = NULL;
 }
+
+// THÊM VÀO CUỐI FILE neural/nn.c
+
+// Static separate elastic centers for hybrid parallelism
+static SeparateElasticCenter separate_center = {
+    .center_hidden_weights = NULL,
+    .center_output_weights = NULL,
+    .hidden_initialized = false,
+    .output_initialized = false,
+    .hidden_update_count = 0,
+    .output_update_count = 0
+};
+
+void separate_elastic_center_init_hidden(int hidden_rows, int hidden_cols) {
+    if (!separate_center.hidden_initialized) {
+        separate_center.center_hidden_weights = matrix_create(hidden_rows, hidden_cols);
+        matrix_randomize(separate_center.center_hidden_weights, hidden_cols);
+        separate_center.hidden_initialized = true;
+        separate_center.hidden_update_count = 0;
+        printf("[Parameter Server] Hidden elastic center initialized (%dx%d)\n", 
+               hidden_rows, hidden_cols);
+    }
+}
+
+void separate_elastic_center_init_output(int output_rows, int output_cols) {
+    if (!separate_center.output_initialized) {
+        separate_center.center_output_weights = matrix_create(output_rows, output_cols);
+        matrix_randomize(separate_center.center_output_weights, output_cols);
+        separate_center.output_initialized = true;
+        separate_center.output_update_count = 0;
+        printf("[Parameter Server] Output elastic center initialized (%dx%d)\n", 
+               output_rows, output_cols);
+    }
+}
+
+void separate_elastic_center_update_hidden(double* worker_weights, int weight_count, double beta) {
+    if (!separate_center.hidden_initialized) {
+        printf("[Parameter Server] Hidden center not initialized!\n");
+        return;
+    }
+    
+    // Convert worker weights array to matrix
+    Matrix* worker_matrix = matrix_create(separate_center.center_hidden_weights->rows, 
+                                        separate_center.center_hidden_weights->cols);
+    
+    int idx = 0;
+    for (int i = 0; i < worker_matrix->rows; i++) {
+        for (int j = 0; j < worker_matrix->cols; j++) {
+            worker_matrix->entries[i][j] = worker_weights[idx++];
+        }
+    }
+    
+    // Update elastic center: w̄ ← w̄ + β(w_worker - w̄)
+    Matrix* diff = subtract(worker_matrix, separate_center.center_hidden_weights);
+    Matrix* update = scale(beta, diff);
+    Matrix* new_center = add(separate_center.center_hidden_weights, update);
+    
+    matrix_free(separate_center.center_hidden_weights);
+    separate_center.center_hidden_weights = new_center;
+    separate_center.hidden_update_count++;
+    
+    // Cleanup
+    matrix_free(worker_matrix);
+    matrix_free(diff);
+    matrix_free(update);
+}
+
+void separate_elastic_center_update_output(double* worker_weights, int weight_count, double beta) {
+    if (!separate_center.output_initialized) {
+        printf("[Parameter Server] Output center not initialized!\n");
+        return;
+    }
+    
+    // Convert worker weights array to matrix
+    Matrix* worker_matrix = matrix_create(separate_center.center_output_weights->rows, 
+                                        separate_center.center_output_weights->cols);
+    
+    int idx = 0;
+    for (int i = 0; i < worker_matrix->rows; i++) {
+        for (int j = 0; j < worker_matrix->cols; j++) {
+            worker_matrix->entries[i][j] = worker_weights[idx++];
+        }
+    }
+    
+    // Update elastic center: w̄ ← w̄ + β(w_worker - w̄)
+    Matrix* diff = subtract(worker_matrix, separate_center.center_output_weights);
+    Matrix* update = scale(beta, diff);
+    Matrix* new_center = add(separate_center.center_output_weights, update);
+    
+    matrix_free(separate_center.center_output_weights);
+    separate_center.center_output_weights = new_center;
+    separate_center.output_update_count++;
+    
+    // Cleanup
+    matrix_free(worker_matrix);
+    matrix_free(diff);
+    matrix_free(update);
+}
+
+double* separate_elastic_center_get_hidden_weights(int* count_out) {
+    if (!separate_center.hidden_initialized) {
+        *count_out = 0;
+        return NULL;
+    }
+    
+    int count = separate_center.center_hidden_weights->rows * separate_center.center_hidden_weights->cols;
+    double* weights = malloc(sizeof(double) * count);
+    
+    int idx = 0;
+    for (int i = 0; i < separate_center.center_hidden_weights->rows; i++) {
+        for (int j = 0; j < separate_center.center_hidden_weights->cols; j++) {
+            weights[idx++] = separate_center.center_hidden_weights->entries[i][j];
+        }
+    }
+    
+    *count_out = count;
+    return weights;
+}
+
+double* separate_elastic_center_get_output_weights(int* count_out) {
+    if (!separate_center.output_initialized) {
+        *count_out = 0;
+        return NULL;
+    }
+    
+    int count = separate_center.center_output_weights->rows * separate_center.center_output_weights->cols;
+    double* weights = malloc(sizeof(double) * count);
+    
+    int idx = 0;
+    for (int i = 0; i < separate_center.center_output_weights->rows; i++) {
+        for (int j = 0; j < separate_center.center_output_weights->cols; j++) {
+            weights[idx++] = separate_center.center_output_weights->entries[i][j];
+        }
+    }
+    
+    *count_out = count;
+    return weights;
+}
+
+void separate_elastic_center_cleanup(void) {
+    if (separate_center.hidden_initialized) {
+        matrix_free(separate_center.center_hidden_weights);
+        separate_center.hidden_initialized = false;
+        printf("[Parameter Server] Hidden elastic center cleaned up\n");
+    }
+    
+    if (separate_center.output_initialized) {
+        matrix_free(separate_center.center_output_weights);
+        separate_center.output_initialized = false;
+        printf("[Parameter Server] Output elastic center cleaned up\n");
+    }
+}
