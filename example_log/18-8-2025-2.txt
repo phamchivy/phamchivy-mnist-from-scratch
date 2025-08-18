@@ -1,0 +1,1497 @@
+worker1_stage1-1    | [Stage1 Group 1] Starting, next stage: 172.32.0.12:13001, server: 172.32.0.10:12345
+worker2_stage2-1    | [Stage2 Group 2] Starting, listening on port 13002, server: 172.32.0.10:12345
+worker2_stage2-1    | [Stage2 Group 2] Pipeline stage initialized: 300→10, α=0.01, β=0.001
+worker2_stage2-1    | [Stage2 Group 13002] Activation server ready on port 16
+worker2_stage1-1    | [Stage1 Group 2] Starting, next stage: 172.32.0.14:13002, server: 172.32.0.10:12345
+worker1_stage2-1    | [Stage2 Group 1] Starting, listening on port 13001, server: 172.32.0.10:12345
+worker1_stage2-1    | [Stage2 Group 1] Pipeline stage initialized: 300→10, α=0.01, β=0.001
+worker1_stage2-1    | [Stage2 Group 13001] Activation server ready on port 16
+parameter_server-1  | [Parameter Server] Starting on port 12345 (Hybrid Mode)
+parameter_server-1  | [Parameter Server] Hidden elastic center initialized (300x784)
+parameter_server-1  | [Parameter Server] Output elastic center initialized (10x300)
+parameter_server-1  | [Parameter Server] Separate elastic centers initialized
+parameter_server-1  | [Parameter Server] Server socket ready, waiting for workers...
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Loading MNIST data...
+worker2_stage1-1    | [Stage1 Group 2] Processing images 30000 to 59999 (30000 total)
+worker2_stage1-1    | [Stage1 Group 2] Pipeline stage initialized: 784→300, α=0.01, β=0.001
+worker2_stage1-1    | [Stage1 Group 2] Starting epoch 1
+worker1_stage1-1    | [Stage1 Group 1] Loading MNIST data...
+worker1_stage1-1    | [Stage1 Group 1] Processing images 0 to 29999 (30000 total)
+worker1_stage1-1    | [Stage1 Group 1] Pipeline stage initialized: 784→300, α=0.01, β=0.001
+worker1_stage1-1    | [Stage1 Group 1] Starting epoch 1
+parameter_server-1  | [Parameter Server] Worker connected (request #1)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.147ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.251ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.158ms
+parameter_server-1  | [Parameter Server] Request #1 (OUTPUT) processed in 0.719ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 1000 images (sync #1), avg_loss=0.093176
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.174ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.017ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.111ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 1000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #2)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 6.184ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 21.238ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.665ms
+parameter_server-1  | [Parameter Server] Request #2 (HIDDEN) processed in 32.077ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 1000 images (sync #1)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 5.289ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.660ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 33.603ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 1000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #3)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.011ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.154ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.305ms
+parameter_server-1  | [Parameter Server] Request #3 (OUTPUT) processed in 0.984ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 1000 images (sync #1), avg_loss=0.093034
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.069ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.046ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.819ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 1000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #4)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.684ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 14.695ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 1000 images (sync #1)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.391ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.546ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 23.352ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 1000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.535ms
+parameter_server-1  | [Parameter Server] Request #4 (HIDDEN) processed in 22.678ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #5)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.174ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 2000 images (sync #2), avg_loss=0.092609
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.191ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.121ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.112ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 2000 images
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.254ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.334ms
+parameter_server-1  | [Parameter Server] Request #5 (OUTPUT) processed in 0.900ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #6)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.871ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 12.502ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 2000 images (sync #2)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 2.716ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 2.721ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 20.727ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 2000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.860ms
+parameter_server-1  | [Parameter Server] Request #6 (HIDDEN) processed in 20.113ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #7)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.335ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.178ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.237ms
+parameter_server-1  | [Parameter Server] Request #7 (OUTPUT) processed in 0.957ms
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 2000 images (sync #2), avg_loss=0.092659
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.303ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.144ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.144ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 2000 images
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #8)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.950ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 11.171ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 10.159ms
+parameter_server-1  | [Parameter Server] Request #8 (HIDDEN) processed in 24.968ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 2000 images (sync #2)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 1.709ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 1.341ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 25.222ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 2000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #9)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.011ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.191ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.279ms
+parameter_server-1  | [Parameter Server] Request #9 (OUTPUT) processed in 0.761ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 3000 images (sync #3), avg_loss=0.091739
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.059ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.209ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.136ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 3000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #10)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.348ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 14.661ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.048ms
+parameter_server-1  | [Parameter Server] Request #10 (HIDDEN) processed in 20.813ms
+parameter_server-1  | [Parameter Server] === Processed 10 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 3000 images (sync #3)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 18.858ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 2.073ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 37.533ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 3000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #11)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.012ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.203ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.144ms
+parameter_server-1  | [Parameter Server] Request #11 (OUTPUT) processed in 0.566ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 3000 images (sync #3), avg_loss=0.091975
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.063ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.011ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.170ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 3000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #12)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.684ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 12.387ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 1.284ms
+parameter_server-1  | [Parameter Server] Request #12 (HIDDEN) processed in 19.189ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 3000 images (sync #3)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.281ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 1.118ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 19.435ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 3000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #13)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.011ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.196ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.128ms
+parameter_server-1  | [Parameter Server] Request #13 (OUTPUT) processed in 0.463ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 4000 images (sync #4), avg_loss=0.091799
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.068ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.036ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 0.818ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 4000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #14)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.365ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 15.085ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 4000 images (sync #4)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 2.412ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.142ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 24.067ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 4000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.571ms
+parameter_server-1  | [Parameter Server] Request #14 (HIDDEN) processed in 23.684ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #15)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.011ms
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 4000 images (sync #4), avg_loss=0.091792
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.030ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.887ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 3.340ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 4000 images
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 1.974ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.500ms
+parameter_server-1  | [Parameter Server] Request #15 (OUTPUT) processed in 2.783ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #16)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.084ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.908ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 1.963ms
+parameter_server-1  | [Parameter Server] Request #16 (HIDDEN) processed in 27.705ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 4000 images (sync #4)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.940ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.206ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 28.262ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 4000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #17)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.009ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.190ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.141ms
+parameter_server-1  | [Parameter Server] Request #17 (OUTPUT) processed in 0.605ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 5000 images (sync #5), avg_loss=0.092126
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.061ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.011ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.066ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 5000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #18)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 7.498ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.220ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.221ms
+parameter_server-1  | [Parameter Server] Request #18 (HIDDEN) processed in 32.149ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 5000 images (sync #5)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 7.368ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.995ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 33.415ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 5000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #19)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.038ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.179ms
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 5000 images (sync #5), avg_loss=0.091904
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.069ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.037ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 0.978ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 5000 images
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.280ms
+parameter_server-1  | [Parameter Server] Request #19 (OUTPUT) processed in 0.709ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #20)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.831ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 17.379ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.460ms
+parameter_server-1  | [Parameter Server] Request #20 (HIDDEN) processed in 24.819ms
+parameter_server-1  | [Parameter Server] === Processed 20 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 5000 images (sync #5)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.510ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 3.892ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 27.075ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 5000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #21)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.043ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.365ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 6000 images (sync #6), avg_loss=0.093274
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.076ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.211ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.253ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 6000 images
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.329ms
+parameter_server-1  | [Parameter Server] Request #21 (OUTPUT) processed in 0.992ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #22)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.756ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.657ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 6000 images (sync #6)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 2.638ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 5.850ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 32.924ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 6000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 5.863ms
+parameter_server-1  | [Parameter Server] Request #22 (HIDDEN) processed in 34.707ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 6000 images (sync #6), avg_loss=0.092310
+parameter_server-1  | [Parameter Server] Worker connected (request #23)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.010ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.186ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.374ms
+parameter_server-1  | [Parameter Server] Request #23 (OUTPUT) processed in 0.823ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.054ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.364ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.119ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 6000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #24)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 8.861ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 18.585ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 6000 images (sync #6)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 6.183ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 3.640ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 34.550ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 6000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.692ms
+parameter_server-1  | [Parameter Server] Request #24 (HIDDEN) processed in 33.669ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #25)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.020ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 5.071ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.313ms
+parameter_server-1  | [Parameter Server] Request #25 (OUTPUT) processed in 5.813ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 7000 images (sync #7), avg_loss=0.105432
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.135ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.021ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 17.062ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 7000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #26)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 32.033ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 71.111ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 12.918ms
+parameter_server-1  | [Parameter Server] Request #26 (HIDDEN) processed in 118.709ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 7000 images (sync #7)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 10.128ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 6.895ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 119.263ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 7000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #27)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.237ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.217ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.194ms
+parameter_server-1  | [Parameter Server] Request #27 (OUTPUT) processed in 0.880ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 7000 images (sync #7), avg_loss=0.100872
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.226ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.011ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.205ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 7000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #28)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.758ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 17.510ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 7000 images (sync #7)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 3.327ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.951ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 3.709ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 29.156ms
+parameter_server-1  | [Parameter Server] Request #28 (HIDDEN) processed in 28.679ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Processed 7000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #29)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.010ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.182ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.226ms
+parameter_server-1  | [Parameter Server] Request #29 (OUTPUT) processed in 0.685ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 8000 images (sync #8), avg_loss=0.138893
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.054ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.011ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 0.977ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 8000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #30)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.262ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.329ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 6.305ms
+parameter_server-1  | [Parameter Server] Request #30 (HIDDEN) processed in 31.211ms
+parameter_server-1  | [Parameter Server] === Processed 30 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 8000 images (sync #8)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 1.427ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 6.187ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 31.037ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 8000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #31)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.154ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.294ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.221ms
+parameter_server-1  | [Parameter Server] Request #31 (OUTPUT) processed in 0.810ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 8000 images (sync #8), avg_loss=0.145392
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.173ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.025ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 3.056ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 8000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #32)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 8.580ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 26.248ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 6.469ms
+parameter_server-1  | [Parameter Server] Request #32 (HIDDEN) processed in 44.956ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 8000 images (sync #8)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 8.114ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 3.914ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 46.021ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 8000 images
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 9000 images (sync #9), avg_loss=0.200143
+parameter_server-1  | [Parameter Server] Worker connected (request #33)
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.136ms
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.128ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.071ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.206ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 0.965ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.179ms
+parameter_server-1  | [Parameter Server] Request #33 (OUTPUT) processed in 0.725ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 9000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #34)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.199ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 17.333ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.900ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 9000 images (sync #9)
+parameter_server-1  | [Parameter Server] Request #34 (HIDDEN) processed in 27.754ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 2.201ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.910ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 28.385ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 9000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #35)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.012ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.217ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.246ms
+parameter_server-1  | [Parameter Server] Request #35 (OUTPUT) processed in 0.770ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 9000 images (sync #9), avg_loss=0.194096
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.087ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.014ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.276ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 9000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #36)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.496ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 16.840ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 9000 images (sync #9)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.661ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.297ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 28.808ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 9000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.792ms
+parameter_server-1  | [Parameter Server] Request #36 (HIDDEN) processed in 28.300ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #37)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.385ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.390ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.657ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 10000 images (sync #10), avg_loss=0.214139
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.364ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.337ms
+parameter_server-1  | [Parameter Server] Request #37 (OUTPUT) processed in 2.124ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 2.522ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 10000 images
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #38)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 10.675ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 33.030ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 20.424ms
+parameter_server-1  | [Parameter Server] Request #38 (HIDDEN) processed in 73.452ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 10000 images (sync #10)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 13.351ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 17.999ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 78.744ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 10000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #39)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.123ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.316ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.248ms
+parameter_server-1  | [Parameter Server] Request #39 (OUTPUT) processed in 0.899ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 10000 images (sync #10), avg_loss=0.214875
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.148ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.020ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.172ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 10000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #40)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.637ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 24.793ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.444ms
+parameter_server-1  | [Parameter Server] Request #40 (HIDDEN) processed in 34.627ms
+parameter_server-1  | [Parameter Server] === Processed 40 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 10000 images (sync #10)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 3.048ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 5.204ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 36.300ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 10000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #41)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.016ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 6.872ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.341ms
+parameter_server-1  | [Parameter Server] Request #41 (OUTPUT) processed in 7.772ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 11000 images (sync #11), avg_loss=0.229218
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.125ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.022ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 18.842ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 11000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #42)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 18.073ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 34.706ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 26.630ms
+parameter_server-1  | [Parameter Server] Request #42 (HIDDEN) processed in 82.700ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 11000 images (sync #11)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 25.102ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 20.264ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 94.441ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 11000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #43)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.010ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 1.366ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.357ms
+parameter_server-1  | [Parameter Server] Request #43 (OUTPUT) processed in 1.994ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 11000 images (sync #11), avg_loss=0.224303
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.025ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.016ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 2.237ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 11000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #44)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.088ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 25.891ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 5.466ms
+parameter_server-1  | [Parameter Server] Request #44 (HIDDEN) processed in 35.300ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 11000 images (sync #11)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 1.518ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 5.573ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 36.072ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 11000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #45)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.104ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.180ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.324ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 12000 images (sync #12), avg_loss=0.233361
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.135ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.235ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.022ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 12000 images
+parameter_server-1  | [Parameter Server] Request #45 (OUTPUT) processed in 0.785ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #46)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 1.966ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.582ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 10.213ms
+parameter_server-1  | [Parameter Server] Request #46 (HIDDEN) processed in 35.712ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 12000 images (sync #12)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 1.834ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 10.349ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 36.382ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 12000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #47)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.018ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.175ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.558ms
+parameter_server-1  | [Parameter Server] Request #47 (OUTPUT) processed in 0.914ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 12000 images (sync #12), avg_loss=0.225104
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.096ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.397ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.248ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 12000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #48)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.908ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.253ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 12000 images (sync #12)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 7.135ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.428ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 32.420ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 12000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.431ms
+parameter_server-1  | [Parameter Server] Request #48 (HIDDEN) processed in 26.331ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #49)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.817ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.204ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.225ms
+parameter_server-1  | [Parameter Server] Request #49 (OUTPUT) processed in 1.406ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 13000 images (sync #13), avg_loss=0.234900
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.249ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.015ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 2.965ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 13000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #50)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.657ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 15.444ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 8.662ms
+parameter_server-1  | [Parameter Server] Request #50 (HIDDEN) processed in 29.680ms
+parameter_server-1  | [Parameter Server] === Processed 50 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 13000 images (sync #13)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 8.848ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 8.357ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 36.224ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 13000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #51)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.012ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.219ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.429ms
+parameter_server-1  | [Parameter Server] Request #51 (OUTPUT) processed in 0.884ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 13000 images (sync #13), avg_loss=0.234518
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.072ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.378ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.263ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 13000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #52)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.265ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.702ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.251ms
+parameter_server-1  | [Parameter Server] Request #52 (HIDDEN) processed in 31.421ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 13000 images (sync #13)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 4.148ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.575ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 33.087ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 13000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #53)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.066ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.204ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 14000 images (sync #14), avg_loss=0.236808
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.065ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.281ms
+parameter_server-1  | [Parameter Server] Request #53 (OUTPUT) processed in 0.835ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.019ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.292ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 14000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #54)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 11.432ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 24.279ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.734ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 14000 images (sync #14)
+parameter_server-1  | [Parameter Server] Request #54 (HIDDEN) processed in 41.816ms
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 11.376ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 2.927ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 42.441ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 14000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #55)
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 14000 images (sync #14), avg_loss=0.237643
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.109ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.256ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.737ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 14000 images
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.295ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.265ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.617ms
+parameter_server-1  | [Parameter Server] Request #55 (OUTPUT) processed in 1.414ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #56)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.752ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.909ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 8.858ms
+parameter_server-1  | [Parameter Server] Request #56 (HIDDEN) processed in 35.691ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 14000 images (sync #14)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 3.607ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 1.788ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 37.983ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 14000 images
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 15000 images (sync #15), avg_loss=0.237698
+parameter_server-1  | [Parameter Server] Worker connected (request #57)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.077ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.344ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.219ms
+parameter_server-1  | [Parameter Server] Request #57 (OUTPUT) processed in 0.860ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.115ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.045ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.212ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 15000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #58)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 10.911ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 35.041ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 15000 images (sync #15)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 7.861ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.934ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 55.938ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 15000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 7.054ms
+parameter_server-1  | [Parameter Server] Request #58 (HIDDEN) processed in 60.683ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 15000 images (sync #15), avg_loss=0.239158
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.060ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.153ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.057ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 15000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #59)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.012ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.226ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.275ms
+parameter_server-1  | [Parameter Server] Request #59 (OUTPUT) processed in 0.787ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #60)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 11.558ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 16.620ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 9.868ms
+parameter_server-1  | [Parameter Server] Request #60 (HIDDEN) processed in 48.632ms
+parameter_server-1  | [Parameter Server] === Processed 60 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 15000 images (sync #15)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 5.776ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 13.115ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 54.907ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 15000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #61)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.015ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.258ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.326ms
+parameter_server-1  | [Parameter Server] Request #61 (OUTPUT) processed in 0.830ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 16000 images (sync #16), avg_loss=0.238505
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.100ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.167ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.523ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 16000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #62)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 12.536ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 21.384ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 16000 images (sync #16)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 14.038ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 4.340ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 43.689ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 16000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.945ms
+parameter_server-1  | [Parameter Server] Request #62 (HIDDEN) processed in 39.574ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 16000 images (sync #16), avg_loss=0.239128
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.065ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.120ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 0.880ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 16000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #63)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.017ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.187ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.295ms
+parameter_server-1  | [Parameter Server] Request #63 (OUTPUT) processed in 0.690ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #64)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.383ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 21.957ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 16000 images (sync #16)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 1.777ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.505ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 31.819ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.636ms
+parameter_server-1  | [Parameter Server] Request #64 (HIDDEN) processed in 31.219ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 16000 images
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #65)
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 17000 images (sync #17), avg_loss=0.241533
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.110ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.017ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 2.609ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 17000 images
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.016ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.228ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.196ms
+parameter_server-1  | [Parameter Server] Request #65 (OUTPUT) processed in 0.563ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #66)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.259ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 28.769ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 17000 images (sync #17)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 1.895ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.031ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 36.886ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 17000 images
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.291ms
+parameter_server-1  | [Parameter Server] Request #66 (HIDDEN) processed in 36.521ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #67)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.289ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.219ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.209ms
+parameter_server-1  | [Parameter Server] Request #67 (OUTPUT) processed in 1.022ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #68)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.910ms
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 17000 images (sync #17), avg_loss=0.241553
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.296ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.020ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 21.450ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 17000 images
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.573ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 6.307ms
+parameter_server-1  | [Parameter Server] Request #68 (HIDDEN) processed in 31.096ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 17000 images (sync #17)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.301ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 4.346ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 32.778ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 17000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #69)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.312ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.191ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.165ms
+parameter_server-1  | [Parameter Server] Request #69 (OUTPUT) processed in 0.887ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 18000 images (sync #18), avg_loss=0.240919
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.337ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.089ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.240ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 18000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #70)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 7.606ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 22.253ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.614ms
+parameter_server-1  | [Parameter Server] Request #70 (HIDDEN) processed in 37.247ms
+parameter_server-1  | [Parameter Server] === Processed 70 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 18000 images (sync #18)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 8.994ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 11.810ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 48.050ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 18000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #71)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.354ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 1.427ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.229ms
+parameter_server-1  | [Parameter Server] Request #71 (OUTPUT) processed in 2.259ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 18000 images (sync #18), avg_loss=0.242582
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.275ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.057ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 2.569ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 18000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #72)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 7.796ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 25.154ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 5.094ms
+parameter_server-1  | [Parameter Server] Request #72 (HIDDEN) processed in 43.621ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 18000 images (sync #18)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 8.784ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 5.213ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 45.389ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 18000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #73)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.010ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.159ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.133ms
+parameter_server-1  | [Parameter Server] Request #73 (OUTPUT) processed in 0.451ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 19000 images (sync #19), avg_loss=0.242936
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.056ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.016ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 0.971ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 19000 images
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #74)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.342ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.939ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 4.668ms
+parameter_server-1  | [Parameter Server] Request #74 (HIDDEN) processed in 31.510ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 19000 images (sync #19)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 3.235ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 4.269ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 32.383ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 19000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #75)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.284ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.234ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.325ms
+parameter_server-1  | [Parameter Server] Request #75 (OUTPUT) processed in 1.101ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 19000 images (sync #19), avg_loss=0.244604
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.247ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.029ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 2.022ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 19000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #76)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.979ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.101ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 10.636ms
+parameter_server-1  | [Parameter Server] Request #76 (HIDDEN) processed in 35.572ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 19000 images (sync #19)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 1.403ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 8.872ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 36.347ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 19000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #77)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.209ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.177ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.158ms
+parameter_server-1  | [Parameter Server] Request #77 (OUTPUT) processed in 0.711ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 20000 images (sync #20), avg_loss=0.243899
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.250ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.013ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 0.955ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 20000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #78)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.164ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.425ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 1.841ms
+parameter_server-1  | [Parameter Server] Request #78 (HIDDEN) processed in 25.651ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 20000 images (sync #20)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 4.836ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 1.685ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 28.936ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 20000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #79)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.011ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.220ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.296ms
+parameter_server-1  | [Parameter Server] Request #79 (OUTPUT) processed in 0.726ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 20000 images (sync #20), avg_loss=0.242744
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.121ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.273ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 2.371ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 20000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #80)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.855ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.879ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 20000 images (sync #20)
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.368ms
+parameter_server-1  | [Parameter Server] Request #80 (HIDDEN) processed in 27.297ms
+parameter_server-1  | [Parameter Server] === Processed 80 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 3.100ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.192ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 28.493ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 20000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #81)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.013ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.157ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 21000 images (sync #21), avg_loss=0.245398
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.055ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.206ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 0.817ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 21000 images
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.319ms
+parameter_server-1  | [Parameter Server] Request #81 (OUTPUT) processed in 0.656ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #82)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 4.343ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 15.045ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 11.345ms
+parameter_server-1  | [Parameter Server] Request #82 (HIDDEN) processed in 33.702ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 21000 images (sync #21)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 4.376ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 11.107ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 34.095ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 21000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #83)
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 21000 images (sync #21), avg_loss=0.245035
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.160ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.153ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.174ms
+parameter_server-1  | [Parameter Server] Request #83 (OUTPUT) processed in 0.654ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.148ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.013ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.008ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 21000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #84)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.037ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.015ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.023ms
+parameter_server-1  | [Parameter Server] Request #84 (HIDDEN) processed in 32.047ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 21000 images (sync #21)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.442ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 4.052ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 32.595ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 21000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #85)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.235ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.232ms
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 22000 images (sync #22), avg_loss=0.243845
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.232ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.017ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.329ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 22000 images
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.257ms
+parameter_server-1  | [Parameter Server] Request #85 (OUTPUT) processed in 0.937ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #86)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.189ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 23.761ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.244ms
+parameter_server-1  | [Parameter Server] Request #86 (HIDDEN) processed in 34.768ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 22000 images (sync #22)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 2.764ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 2.095ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 35.288ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 22000 images
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 22000 images (sync #22), avg_loss=0.245275
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.080ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.014ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.235ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 22000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #87)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.014ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.210ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.222ms
+parameter_server-1  | [Parameter Server] Request #87 (OUTPUT) processed in 0.521ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #88)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 6.744ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 16.570ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.104ms
+parameter_server-1  | [Parameter Server] Request #88 (HIDDEN) processed in 27.495ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 22000 images (sync #22)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 6.168ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 1.756ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 28.065ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 22000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #89)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.653ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.224ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.220ms
+parameter_server-1  | [Parameter Server] Request #89 (OUTPUT) processed in 1.333ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #90)
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 23000 images (sync #23), avg_loss=0.245321
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.185ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.019ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 21.068ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 23000 images
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 4.228ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 22.601ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.832ms
+parameter_server-1  | [Parameter Server] Request #90 (HIDDEN) processed in 33.698ms
+parameter_server-1  | [Parameter Server] === Processed 90 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 23000 images (sync #23)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 4.978ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 2.870ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 35.099ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 23000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #91)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.016ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.237ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.250ms
+parameter_server-1  | [Parameter Server] Request #91 (OUTPUT) processed in 0.607ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 23000 images (sync #23), avg_loss=0.244122
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.115ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.154ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.641ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 23000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #92)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.412ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 23000 images (sync #23)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 4.790ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 17.636ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 58.162ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.447ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 16.372ms
+parameter_server-1  | [Parameter Server] Request #92 (HIDDEN) processed in 48.760ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Processed 23000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #93)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.114ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.211ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.326ms
+parameter_server-1  | [Parameter Server] Request #93 (OUTPUT) processed in 0.875ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 24000 images (sync #24), avg_loss=0.245346
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.101ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.480ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.626ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 24000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #94)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.269ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 42.093ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.839ms
+parameter_server-1  | [Parameter Server] Request #94 (HIDDEN) processed in 61.957ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 24000 images (sync #24)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 3.100ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.159ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 65.731ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 24000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #95)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.010ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.241ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.289ms
+parameter_server-1  | [Parameter Server] Request #95 (OUTPUT) processed in 0.715ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 24000 images (sync #24), avg_loss=0.245167
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.064ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.020ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.061ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 24000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #96)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 4.908ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 23.954ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.881ms
+parameter_server-1  | [Parameter Server] Request #96 (HIDDEN) processed in 36.659ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 24000 images (sync #24)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 14.022ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.562ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 45.858ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 24000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #97)
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 25000 images (sync #25), avg_loss=0.245696
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.096ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.011ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.242ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 25000 images
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.164ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.276ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.149ms
+parameter_server-1  | [Parameter Server] Request #97 (OUTPUT) processed in 0.688ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #98)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 7.441ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 23.394ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.667ms
+parameter_server-1  | [Parameter Server] Request #98 (HIDDEN) processed in 37.248ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 25000 images (sync #25)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 9.315ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.114ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 38.863ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 25000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #99)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.348ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 1.182ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.222ms
+parameter_server-1  | [Parameter Server] Request #99 (OUTPUT) processed in 1.951ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #100)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.708ms
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 25000 images (sync #25), avg_loss=0.245737
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.280ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.021ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 29.785ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 25000 images
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 28.543ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.553ms
+parameter_server-1  | [Parameter Server] Request #100 (HIDDEN) processed in 40.703ms
+parameter_server-1  | [Parameter Server] === Processed 100 total requests ===
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 25000 images (sync #25)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 3.198ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 3.728ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 40.579ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 25000 images
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #101)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.012ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.202ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.216ms
+parameter_server-1  | [Parameter Server] Request #101 (OUTPUT) processed in 0.631ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 26000 images (sync #26), avg_loss=0.245835
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.061ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.043ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 0.900ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 26000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #102)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.518ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.235ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 5.672ms
+parameter_server-1  | [Parameter Server] Request #102 (HIDDEN) processed in 32.130ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 26000 images (sync #26)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 3.434ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.355ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 34.045ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 26000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #103)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.012ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.305ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.155ms
+parameter_server-1  | [Parameter Server] Request #103 (OUTPUT) processed in 0.759ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 26000 images (sync #26), avg_loss=0.246910
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.043ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.012ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.271ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 26000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #104)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 11.715ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 23.935ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 5.489ms
+parameter_server-1  | [Parameter Server] Request #104 (HIDDEN) processed in 43.244ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 26000 images (sync #26)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 22.594ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 4.605ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 55.821ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 26000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #105)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.016ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.225ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.483ms
+parameter_server-1  | [Parameter Server] Request #105 (OUTPUT) processed in 0.919ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 27000 images (sync #27), avg_loss=0.245103
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.071ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.297ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.234ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 27000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #106)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 1.876ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.205ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.941ms
+parameter_server-1  | [Parameter Server] Request #106 (HIDDEN) processed in 28.861ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 27000 images (sync #27)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 4.582ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 3.309ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 32.982ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 27000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #107)
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 27000 images (sync #27), avg_loss=0.244867
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.082ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.192ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.904ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 27000 images
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.109ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.275ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.360ms
+parameter_server-1  | [Parameter Server] Request #107 (OUTPUT) processed in 1.679ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #108)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 6.378ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 27.295ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 5.748ms
+parameter_server-1  | [Parameter Server] Request #108 (HIDDEN) processed in 43.165ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 27000 images (sync #27)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 5.505ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 5.076ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 43.703ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 27000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #109)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.012ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.169ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.415ms
+parameter_server-1  | [Parameter Server] Request #109 (OUTPUT) processed in 0.723ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 28000 images (sync #28), avg_loss=0.245897
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.026ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.267ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.054ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 28000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #110)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 1.946ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 12.141ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.721ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 28000 images (sync #28)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 1.997ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 2.639ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 21.355ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 28000 images
+parameter_server-1  | [Parameter Server] Request #110 (HIDDEN) processed in 21.451ms
+parameter_server-1  | [Parameter Server] === Processed 110 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #111)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.013ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.228ms
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 28000 images (sync #28), avg_loss=0.245158
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.079ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.317ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.156ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 28000 images
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.446ms
+parameter_server-1  | [Parameter Server] Request #111 (OUTPUT) processed in 0.852ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #112)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.352ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 19.333ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.851ms
+parameter_server-1  | [Parameter Server] Request #112 (HIDDEN) processed in 30.865ms
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 28000 images (sync #28)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.940ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.820ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 32.627ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 28000 images
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #113)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.016ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.209ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.411ms
+parameter_server-1  | [Parameter Server] Request #113 (OUTPUT) processed in 0.878ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 29000 images (sync #29), avg_loss=0.246024
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.068ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.251ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.134ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Processed 29000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #114)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.744ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 23.299ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 15.679ms
+parameter_server-1  | [Parameter Server] Request #114 (HIDDEN) processed in 44.836ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 29000 images (sync #29)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 3.309ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 14.344ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 46.085ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | [Stage1 Group 1] Processed 29000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #115)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.014ms
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 29000 images (sync #29), avg_loss=0.246580
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.202ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.316ms
+parameter_server-1  | [Parameter Server] Request #115 (OUTPUT) processed in 0.640ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.129ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.016ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.740ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Processed 29000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #116)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.228ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 17.601ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.961ms
+parameter_server-1  | [Parameter Server] Request #116 (HIDDEN) processed in 27.608ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 29000 images (sync #29)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 3.899ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 4.598ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 29.756ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 29000 images
+parameter_server-1  | [Parameter Server] Worker connected (request #117)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.275ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.169ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.192ms
+parameter_server-1  | [Parameter Server] Request #117 (OUTPUT) processed in 0.893ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage2-1    | [Stage2 Group 1] Syncing after 30000 images (sync #30), avg_loss=0.246044
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.238ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.013ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.290ms
+worker1_stage2-1    | [Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | [Stage2 Group 1] Completed processing 30k images
+worker1_stage2-1    | [Stage2 Group 1] Training completed in 566.76 seconds, total syncs: 30
+worker1_stage2-1    | Successfully saved matrix to weights
+worker1_stage2-1    | [Worker] Saved stage2 to 'stage2_group_1'
+worker1_stage2-1    | [Stage2 Group 1] Final model saved
+parameter_server-1  | [Parameter Server] Worker connected (request #118)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.031ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 21.644ms
+worker1_stage1-1    | [Stage1 Group 1] Syncing after 30000 images (sync #30)
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 1.787ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 15.769ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 14.707ms
+parameter_server-1  | [Parameter Server] Request #118 (HIDDEN) processed in 41.789ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 45.153ms
+worker1_stage1-1    | [Stage1 Group 1] Successfully synced weights
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Stage1 Group 1] Processed 30000 images
+worker1_stage1-1    | [Stage1 Group 1] Epoch 1 completed
+worker1_stage1-1    | [Stage1 Group 1] Training completed in 561.15 seconds, total syncs: 30
+worker1_stage1-1    | Successfully saved matrix to weights
+worker1_stage1-1    | [Worker] Saved stage1 to 'stage1_group_1'
+worker1_stage1-1    | [Stage1 Group 1] Final model saved
+[Kworker1_stage2-1 exited with code 0
+[Kworker1_stage1-1 exited with code 0
+parameter_server-1  | [Parameter Server] Worker connected (request #119)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.013ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.185ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.383ms
+parameter_server-1  | [Parameter Server] Request #119 (OUTPUT) processed in 0.822ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Stage2 Group 2] Syncing after 30000 images (sync #30), avg_loss=0.248293
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.080ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.233ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 0.990ms
+worker2_stage2-1    | [Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | [Stage2 Group 2] Completed processing 30k images
+worker2_stage2-1    | [Stage2 Group 2] Training completed in 576.05 seconds, total syncs: 30
+worker2_stage2-1    | Successfully saved matrix to weights
+worker2_stage2-1    | [Worker] Saved stage2 to 'stage2_group_2'
+worker2_stage2-1    | [Stage2 Group 2] Final model saved
+parameter_server-1  | [Parameter Server] Worker connected (request #120)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 8.386ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 31.884ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.838ms
+parameter_server-1  | [Parameter Server] Request #120 (HIDDEN) processed in 46.880ms
+parameter_server-1  | [Parameter Server] === Processed 120 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Stage1 Group 2] Syncing after 30000 images (sync #30)
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 7.444ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 3.008ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 48.114ms
+worker2_stage1-1    | [Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | [Stage1 Group 2] Processed 30000 images
+worker2_stage1-1    | [Stage1 Group 2] Epoch 1 completed
+worker2_stage1-1    | [Stage1 Group 2] Training completed in 570.34 seconds, total syncs: 30
+worker2_stage1-1    | Successfully saved matrix to weights
+worker2_stage1-1    | [Worker] Saved stage1 to 'stage1_group_2'
+worker2_stage1-1    | [Stage1 Group 2] Final model saved
+[Kworker2_stage2-1 exited with code 0
+[Kworker2_stage1-1 exited with code 0
+[Kparameter_server-1 exited with code 137

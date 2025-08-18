@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
     printf("[Parameter Server] Training completed, saving final model...\n");
     fflush(stdout);
     
-    network_save_hybrid_final("server_logs/hybrid_final_model");
+    network_save_hybrid_final("server_logs");
     
     printf("[Parameter Server] Final hybrid model saved successfully!\n");
     fflush(stdout);

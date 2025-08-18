@@ -1,0 +1,8 @@
+Stage: stage2
+Group: 2
+Architecture: 300 -> 10
+Learning Rate: 0.100000
+EASGD Alpha: 0.010000
+EASGD Beta: 0.001000
+EASGD Enabled: Yes
+Weight Matrix: 10x300 = 3000 parameters

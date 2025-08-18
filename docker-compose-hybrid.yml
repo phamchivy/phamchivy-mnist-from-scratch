@@ -35,7 +35,7 @@ services:
       - parameter_server
       - worker1_stage2
     volumes:
-      - ./results/worker1_stage1:/app/worker1_stage1_results
+      - ./results/worker1_stage1:/app/stage1_group_1
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.11
@@ -54,7 +54,7 @@ services:
     depends_on:
       - parameter_server
     volumes:
-      - ./results/worker1_stage2:/app/worker1_stage2_results
+      - ./results/worker1_stage2:/app/stage2_group_1
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.12
@@ -77,7 +77,7 @@ services:
       - parameter_server
       - worker2_stage2
     volumes:
-      - ./results/worker2_stage1:/app/worker2_stage1_results
+      - ./results/worker2_stage1:/app/stage1_group_2
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.13
@@ -96,7 +96,7 @@ services:
     depends_on:
       - parameter_server
     volumes:
-      - ./results/worker2_stage2:/app/worker2_stage2_results
+      - ./results/worker2_stage2:/app/stage2_group_2
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.14
