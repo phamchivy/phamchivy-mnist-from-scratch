@@ -88,14 +88,17 @@ void elastic_center_cleanup(void);
 
 // Stage 1 functions
 Matrix* pipeline_stage1_forward(PipelineStage* stage, Matrix* input);
-double pipeline_stage1_backward(PipelineStage* stage, Matrix* input, Matrix* grad_from_stage2);
+double pipeline_stage1_backward(PipelineStage* stage, Matrix* input, 
+                               Matrix* hidden_outputs, Matrix* grad_from_stage2);
 double* pipeline_stage1_get_weights(PipelineStage* stage, int* count_out);
 void pipeline_stage1_set_weights(PipelineStage* stage, const double* weights, int count);
 void pipeline_stage1_apply_elastic_averaging(PipelineStage* stage, double* center_weights, int weight_count);
 
 // Stage 2 functions  
-Matrix* pipeline_stage2_forward(PipelineStage* stage, Matrix* hidden_activation);
-double pipeline_stage2_backward(PipelineStage* stage, Matrix* hidden_activation, Matrix* target, Matrix** grad_to_stage1);
+Matrix* pipeline_stage2_forward(PipelineStage* stage, Matrix* hidden_outputs);
+double pipeline_stage2_backward(PipelineStage* stage, Matrix* hidden_outputs,
+                               Matrix* final_outputs, Matrix* target,
+                               Matrix** grad_to_stage1);
 double* pipeline_stage2_get_weights(PipelineStage* stage, int* count_out);
 void pipeline_stage2_set_weights(PipelineStage* stage, const double* weights, int count);
 void pipeline_stage2_apply_elastic_averaging(PipelineStage* stage, double* center_weights, int weight_count);

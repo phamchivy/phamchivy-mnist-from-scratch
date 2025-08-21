@@ -1,0 +1,7 @@
+Model Type: Hybrid EASGD Final
+Architecture: 784 -> 300 -> 10
+Hidden Weights: 300x784 = 235200 parameters
+Output Weights: 10x300 = 3000 parameters
+Total Parameters: 238200
+Hidden Center Updates: 60
+Output Center Updates: 60

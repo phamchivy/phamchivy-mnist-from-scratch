@@ -37,8 +37,10 @@ int main(int argc, char** argv) {
     fflush(stdout);
     
     int request_count = 0;
+    const int EXPECTED_REQUESTS = 120;
+    int training_completed = 0;  // ← FLAG để track completion
     
-    while (1) {
+    while (!training_completed) {
         printf("[Parameter Server] Waiting for worker connection...\n");
         fflush(stdout);
         
@@ -139,14 +141,25 @@ int main(int argc, char** argv) {
             printf("[Parameter Server] === Processed %d total requests ===\n", request_count);
             fflush(stdout);
         }
+                
+        
+        // ← CHECK COMPLETION
+        if (request_count >= EXPECTED_REQUESTS) {
+            printf("[Parameter Server] Training target reached (%d requests)\n", EXPECTED_REQUESTS);
+            training_completed = 1;  // ← SET FLAG
+        }
     }
     
+    printf("[Parameter Server] No requests processed, exiting...\n");
+    fflush(stdout);
+
+
     // Save final hybrid model after all training completed
     printf("[Parameter Server] Training completed, saving final model...\n");
     fflush(stdout);
-    
+
     network_save_hybrid_final("server_logs");
-    
+
     printf("[Parameter Server] Final hybrid model saved successfully!\n");
     fflush(stdout);
     

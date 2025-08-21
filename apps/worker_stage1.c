@@ -62,20 +62,20 @@ int main(int argc, char** argv) {
             Matrix* input = matrix_flatten(cur_img->img_data, 0);
             
             // Forward pass through stage 1
-            Matrix* hidden_activation = pipeline_stage1_forward(stage1, input);
+            Matrix* hidden_outputs = pipeline_stage1_forward(stage1, input);
             
             // Send activation to stage 2
             int stage2_sock = connect_to_next_stage(next_stage_ip, next_stage_port);
             if (stage2_sock < 0) {
                 printf("[Stage1 Group %d] Failed to connect to stage 2\n", group_id);
                 matrix_free(input);
-                matrix_free(hidden_activation);
+                matrix_free(hidden_outputs);
                 continue;
             }
             
             // Send image label và activation
             send_all(stage2_sock, &cur_img->label, sizeof(int));
-            send_activation(stage2_sock, hidden_activation);
+            send_activation(stage2_sock, hidden_outputs);
             
             // Receive gradient from stage 2
             Matrix* grad_from_stage2 = receive_gradient(stage2_sock, 300, 1);
@@ -83,13 +83,13 @@ int main(int argc, char** argv) {
             
             if (grad_from_stage2 != NULL) {
                 // Backward pass
-                double loss = pipeline_stage1_backward(stage1, input, grad_from_stage2);
+                pipeline_stage1_backward(stage1, input, hidden_outputs, grad_from_stage2);
                 matrix_free(grad_from_stage2);
             }
             
             // Cleanup
             matrix_free(input);
-            matrix_free(hidden_activation);
+            matrix_free(hidden_outputs);
             
             // Sync every 1000 images (independent of stage 2)
             if ((i - start_index + 1) % 1000 == 0) {

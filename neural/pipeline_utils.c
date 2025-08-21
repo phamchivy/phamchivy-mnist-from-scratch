@@ -1,6 +1,7 @@
 #include "pipeline_utils.h"
 #include "../matrix/ops.h"
 #include "../neural/nn.h"
+#include "../neural/activations.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -159,50 +160,37 @@ void pipeline_worker_free(PipelineWorker* worker) {
 
 // Stage 1 functions (784 → 300)
 Matrix* pipeline_stage1_forward(PipelineStage* stage, Matrix* input) {
-    // Forward pass: activation = sigmoid(W * input)
-    Matrix* z = dot(stage->weights, input);  // 300x784 * 784x1 = 300x1
-    Matrix* activation = apply_sigmoid(z);
-    matrix_free(z);
-    return activation;
+    Matrix* hidden_inputs = dot(stage->weights, input);    // W1 × input
+    Matrix* hidden_outputs = apply(sigmoid, hidden_inputs); // σ(W1 × input)
+    
+    matrix_free(hidden_inputs);
+    return hidden_outputs;  // Return activation để gửi cho Stage 2
 }
 
-double pipeline_stage1_backward(PipelineStage* stage, Matrix* input, Matrix* grad_from_stage2) {
-    // Forward pass to get intermediate values
-    Matrix* z = dot(stage->weights, input);
-    Matrix* activation = apply_sigmoid(z);
+// Backward: chỉ làm backward pass với pre-computed activations
+double pipeline_stage1_backward(PipelineStage* stage, Matrix* input, 
+                               Matrix* hidden_outputs, Matrix* grad_from_stage2) {
+    // Không làm forward nữa - dùng hidden_outputs đã có!
     
-    // Backward pass
-    Matrix* sigmoid_grad = sigmoid_derivative(activation);
-    Matrix* delta = matrix_multiply_elementwise(grad_from_stage2, sigmoid_grad);
-    
-    // Compute gradients for weights
-    Matrix* input_transpose = transpose(input);
-    Matrix* weight_grad = dot(delta, input_transpose);
-    
-    // Update weights
-    Matrix* scaled_grad = scale(stage->learning_rate, weight_grad);
-    Matrix* new_weights = subtract(stage->weights, scaled_grad);
+    // Backward pass theo network_train() chuẩn
+    Matrix* sigmoid_primed_mat = sigmoidPrime(hidden_outputs);
+    Matrix* multiplied_mat = multiply(grad_from_stage2, sigmoid_primed_mat);
+    Matrix* transposed_mat = transpose(input);
+    Matrix* dot_mat = dot(multiplied_mat, transposed_mat);
+    Matrix* scaled_mat = scale(stage->learning_rate, dot_mat);
+    Matrix* added_mat = add(stage->weights, scaled_mat);  // FIXED: ADD not subtract
     
     matrix_free(stage->weights);
-    stage->weights = new_weights;
-    
-    // Compute loss (MSE with gradient)
-    double loss = 0.0;
-    for (int i = 0; i < grad_from_stage2->rows; i++) {
-        loss += grad_from_stage2->entries[i][0] * grad_from_stage2->entries[i][0];
-    }
-    loss /= grad_from_stage2->rows;
+    stage->weights = added_mat;
     
     // Cleanup
-    matrix_free(z);
-    matrix_free(activation);
-    matrix_free(sigmoid_grad);
-    matrix_free(delta);
-    matrix_free(input_transpose);
-    matrix_free(weight_grad);
-    matrix_free(scaled_grad);
+    matrix_free(sigmoid_primed_mat);
+    matrix_free(multiplied_mat);
+    matrix_free(transposed_mat);
+    matrix_free(dot_mat);
+    matrix_free(scaled_mat);
     
-    return loss;
+    return 0.0;  // Stage1 không có meaningful loss
 }
 
 double* pipeline_stage1_get_weights(PipelineStage* stage, int* count_out) {
@@ -258,53 +246,49 @@ void pipeline_stage1_apply_elastic_averaging(PipelineStage* stage, double* cente
 }
 
 // Stage 2 functions (300 → 10)
-Matrix* pipeline_stage2_forward(PipelineStage* stage, Matrix* hidden_activation) {
-    Matrix* z = dot(stage->weights, hidden_activation);  // 10x300 * 300x1 = 10x1
-    Matrix* output = apply_sigmoid(z);
-    matrix_free(z);
-    return output;
+Matrix* pipeline_stage2_forward(PipelineStage* stage, Matrix* hidden_outputs) {
+    Matrix* final_inputs = dot(stage->weights, hidden_outputs);   // W2 × hidden
+    Matrix* final_outputs = apply(sigmoid, final_inputs);         // σ(W2 × hidden)
+    
+    matrix_free(final_inputs);
+    return final_outputs;  // Return prediction
 }
 
-double pipeline_stage2_backward(PipelineStage* stage, Matrix* hidden_activation, Matrix* target, Matrix** grad_to_stage1) {
-    // Forward pass
-    Matrix* z = dot(stage->weights, hidden_activation);
-    Matrix* output = apply_sigmoid(z);
+double pipeline_stage2_backward(PipelineStage* stage, Matrix* hidden_outputs,
+                               Matrix* final_outputs, Matrix* target,
+                               Matrix** grad_to_stage1) {
+    // Không làm forward nữa - dùng final_outputs đã có!
     
-    // Compute output error and loss
-    Matrix* output_error = subtract(target, output);
+    // Compute loss theo network_train() chuẩn
+    Matrix* output_errors = subtract(target, final_outputs);
     double loss = 0.0;
-    for (int i = 0; i < output_error->rows; i++) {
-        double err = output_error->entries[i][0];
-        loss += err * err;
+    for (int i = 0; i < target->rows; i++) {
+        double diff = target->entries[i][0] - final_outputs->entries[i][0];
+        loss += diff * diff;
     }
-    loss /= output_error->rows;
     
-    // Backward pass
-    Matrix* sigmoid_grad = sigmoid_derivative(output);
-    Matrix* delta_output = matrix_multiply_elementwise(output_error, sigmoid_grad);
-    
-    // Update output weights
-    Matrix* hidden_transpose = transpose(hidden_activation);
-    Matrix* weight_grad = dot(delta_output, hidden_transpose);
-    Matrix* scaled_grad = scale(stage->learning_rate, weight_grad);
-    Matrix* new_weights = add(stage->weights, scaled_grad);
+    // Backward pass theo network_train() chuẩn
+    Matrix* sigmoid_primed_mat = sigmoidPrime(final_outputs);
+    Matrix* multiplied_mat = multiply(output_errors, sigmoid_primed_mat);
+    Matrix* transposed_mat = transpose(hidden_outputs);
+    Matrix* dot_mat = dot(multiplied_mat, transposed_mat);
+    Matrix* scaled_mat = scale(stage->learning_rate, dot_mat);
+    Matrix* added_mat = add(stage->weights, scaled_mat);
     
     matrix_free(stage->weights);
-    stage->weights = new_weights;
+    stage->weights = added_mat;
     
-    // Compute gradient to send back to stage 1
-    Matrix* weights_transpose = transpose(stage->weights);
-    *grad_to_stage1 = dot(weights_transpose, delta_output);
+    // Compute gradient to send back (theo network_train() chuẩn)
+    Matrix* weights_transpose = transpose(stage->weights);  // ⚠️ Dùng OLD weights!
+    *grad_to_stage1 = dot(weights_transpose, output_errors);
     
     // Cleanup
-    matrix_free(z);
-    matrix_free(output);
-    matrix_free(output_error);
-    matrix_free(sigmoid_grad);
-    matrix_free(delta_output);
-    matrix_free(hidden_transpose);
-    matrix_free(weight_grad);
-    matrix_free(scaled_grad);
+    matrix_free(output_errors);
+    matrix_free(sigmoid_primed_mat);
+    matrix_free(multiplied_mat);
+    matrix_free(transposed_mat);
+    matrix_free(dot_mat);
+    matrix_free(scaled_mat);
     matrix_free(weights_transpose);
     
     return loss;

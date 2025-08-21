@@ -71,10 +71,12 @@ int main(int argc, char** argv) {
         // Create target output
         Matrix* target = matrix_create(10, 1);
         target->entries[label][0] = 1.0;
+        Matrix* final_outputs = pipeline_stage2_forward(stage2, hidden_activation);
         
         // Forward and backward pass through stage 2
         Matrix* grad_to_stage1;
-        double loss = pipeline_stage2_backward(stage2, hidden_activation, target, &grad_to_stage1);
+        double loss = pipeline_stage2_backward(stage2, hidden_activation, final_outputs, 
+                                            target, &grad_to_stage1);
         loss_sum += loss;
         processed_count++;
         

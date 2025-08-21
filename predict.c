@@ -6,7 +6,7 @@
 int main() {
     int number_test_imgs = 10000;
     Img** test_imgs = csv_to_imgs("./data/mnist_test.csv", number_test_imgs);
-    NeuralNetwork* net = network_load("./results/worker2_results");
+    NeuralNetwork* net = network_load("./test_result");
 
         // Test: In thử 20 ảnh đầu
     for (int i = 0; i < 20; i++) {

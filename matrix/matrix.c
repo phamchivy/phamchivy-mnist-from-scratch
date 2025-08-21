@@ -16,6 +16,18 @@ Matrix* matrix_create(int row, int col) {
 	return matrix;
 }
 
+// ✅ ALTERNATIVE: Using calloc (more efficient)
+Matrix* matrix_create_v2(int row, int col) {
+    Matrix *matrix = malloc(sizeof(Matrix));
+    matrix->rows = row;
+    matrix->cols = col;
+    matrix->entries = malloc(row * sizeof(double*));
+    for (int i = 0; i < row; i++) {
+        matrix->entries[i] = calloc(col, sizeof(double));  // calloc zeros memory
+    }
+    return matrix;
+}
+
 void matrix_fill(Matrix *m, int n) {
 	for (int i = 0; i < m->rows; i++) {
 		for (int j = 0; j < m->cols; j++) {

@@ -508,7 +508,7 @@ static SeparateElasticCenter separate_center = {
 
 void separate_elastic_center_init_hidden(int hidden_rows, int hidden_cols) {
     if (!separate_center.hidden_initialized) {
-        separate_center.center_hidden_weights = matrix_create(hidden_rows, hidden_cols);
+        separate_center.center_hidden_weights = matrix_create_v2(hidden_rows, hidden_cols);
         matrix_randomize(separate_center.center_hidden_weights, hidden_cols);
         separate_center.hidden_initialized = true;
         separate_center.hidden_update_count = 0;
@@ -519,7 +519,7 @@ void separate_elastic_center_init_hidden(int hidden_rows, int hidden_cols) {
 
 void separate_elastic_center_init_output(int output_rows, int output_cols) {
     if (!separate_center.output_initialized) {
-        separate_center.center_output_weights = matrix_create(output_rows, output_cols);
+        separate_center.center_output_weights = matrix_create_v2(output_rows, output_cols);
         matrix_randomize(separate_center.center_output_weights, output_cols);
         separate_center.output_initialized = true;
         separate_center.output_update_count = 0;
