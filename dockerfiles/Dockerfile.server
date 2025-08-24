@@ -16,9 +16,11 @@ COPY socket/ ./socket/
 COPY util/ ./util/
 COPY apps/ ./apps/
 COPY Makefile .
+COPY Makefile.con .
+COPY config/ ./config/
 
 # Build parameter server
-RUN make server
+RUN make -f Makefile.con server
 
 EXPOSE 12345
 

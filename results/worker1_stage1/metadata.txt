@@ -1,8 +1,8 @@
 Stage: stage1
 Group: 1
 Architecture: 784 -> 300
-Learning Rate: 0.100000
-EASGD Alpha: 0.010000
-EASGD Beta: 0.001000
-EASGD Enabled: Yes
+Learning Rate: 0.200000
+EASGD Alpha: 0.020000
+EASGD Beta: 0.002000
+EASGD Enabled: No
 Weight Matrix: 300x784 = 235200 parameters

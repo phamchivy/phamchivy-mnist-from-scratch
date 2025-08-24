@@ -7,20 +7,62 @@
 #include "../util/img.h"
 #include "../socket/socket_utils.h"
 #include "../socket/pipeline_socket.h"
+#include "../config/config_loader.h"
 
 int main(int argc, char** argv) {
+    // if (argc < 7) {
+    //     printf("Usage: %s <group_id> <next_stage_ip> <next_stage_port> <server_ip> <server_port>\n", argv[0]);
+    //     return 1;
+    // }
+
     if (argc < 6) {
-        printf("Usage: %s <group_id> <next_stage_ip> <next_stage_port> <server_ip> <server_port>\n", argv[0]);
+        printf("Usage: %s <config_file> <group_id> <next_stage_ip> <next_stage_port> <server_ip> <server_port>\n", argv[0]);
+        printf("   OR: %s <group_id> <next_stage_ip> <next_stage_port> <server_ip> <server_port> (uses default config.yml)\n", argv[0]);
+        return 1;
+    }
+
+    // Load configuration
+    HybridConfig* config;
+    int group_id, next_stage_port, server_port;
+    char next_stage_ip[64], server_ip[64];
+    
+    // int group_id = atoi(argv[2]);
+    // const char* next_stage_ip = argv[3];
+    // int next_stage_port = atoi(argv[4]);
+    // const char* server_ip = argv[5];
+    // int server_port = atoi(argv[6]);
+
+    if (argc == 6) {
+        // Old format - use default config
+        config = load_config("config.yml");
+        group_id = atoi(argv[1]);
+        strcpy(next_stage_ip, argv[2]);
+        next_stage_port = atoi(argv[3]);
+        strcpy(server_ip, argv[4]);
+        server_port = atoi(argv[5]);
+    } else {
+        // New format - config file specified
+        config = load_config(argv[1]);
+        group_id = atoi(argv[2]);
+        strcpy(next_stage_ip, argv[3]);
+        next_stage_port = atoi(argv[4]);
+        strcpy(server_ip, argv[5]);
+        server_port = atoi(argv[6]);
+    }
+
+    if (!config) {
+        printf("Failed to load configuration\n");
         return 1;
     }
     
-    int group_id = atoi(argv[1]);
-    const char* next_stage_ip = argv[2];
-    int next_stage_port = atoi(argv[3]);
-    const char* server_ip = argv[4];
-    int server_port = atoi(argv[5]);
-    
-    printf("[Stage1 Group %d] Starting, next stage: %s:%d, server: %s:%d\n", 
+    // printf("[Stage1 Group %d] Starting, next stage: %s:%d, server: %s:%d\n", 
+    //        group_id, next_stage_ip, next_stage_port, server_ip, server_port);
+    // fflush(stdout);
+
+    printf("[Stage1 Group %d] Starting with config-driven parameters\n", group_id);
+    printf("[Stage1 Group %d] EASGD: α=%.3f, β=%.3f, sync_freq=%d\n", 
+           group_id, config->easgd.alpha, config->easgd.beta, config->pipeline.sync_frequency);
+    printf("[Stage1 Group %d] Next stage: %s:%d, server: %s:%d\n", 
            group_id, next_stage_ip, next_stage_port, server_ip, server_port);
     fflush(stdout);
     
@@ -28,33 +70,57 @@ int main(int argc, char** argv) {
     sleep(2);
     
     // Load data
-    printf("[Stage1 Group %d] Loading MNIST data...\n", group_id);
-    int number_imgs = 60000;
-    Img** imgs = csv_to_imgs("./data/mnist_train.csv", number_imgs);
+    // printf("[Stage1 Group %d] Loading MNIST data...\n", group_id);
+    // int number_imgs = 60000;
+    // Img** imgs = csv_to_imgs("./data/mnist_train.csv", number_imgs);
+
+    // Load data using config path
+    printf("[Stage1 Group %d] Loading MNIST data from %s...\n", group_id, config->data.train_path);
+    Img** imgs = csv_to_imgs(config->data.train_path, config->training.total_images);
+
+    // Data partitioning based on group
+    int images_per_group = config->training.total_images / config->pipeline.num_groups;
+    int start_index = (group_id - 1) * images_per_group;
+    int end_index = group_id * images_per_group;
     
     // Data partitioning based on group
-    int start_index = (group_id - 1) * (number_imgs / 2);
-    int end_index = group_id * (number_imgs / 2);
+    // int start_index = (group_id - 1) * (number_imgs / 2);
+    // int end_index = group_id * (number_imgs / 2);
     
     printf("[Stage1 Group %d] Processing images %d to %d (%d total)\n", 
            group_id, start_index, end_index-1, end_index - start_index);
     fflush(stdout);
     
     // Initialize pipeline stage 1 (784 → 300)
-    PipelineStage* stage1 = pipeline_stage_create(784, 300, 0.1);
-    stage1->easgd_enabled = true;
-    stage1->alpha = 0.01;
-    stage1->beta = 0.001;
+    // PipelineStage* stage1 = pipeline_stage_create(784, 300, 0.1);
+    // stage1->easgd_enabled = true;
+    // stage1->alpha = 0.01;
+    // stage1->beta = 0.001;
+
+    PipelineStage* stage1 = pipeline_stage_create(config->network.input_size, 
+                                                 config->network.hidden_size, 
+                                                 config->training.learning_rate);
+    stage1->easgd_enabled = config->easgd.enabled;
+    stage1->alpha = config->easgd.alpha;
+    stage1->beta = config->easgd.beta;
     
-    printf("[Stage1 Group %d] Pipeline stage initialized: 784→300, α=0.01, β=0.001\n", group_id);
+    // printf("[Stage1 Group %d] Pipeline stage initialized: 784→300, α=0.01, β=0.001\n", group_id);
+    // fflush(stdout);
+
+    printf("[Stage1 Group %d] Pipeline stage initialized: %d→%d, lr=%.3f, α=%.3f, β=%.3f\n", 
+           group_id, config->network.input_size, config->network.hidden_size,
+           config->training.learning_rate, config->easgd.alpha, config->easgd.beta);
     fflush(stdout);
     
     // Training loop
     int sync_count = 0;
     double start_time = time_in_socket_seconds();
     
-    for (int epoch = 0; epoch < 1; epoch++) {
-        printf("[Stage1 Group %d] Starting epoch %d\n", group_id, epoch + 1);
+    for (int epoch = 0; epoch < config->training.epochs; epoch++) {
+        // printf("[Stage1 Group %d] Starting epoch %d\n", group_id, epoch + 1);
+        // fflush(stdout);
+
+        printf("[Stage1 Group %d] Starting epoch %d/%d\n", group_id, epoch + 1, config->training.epochs);
         fflush(stdout);
         
         for (int i = start_index; i < end_index; i++) {
@@ -78,7 +144,8 @@ int main(int argc, char** argv) {
             send_activation(stage2_sock, hidden_outputs);
             
             // Receive gradient from stage 2
-            Matrix* grad_from_stage2 = receive_gradient(stage2_sock, 300, 1);
+            //Matrix* grad_from_stage2 = receive_gradient(stage2_sock, 300, 1);
+            Matrix* grad_from_stage2 = receive_gradient(stage2_sock, config->network.hidden_size, 1);
             close(stage2_sock);
             
             if (grad_from_stage2 != NULL) {
@@ -92,7 +159,7 @@ int main(int argc, char** argv) {
             matrix_free(hidden_outputs);
             
             // Sync every 1000 images (independent of stage 2)
-            if ((i - start_index + 1) % 1000 == 0) {
+            if ((i - start_index + 1) % config->pipeline.sync_frequency == 0) {
                 printf("[Stage1 Group %d] Syncing after %d images (sync #%d)\n", 
                        group_id, i - start_index + 1, ++sync_count);
                 
@@ -103,7 +170,9 @@ int main(int argc, char** argv) {
                 // Send to parameter server
                 if (send_weights_to_parameter_server(server_ip, server_port, group_id, 
                                                    WEIGHT_TYPE_HIDDEN, weights, weight_count) == 0) {
-                    printf("[Stage1 Group %d] Successfully synced weights\n", group_id);
+                    if (config->logging.log_sync_details) {
+                        printf("[Stage1 Group %d] Successfully synced weights\n", group_id);
+                    }
                 } else {
                     printf("[Stage1 Group %d] Failed to sync weights\n", group_id);
                 }
@@ -111,7 +180,7 @@ int main(int argc, char** argv) {
                 free(weights);
             }
             
-            if ((i - start_index + 1) % 1000 == 0) {
+            if ((i - start_index + 1) % config->pipeline.sync_frequency == 0) {
                 printf("[Stage1 Group %d] Processed %d images\n", group_id, i - start_index + 1);
                 fflush(stdout);
             }
@@ -131,9 +200,22 @@ int main(int argc, char** argv) {
     // Save final model
     pipeline_stage_save(stage1, "stage1", group_id);
     printf("[Stage1 Group %d] Final model saved\n", group_id);
+
+    // if (config->model.save_individual_stages) {
+    //     char stage_path[512];
+    //     snprintf(stage_path, sizeof(stage_path), "%s/stage1_group_%d", config->model.output_dir, group_id);
+        
+    //     // Create output directory
+    //     char mkdir_cmd[512];
+    //     snprintf(mkdir_cmd, sizeof(mkdir_cmd), "mkdir -p %s", config->model.output_dir);
+    //     system(mkdir_cmd);
+        
+    //     pipeline_stage_save(stage1, "stage1", group_id);
+    //     printf("[Stage1 Group %d] Final model saved to %s\n", group_id, stage_path);
+    // }
     
     // Cleanup
-    imgs_free(imgs, number_imgs);
+    imgs_free(imgs, config->training.total_images);
     pipeline_stage_free(stage1);
     
     return 0;

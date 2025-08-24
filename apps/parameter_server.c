@@ -6,6 +6,7 @@
 #include <unistd.h>  
 #include "../neural/nn.h"
 #include "../socket/socket_utils.h"
+#include "../config/config_loader.h"
 
 typedef enum {
     WEIGHT_TYPE_HIDDEN = 1,
@@ -13,34 +14,66 @@ typedef enum {
 } WeightType;
 
 int main(int argc, char** argv) {
-    if (argc < 2) {
-        printf("Usage: %s <port>\n", argv[0]);
+
+    // Load configuration
+    const char* config_file = (argc > 1) ? argv[1] : "config.yml";
+    HybridConfig* config = load_config(config_file);
+    
+    if (!config) {
+        printf("Failed to load configuration from %s\n", config_file);
         return 1;
     }
     
-    int port = atoi(argv[1]);
-    printf("[Parameter Server] Starting on port %d (Hybrid Mode)\n", port);
+    print_config(config);
+    
+    printf("[Parameter Server] Starting on port %d (Hybrid Mode)\n", 12345);
+    printf("[Parameter Server] EASGD: α=%.3f, β=%.3f\n", config->easgd.alpha, config->easgd.beta);
+    printf("[Parameter Server] Expected requests: %d\n", config->server.expected_requests);
     fflush(stdout);
     
     srand(time(NULL));
+
+
+    // if (argc < 2) {
+    //     printf("Usage: %s <port>\n", argv[0]);
+    //     return 1;
+    // }
+    
+    // int port = atoi(argv[1]);
+    // printf("[Parameter Server] Starting on port %d (Hybrid Mode)\n", port);
+    // fflush(stdout);
+    
+    //srand(time(NULL));
     
     // Initialize separate elastic centers
-    separate_elastic_center_init_hidden(300, 784);  // Hidden: 300x784
-    separate_elastic_center_init_output(10, 300);   // Output: 10x300
+    separate_elastic_center_init_hidden(config->network.hidden_size, config->network.input_size);  // Hidden: 300x784
+    separate_elastic_center_init_output(config->network.output_size, config->network.hidden_size);   // Output: 10x300
     
     printf("[Parameter Server] Separate elastic centers initialized\n");
     fflush(stdout);
     
     // Setup server socket
-    int server_sock = setup_server(port);
+    int server_sock = setup_server(12345); // Cấu hình tĩnh server port
     printf("[Parameter Server] Server socket ready, waiting for workers...\n");
     fflush(stdout);
     
     int request_count = 0;
-    const int EXPECTED_REQUESTS = 120;
+    //const int EXPECTED_REQUESTS = 120;
     int training_completed = 0;  // ← FLAG để track completion
+
+    // Create log directory if logging enabled
+    // if (config->logging.save_logs) {
+    //     char mkdir_cmd[512];
+    //     snprintf(mkdir_cmd, sizeof(mkdir_cmd), "mkdir -p %s", config->logging.log_dir);
+    //     system(mkdir_cmd);
+    // }
     
     while (!training_completed) {
+
+        // if (config->logging.log_sync_details) {
+        //     printf("[Parameter Server] Waiting for worker connection...\n");
+        //     fflush(stdout);
+        // }
         printf("[Parameter Server] Waiting for worker connection...\n");
         fflush(stdout);
         
@@ -95,11 +128,17 @@ int main(int argc, char** argv) {
         // Update appropriate elastic center
         double update_start = time_in_socket_seconds();
         if (weight_type == WEIGHT_TYPE_HIDDEN) {
-            separate_elastic_center_update_hidden(worker_weights, weight_count, 0.001);
+            separate_elastic_center_update_hidden(worker_weights, weight_count, config->easgd.beta);
         } else {
-            separate_elastic_center_update_output(worker_weights, weight_count, 0.001);
+            separate_elastic_center_update_output(worker_weights, weight_count, config->easgd.beta);
         }
         double update_end = time_in_socket_seconds();
+
+        // if (config->logging.log_timing) {
+        //     printf("[Parameter Server] Updated %s elastic center in %.3fms\n", 
+        //            weight_type_str, (update_end - update_start) * 1000);
+        //     fflush(stdout);
+        // }
         
         printf("[Parameter Server] Updated %s elastic center in %.3fms\n", 
                weight_type_str, (update_end - update_start) * 1000);
@@ -125,6 +164,15 @@ int main(int argc, char** argv) {
             printf("[Parameter Server] Failed to send center to worker %d\n", worker_id);
         }
         fflush(stdout);
+
+        //             if (config->logging.log_timing) {
+        //         printf("[Parameter Server] Sent %d %s center weights to worker %d in %.3fms\n", 
+        //                center_count, weight_type_str, worker_id, (comm_end_2 - comm_start_2) * 1000);
+        //     }
+        // } else {
+        //     printf("[Parameter Server] Failed to send center to worker %d\n", worker_id);
+        // }
+        // fflush(stdout);
         
         double request_end = time_in_socket_seconds();
         double total_time = (request_end - request_start) * 1000;
@@ -136,6 +184,12 @@ int main(int argc, char** argv) {
         free(worker_weights);
         free(center_weights);
         close(client_sock);
+
+        // Save intermediate models if configured
+        // if (config->model.save_frequency > 0 && request_count % config->model.save_frequency == 0) {
+        //     printf("[Parameter Server] === Processed %d total requests ===\n", request_count);
+        //     fflush(stdout);
+        // }
         
         if (request_count % 10 == 0) {
             printf("[Parameter Server] === Processed %d total requests ===\n", request_count);
@@ -144,8 +198,8 @@ int main(int argc, char** argv) {
                 
         
         // ← CHECK COMPLETION
-        if (request_count >= EXPECTED_REQUESTS) {
-            printf("[Parameter Server] Training target reached (%d requests)\n", EXPECTED_REQUESTS);
+        if (request_count >= config->server.expected_requests) {
+            printf("[Parameter Server] Training target reached (%d requests)\n", config->server.expected_requests);
             training_completed = 1;  // ← SET FLAG
         }
     }
@@ -166,4 +220,31 @@ int main(int argc, char** argv) {
     // Cleanup
     separate_elastic_center_cleanup();
     return 0;
+
+
+        printf("[Parameter Server] Training completed, saving final model...\n");
+    fflush(stdout);
+
+    // Save final hybrid model using config
+    // if (config->model.save_final_hybrid) {
+    //     char model_path[512];
+    //     snprintf(model_path, sizeof(model_path), "%s/server_logs", config->model.output_dir);
+        
+    //     // Create output directory
+    //     char mkdir_cmd[512];
+    //     snprintf(mkdir_cmd, sizeof(mkdir_cmd), "mkdir -p %s", config->model.output_dir);
+    //     system(mkdir_cmd);
+        
+    //     network_save_hybrid_final(model_path);
+    //     printf("[Parameter Server] Final hybrid model saved to %s\n", model_path);
+    // }
+
+    // printf("[Parameter Server] Final hybrid model saved successfully!\n");
+    // fflush(stdout);
+    
+    // // Cleanup
+    // separate_elastic_center_cleanup();
+    // free_config(config);
+    
+    // return 0;
 }

@@ -4,28 +4,30 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile.server
-    command: ["12345"]
+    command: ["config.yml"]  # Pass config file as argument
     deploy:
       resources:
         limits:
           cpus: "1.0"
     cpuset: "0"
     ports:
-      - "12345:12345"
+      - "${SERVER_PORT:-12345}:${SERVER_PORT:-12345}"
     volumes:
+      - ./config/config.yml:/app/config.yml:ro  # Mount config file
       - ./results/server_logs:/app/server_logs
+      - ./logs:/app/logs
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.10
     environment:
-      - SERVER_PORT=12345
+      - CONFIG_FILE=config.yml
 
   # Pipeline Group 1 (Data 0-29999)
   worker1_stage1:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile.worker_stage1
-    command: ["1", "172.32.0.12", "13001", "172.32.0.10", "12345"]
+    command: ["config.yml", "1", "172.32.0.12", "13001", "172.32.0.10", "${SERVER_PORT:-12345}"]
     deploy:
       resources:
         limits:
@@ -35,17 +37,23 @@ services:
       - parameter_server
       - worker1_stage2
     volumes:
+      - ./config/config.yml:/app/config.yml:ro
       - ./results/worker1_stage1:/app/stage1_group_1
+      - ./logs:/app/logs
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.11
     restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=1
+      - WORKER_STAGE=1
 
   worker1_stage2:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile.worker_stage2
-    command: ["1", "13001", "172.32.0.10", "12345"]
+    command: ["config.yml", "1", "13001", "172.32.0.10", "${SERVER_PORT:-12345}"]
     deploy:
       resources:
         limits:
@@ -54,20 +62,26 @@ services:
     depends_on:
       - parameter_server
     volumes:
+      - ./config/config.yml:/app/config.yml:ro
       - ./results/worker1_stage2:/app/stage2_group_1
+      - ./logs:/app/logs
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.12
     ports:
       - "13001:13001"
     restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=1
+      - WORKER_STAGE=2
 
   # Pipeline Group 2 (Data 30000-59999)
   worker2_stage1:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile.worker_stage1
-    command: ["2", "172.32.0.14", "13002", "172.32.0.10", "12345"]
+    command: ["config.yml", "2", "172.32.0.14", "13002", "172.32.0.10", "${SERVER_PORT:-12345}"]
     deploy:
       resources:
         limits:
@@ -77,17 +91,23 @@ services:
       - parameter_server
       - worker2_stage2
     volumes:
+      - ./config/config.yml:/app/config.yml:ro
       - ./results/worker2_stage1:/app/stage1_group_2
+      - ./logs:/app/logs
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.13
     restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=2
+      - WORKER_STAGE=1
 
   worker2_stage2:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile.worker_stage2
-    command: ["2", "13002", "172.32.0.10", "12345"]
+    command: ["config.yml", "2", "13002", "172.32.0.10", "${SERVER_PORT:-12345}"]
     deploy:
       resources:
         limits:
@@ -96,13 +116,32 @@ services:
     depends_on:
       - parameter_server
     volumes:
+      - ./config/config.yml:/app/config.yml:ro
       - ./results/worker2_stage2:/app/stage2_group_2
+      - ./logs:/app/logs
     networks:
       hybrid_net:
         ipv4_address: 172.32.0.14
     ports:
       - "13002:13002"
     restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=2
+      - WORKER_STAGE=2
+
+  # Optional: Config validator service
+  config_validator:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.server  # Reuse server image
+    command: ["./test_config", "config.yml"]
+    volumes:
+      - ./config/config.yml:/app/config.yml:ro
+      - ./logs:/app/logs
+    networks:
+      hybrid_net:
+    profiles: ["validate"]  # Only run when explicitly requested
 
 networks:
   hybrid_net:

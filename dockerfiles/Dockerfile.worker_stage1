@@ -16,8 +16,10 @@ COPY socket/ ./socket/
 COPY util/ ./util/
 COPY apps/ ./apps/
 COPY Makefile .
+COPY Makefile.con .
+COPY config/ ./config/
 
 # Build worker stage 1
-RUN make worker_stage1
+RUN make -f Makefile.con worker_stage1
 
 ENTRYPOINT ["./worker_stage1"]

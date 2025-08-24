@@ -1,0 +1,98 @@
+# Hybrid Parallelism Configuration
+# ================================
+
+# Training Parameters
+training:
+  epochs: 1
+  batch_size: 1000  # Images per sync
+  total_images: 60000
+  test_images: 10000
+  learning_rate: 0.1
+  
+# EASGD Parameters  
+easgd:
+  alpha: 0.01      # Elastic averaging coefficient (worker update)
+  beta: 0.001      # Server learning rate (center update)
+  enabled: true
+
+# Network Architecture
+network:
+  input_size: 784
+  hidden_size: 300
+  output_size: 10
+  activation: "sigmoid"
+
+# Pipeline Configuration
+pipeline:
+  num_groups: 2           # Number of data parallel groups
+  num_stages: 2           # Stages per pipeline
+  sync_frequency: 1000    # Images processed before sync
+  
+# Server Configuration
+server:
+  ip: "172.32.0.10"
+  port: 12345
+  expected_requests: 120  # Total sync requests expected
+  timeout_seconds: 3600   # 1 hour timeout
+  
+# Worker Configuration
+workers:
+  stage1:
+    - group_id: 1
+      ip: "172.32.0.11" 
+      next_stage_ip: "172.32.0.12"
+      next_stage_port: 13001
+    - group_id: 2
+      ip: "172.32.0.13"
+      next_stage_ip: "172.32.0.14" 
+      next_stage_port: 13002
+      
+  stage2:
+    - group_id: 1
+      ip: "172.32.0.12"
+      listen_port: 13001
+    - group_id: 2  
+      ip: "172.32.0.14"
+      listen_port: 13002
+
+# Data Configuration
+data:
+  train_path: "./data/mnist_train.csv"
+  test_path: "./data/mnist_test.csv"
+  validation_split: 0.1
+  shuffle: true
+  
+# Docker Configuration  
+docker:
+  cpu_limit: "1.0"
+  memory_limit: "512m"
+  network_subnet: "172.32.0.0/16"
+  
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARN, ERROR
+  log_sync_details: true
+  log_timing: true
+  log_loss: true
+  save_logs: true
+  log_dir: "./logs"
+  
+# Model Saving
+model:
+  save_frequency: 1000    # Save every N requests
+  save_individual_stages: true
+  save_final_hybrid: true
+  output_dir: "./results"
+  
+# Performance Monitoring
+monitoring:
+  enable_profiling: false
+  track_memory_usage: true
+  track_network_stats: true
+  
+# Advanced Options
+advanced:
+  use_compression: false
+  gradient_clipping: false
+  weight_decay: 0.0001
+  momentum: 0.9

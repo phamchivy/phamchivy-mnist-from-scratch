@@ -1,0 +1,231 @@
+CC = gcc
+CFLAGS = -std=c99 -Wall -Wextra -Wpedantic -g -fopenmp -D_POSIX_C_SOURCE=199309L
+LDFLAGS = -lm -lpthread -lgomp
+
+# Source directories
+MATRIX_DIR = matrix
+NEURAL_DIR = neural
+SOCKET_DIR = socket
+UTIL_DIR = util
+APPS_DIR = apps
+CONFIG_DIR = config
+
+# Source files
+MATRIX_SRCS = $(wildcard $(MATRIX_DIR)/*.c)
+NEURAL_SRCS = $(wildcard $(NEURAL_DIR)/*.c)
+SOCKET_SRCS = $(wildcard $(SOCKET_DIR)/*.c)
+UTIL_SRCS = $(wildcard $(UTIL_DIR)/*.c)
+CONFIG_SRCS = $(filter-out $(CONFIG_DIR)/test_config.c, $(wildcard $(CONFIG_DIR)/*.c))
+
+# Object files
+MATRIX_OBJS = $(MATRIX_SRCS:.c=.o)
+NEURAL_OBJS = $(NEURAL_SRCS:.c=.o)
+SOCKET_OBJS = $(SOCKET_SRCS:.c=.o)
+UTIL_OBJS = $(UTIL_SRCS:.c=.o)
+CONFIG_OBJS = $(CONFIG_SRCS:.c=.o)
+
+# Common objects for basic programs
+COMMON_OBJS = $(MATRIX_OBJS) $(NEURAL_OBJS) $(SOCKET_OBJS) $(UTIL_OBJS)
+
+# Common objects for hybrid programs (with config support)
+HYBRID_OBJS = $(COMMON_OBJS) $(CONFIG_OBJS)
+
+# Create config directory if it doesn't exist
+$(shell mkdir -p $(CONFIG_DIR))
+
+# Targets
+all: setup parameter_server app
+
+# Parameter server with config support
+parameter_server: $(HYBRID_OBJS) $(APPS_DIR)/parameter_server.o
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+# Hybrid Pipeline targets with config support
+worker_stage1: $(APPS_DIR)/worker_stage1.o $(HYBRID_OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+worker_stage2: $(APPS_DIR)/worker_stage2.o $(HYBRID_OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+# Ensure pipeline components are built
+$(SOCKET_DIR)/pipeline_socket.o: $(SOCKET_DIR)/pipeline_socket.c $(SOCKET_DIR)/pipeline_socket.h
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+$(NEURAL_DIR)/pipeline_utils.o: $(NEURAL_DIR)/pipeline_utils.c $(NEURAL_DIR)/pipeline_utils.h
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+# Config loader compilation
+$(CONFIG_DIR)/config_loader.o: $(CONFIG_DIR)/config_loader.c $(CONFIG_DIR)/config_loader.h
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+# Test config program
+test_config: $(CONFIG_DIR)/test_config.o $(HYBRID_OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+# Predict program
+predict: predict.o $(COMMON_OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+# Build all hybrid components
+hybrid: setup_hybrid worker_stage1 worker_stage2 parameter_server
+	@echo "=== Hybrid Parallelism Built Successfully ==="
+	@echo "Available executables:"
+	@echo "  - parameter_server (with config support)"
+	@echo "  - worker_stage1 (with config support)"
+	@echo "  - worker_stage2 (with config support)"
+	@echo ""
+	@echo "Usage:"
+	@echo "  ./parameter_server [config.yml]"
+	@echo "  ./worker_stage1 [config.yml] <group_id> <next_ip> <next_port> <server_ip> <server_port>"
+	@echo "  ./worker_stage2 [config.yml] <group_id> <listen_port> <server_ip> <server_port>"
+
+# Legacy app (for backward compatibility)
+app: $(COMMON_OBJS) train.o
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+# Server target alias
+server: parameter_server
+
+# Object file compilation
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Create sample config file
+config.yml:
+	@echo "Creating sample config.yml..."
+	@echo "# Hybrid Parallelism Configuration" > config.yml
+	@echo "# ================================" >> config.yml
+	@echo "" >> config.yml
+	@echo "# Training Parameters" >> config.yml
+	@echo "training:" >> config.yml
+	@echo "  epochs: 1" >> config.yml
+	@echo "  learning_rate: 0.1" >> config.yml
+	@echo "  total_images: 60000" >> config.yml
+	@echo "" >> config.yml
+	@echo "# EASGD Parameters" >> config.yml
+	@echo "easgd:" >> config.yml
+	@echo "  alpha: 0.01" >> config.yml
+	@echo "  beta: 0.001" >> config.yml
+	@echo "  enabled: true" >> config.yml
+	@echo "" >> config.yml
+	@echo "# Network Architecture" >> config.yml
+	@echo "network:" >> config.yml
+	@echo "  input_size: 784" >> config.yml
+	@echo "  hidden_size: 300" >> config.yml
+	@echo "  output_size: 10" >> config.yml
+	@echo "" >> config.yml
+	@echo "# Pipeline Configuration" >> config.yml
+	@echo "pipeline:" >> config.yml
+	@echo "  num_groups: 2" >> config.yml
+	@echo "  sync_frequency: 1000" >> config.yml
+	@echo "" >> config.yml
+	@echo "# Server Configuration" >> config.yml
+	@echo "server:" >> config.yml
+	@echo "  ip: \"172.32.0.10\"" >> config.yml
+	@echo "  port: 12345" >> config.yml
+	@echo "  expected_requests: 120" >> config.yml
+	@echo "" >> config.yml
+	@echo "# Data Configuration" >> config.yml
+	@echo "data:" >> config.yml
+	@echo "  train_path: \"./data/mnist_train.csv\"" >> config.yml
+	@echo "  test_path: \"./data/mnist_test.csv\"" >> config.yml
+	@echo "" >> config.yml
+	@echo "# Logging Configuration" >> config.yml
+	@echo "logging:" >> config.yml
+	@echo "  log_sync_details: true" >> config.yml
+	@echo "  log_timing: true" >> config.yml
+	@echo "  log_loss: true" >> config.yml
+	@echo "" >> config.yml
+	@echo "# Model Configuration" >> config.yml
+	@echo "model:" >> config.yml
+	@echo "  save_final_hybrid: true" >> config.yml
+	@echo "  save_individual_stages: true" >> config.yml
+	@echo "  output_dir: \"./results\"" >> config.yml
+	@echo "Sample config.yml created successfully!"
+
+# Test configuration loading
+test: test_config config.yml
+	@echo "Testing configuration loading..."
+	./test_config config.yml
+
+# Create results directories for hybrid parallelism
+setup:
+	mkdir -p results/server_logs results/worker1_results results/worker2_results
+
+# Create additional directories for config-driven results
+setup_hybrid: setup
+	mkdir -p $(CONFIG_DIR) logs data
+	mkdir -p results/worker1_stage1 results/worker1_stage2
+	mkdir -p results/worker2_stage1 results/worker2_stage2
+
+# Check directory structure and files
+check:
+	@echo "=== Directory Structure Check ==="
+	@echo "Matrix files:" && ls -la $(MATRIX_DIR)/ 2>/dev/null || echo "Matrix directory not found"
+	@echo "Neural files:" && ls -la $(NEURAL_DIR)/ 2>/dev/null || echo "Neural directory not found"
+	@echo "Socket files:" && ls -la $(SOCKET_DIR)/ 2>/dev/null || echo "Socket directory not found"
+	@echo "Util files:" && ls -la $(UTIL_DIR)/ 2>/dev/null || echo "Util directory not found"
+	@echo "Apps files:" && ls -la $(APPS_DIR)/ 2>/dev/null || echo "Apps directory not found"
+	@echo "Config files:" && ls -la $(CONFIG_DIR)/ 2>/dev/null || echo "Config directory not found"
+	@echo "Root files:" && ls -la *.c *.h 2>/dev/null || echo "No .c/.h files in root"
+
+# Clean basic objects
+clean:
+	rm -f $(COMMON_OBJS) $(CONFIG_OBJS) $(APPS_DIR)/*.o train.o test_config.o predict.o
+	rm -f parameter_server worker app test_config predict
+
+# Clean hybrid targets
+clean_hybrid: clean
+	rm -f worker_stage1 worker_stage2
+
+# Deep clean - remove all generated files
+clean_all: clean_hybrid
+	rm -rf results/* logs/* config.yml
+	@echo "All build artifacts and generated files cleaned"
+
+# Docker build support
+docker_build:
+	@echo "Building Docker images for hybrid parallelism..."
+	docker build -f dockerfiles/Dockerfile.server -t hybrid-server .
+	docker build -f dockerfiles/Dockerfile.worker_stage1 -t hybrid-worker1 .
+	docker build -f dockerfiles/Dockerfile.worker_stage2 -t hybrid-worker2 .
+
+# Docker run with config
+docker_run: config.yml
+	@echo "Starting hybrid parallelism with Docker Compose..."
+	docker-compose -f docker-compose-hybrid.yml up --build
+
+# Stop Docker containers
+docker_stop:
+	docker-compose -f docker-compose-hybrid.yml down
+
+# Show help information
+help:
+	@echo "Available targets:"
+	@echo "  all           - Build basic components (parameter_server, app)"
+	@echo "  hybrid        - Build complete hybrid parallelism system"
+	@echo "  test_config   - Build configuration test program"
+	@echo "  test          - Test configuration loading"
+	@echo "  predict       - Build prediction program"
+	@echo "  check         - Check directory structure"
+	@echo "  config.yml    - Generate sample configuration file"
+	@echo "  setup         - Create basic result directories"  
+	@echo "  setup_hybrid  - Create all necessary directories"
+	@echo "  clean         - Clean build artifacts"
+	@echo "  clean_hybrid  - Clean hybrid build artifacts"
+	@echo "  clean_all     - Clean everything including results"
+	@echo "  docker_build  - Build Docker images"
+	@echo "  docker_run    - Run with Docker Compose"
+	@echo "  docker_stop   - Stop Docker containers"
+	@echo "  help          - Show this help"
+
+# Show current configuration if it exists
+show_config:
+	@if [ -f config.yml ]; then \
+		echo "=== Current Configuration ==="; \
+		cat config.yml; \
+	else \
+		echo "No config.yml found. Run 'make config.yml' to create one."; \
+	fi
+
+.PHONY: all server app worker clean setup worker_stage1 worker_stage2 clean_hybrid hybrid setup_hybrid check test help clean_all docker_build docker_run docker_stop show_config
