@@ -4,6 +4,35 @@
 
 #include <stdbool.h>
 
+// // Async Pipeline Configuration
+// typedef struct {
+//     bool enabled;
+//     int queue_size;
+//     bool enable_profiling;
+//     int timeout_ms;
+//     double backpressure_threshold;
+// } AsyncPipelineConfig;
+
+// Async Pipeline Configuration
+typedef struct {
+    bool enabled;
+    int queue_size;
+    int timeout_ms;
+    double backpressure_threshold;
+    bool enable_profiling;
+    
+    // Advanced async settings
+    int max_gradients_per_iter;
+    int batch_storage_cleanup_interval;
+    long long batch_max_age_us;
+    bool use_shared_memory;
+    
+    // Performance tuning
+    int stage1_thread_priority;
+    int stage2_thread_priority;
+    bool enable_cpu_affinity;
+} AsyncPipelineConfig;
+
 // Configuration structures
 typedef struct {
     int epochs;
@@ -82,9 +111,13 @@ typedef struct {
     DataConfig data;
     LoggingConfig logging;
     ModelConfig model;
+
+    // NEW: Async Pipeline Configuration
+    AsyncPipelineConfig async_pipeline;
 } HybridConfig;
 
 // Function declarations
+bool str_to_bool(const char* str);  // 👈 khai báo prototype
 HybridConfig* load_config(const char* config_file);
 void free_config(HybridConfig* config);
 void print_config(const HybridConfig* config);

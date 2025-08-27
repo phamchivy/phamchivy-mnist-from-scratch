@@ -17,9 +17,10 @@ COPY util/ ./util/
 COPY apps/ ./apps/
 COPY Makefile .
 COPY Makefile.con .
+COPY Makefile.async .
 COPY config/ ./config/
 
 # Build worker stage 2
-RUN make -f Makefile.con worker_stage2
+RUN make -f Makefile.async async_worker_stage2
 
-ENTRYPOINT ["./worker_stage2"]
+ENTRYPOINT ["./async_worker_stage2"]

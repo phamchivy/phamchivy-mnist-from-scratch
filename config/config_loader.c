@@ -50,6 +50,40 @@ int parse_key_value(const char* line, char* key, char* value) {
     return 1;
 }
 
+static void parse_async_pipeline_config(HybridConfig* config, const char* line) {
+    char key[MAX_KEY], value[MAX_VALUE];
+    if (!parse_key_value(line, key, value)) return;
+    
+    if (strcmp(key, "enabled") == 0) {
+        config->async_pipeline.enabled = str_to_bool(value);
+    }
+    else if (strcmp(key, "queue_size") == 0) {
+        config->async_pipeline.queue_size = atoi(value);
+    }
+    else if (strcmp(key, "timeout_ms") == 0) {
+        config->async_pipeline.timeout_ms = atoi(value);
+    }
+    else if (strcmp(key, "backpressure_threshold") == 0) {
+        config->async_pipeline.backpressure_threshold = atof(value);
+    }
+    else if (strcmp(key, "enable_profiling") == 0) {
+        config->async_pipeline.enable_profiling = str_to_bool(value);
+    }
+    else if (strcmp(key, "max_gradients_per_iter") == 0) {
+        config->async_pipeline.max_gradients_per_iter = atoi(value);
+    }
+    else if (strcmp(key, "batch_storage_cleanup_interval") == 0) {
+        config->async_pipeline.batch_storage_cleanup_interval = atoi(value);
+    }
+    else if (strcmp(key, "batch_max_age_us") == 0) {
+        config->async_pipeline.batch_max_age_us = atoll(value);
+    }
+    else if (strcmp(key, "use_shared_memory") == 0) {
+        config->async_pipeline.use_shared_memory = str_to_bool(value);
+    }
+}
+
+
 // Convert string to boolean
 bool str_to_bool(const char* str) {
     return (strcmp(str, "true") == 0 || strcmp(str, "True") == 0 || 
@@ -115,6 +149,26 @@ HybridConfig* load_config(const char* config_file) {
     char current_section[MAX_KEY] = "";
     int worker_stage1_idx = 0;
     int worker_stage2_idx = 0;
+
+    // NEW: Set default values for async pipeline
+    // config->async_pipeline.enabled = false;           // Disabled by default
+    // config->async_pipeline.queue_size = 5;            // Default queue size
+    // config->async_pipeline.enable_profiling = false;  // Profiling off by default
+    // config->async_pipeline.timeout_ms = 1000;         // 1 second timeout
+    // config->async_pipeline.backpressure_threshold = 0.8; // 80% queue full warning
+
+    // ✅ SET DEFAULT VALUES trong load_config():
+
+    // Set async pipeline defaults
+    config->async_pipeline.enabled = false;
+    config->async_pipeline.queue_size = 10;
+    config->async_pipeline.timeout_ms = 5000;
+    config->async_pipeline.backpressure_threshold = 0.8;
+    config->async_pipeline.enable_profiling = false;
+    config->async_pipeline.max_gradients_per_iter = 5;
+    config->async_pipeline.batch_storage_cleanup_interval = 100;
+    config->async_pipeline.batch_max_age_us = 10000000;
+    config->async_pipeline.use_shared_memory = true;
     
     while (fgets(line, sizeof(line), file)) {
         char* trimmed = trim_whitespace(line);
@@ -168,6 +222,42 @@ HybridConfig* load_config(const char* config_file) {
             else if (strcmp(key, "timeout_seconds") == 0) config->server.timeout_seconds = atoi(value);
         }
         // Add more sections as needed...
+        //         // NEW: Parse async_pipeline section
+        // else if (strcmp(current_section, "async_pipeline") == 0) {
+        //     if (strcmp(key, "enabled") == 0) {
+        //         config->async_pipeline.enabled = str_to_bool(value);
+        //     }
+        //     else if (strcmp(key, "queue_size") == 0) {
+        //         int queue_size = atoi(value);
+        //         if (queue_size > 0 && queue_size <= 20) {
+        //             config->async_pipeline.queue_size = queue_size;
+        //         } else {
+        //             printf("Warning: Invalid queue_size %d, using default 5\n", queue_size);
+        //         }
+        //     }
+        //     else if (strcmp(key, "enable_profiling") == 0) {
+        //         config->async_pipeline.enable_profiling = str_to_bool(value);
+        //     }
+        //     else if (strcmp(key, "timeout_ms") == 0) {
+        //         int timeout = atoi(value);
+        //         if (timeout > 0 && timeout <= 60000) { // Max 60 seconds
+        //             config->async_pipeline.timeout_ms = timeout;
+        //         } else {
+        //             printf("Warning: Invalid timeout_ms %d, using default 1000\n", timeout);
+        //         }
+        //     }
+        //     else if (strcmp(key, "backpressure_threshold") == 0) {
+        //         double threshold = atof(value);
+        //         if (threshold > 0.0 && threshold <= 1.0) {
+        //             config->async_pipeline.backpressure_threshold = threshold;
+        //         } else {
+        //             printf("Warning: Invalid backpressure_threshold %.2f, using default 0.8\n", threshold);
+        //         }
+        //     }
+        // }
+        else if (strcmp(current_section, "async_pipeline") == 0) {
+            parse_async_pipeline_config(config, trimmed);
+        }
     }
     
     fclose(file);
@@ -201,6 +291,17 @@ void print_config(const HybridConfig* config) {
            config->pipeline.num_groups, config->pipeline.num_stages, config->pipeline.sync_frequency);
     printf("Server: %s:%d, expecting %d requests\n", 
            config->server.ip, config->server.port, config->server.expected_requests);
+
+    // NEW: Print async pipeline config
+    printf("Async Pipeline: %s, queue_size=%d, profiling=%s\n",
+           config->async_pipeline.enabled ? "enabled" : "disabled",
+           config->async_pipeline.queue_size,
+           config->async_pipeline.enable_profiling ? "on" : "off");
+    if (config->async_pipeline.enabled) {
+        printf("  - Timeout: %dms, Backpressure threshold: %.1f%%\n",
+               config->async_pipeline.timeout_ms,
+               config->async_pipeline.backpressure_threshold * 100);
+    }
     printf("=========================================\n");
 }
 
@@ -228,6 +329,27 @@ bool validate_config(const HybridConfig* config) {
     if (config->server.port <= 0 || config->server.port > 65535) {
         printf("Error: Invalid server port\n");
         return false;
+    }
+
+    // NEW: Async pipeline validations
+    if (config->async_pipeline.enabled) {
+        if (config->async_pipeline.queue_size <= 0 || config->async_pipeline.queue_size > 20) {
+            printf("Error: Invalid async pipeline queue_size (must be 1-20)\n");
+            return false;
+        }
+        
+        if (config->async_pipeline.timeout_ms <= 0 || config->async_pipeline.timeout_ms > 60000) {
+            printf("Error: Invalid async pipeline timeout_ms (must be 1-60000)\n");
+            return false;
+        }
+        
+        if (config->async_pipeline.backpressure_threshold <= 0.0 || 
+            config->async_pipeline.backpressure_threshold > 1.0) {
+            printf("Error: Invalid backpressure_threshold (must be 0.0-1.0)\n");
+            return false;
+        }
+        
+        printf("Info: Async pipeline validation passed\n");
     }
     
     return true;

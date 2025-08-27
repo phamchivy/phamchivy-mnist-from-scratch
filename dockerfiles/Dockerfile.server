@@ -17,10 +17,11 @@ COPY util/ ./util/
 COPY apps/ ./apps/
 COPY Makefile .
 COPY Makefile.con .
+COPY Makefile.async .
 COPY config/ ./config/
 
 # Build parameter server
-RUN make -f Makefile.con server
+RUN make -f Makefile.async parameter_server
 
 EXPOSE 12345
 

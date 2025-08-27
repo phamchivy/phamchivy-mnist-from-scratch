@@ -1,0 +1,154 @@
+# Makefile.async - Build system for Async Pipeline
+
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99 -O2 -pthread -fopenmp -lrt
+DEBUG_FLAGS = -g -DDEBUG
+INCLUDE_DIRS = -I.
+LIB_DIRS = -L. -lgomp -lm
+
+# ✅ Async-specific source files
+ASYNC_SOURCES = neural/pipeline_queue.c neural/batch_storage.c 
+COMMON_SOURCES = matrix/matrix.c matrix/ops.c neural/activations.c neural/nn.c \
+                 neural/pipeline_utils.c socket/socket_utils.c socket/pipeline_socket.c \
+                 util/img.c config/config_loader.c
+ASYNC_OBJECTS = $(ASYNC_SOURCES:.c=.o)
+COMMON_OBJECTS = $(COMMON_SOURCES:.c=.o)
+
+# ✅ Async targets
+ASYNC_TARGETS = parameter_server async_worker_stage1 async_worker_stage2 \
+                test_async_config async_performance_test
+
+.PHONY: all async clean clean-async debug async-debug
+
+# ✅ Main async build target
+async: $(ASYNC_TARGETS)
+
+# ✅ Async parameter server (reuses existing server with config changes)
+parameter_server: $(COMMON_OBJECTS) apps/parameter_server.o
+	@echo "Building Async Parameter Server..."
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $@ $^ $(LIB_DIRS)
+
+# ✅ Async Stage 1 Worker
+async_worker_stage1: $(COMMON_OBJECTS) $(ASYNC_OBJECTS) apps/async_worker_stage1.o
+	@echo "Building Async Worker Stage 1..."
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $@ $^ $(LIB_DIRS)
+
+# ✅ Async Stage 2 Worker  
+async_worker_stage2: $(COMMON_OBJECTS) $(ASYNC_OBJECTS) apps/async_worker_stage2.o
+	@echo "Building Async Worker Stage 2..."
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $@ $^ $(LIB_DIRS)
+
+# ✅ Test async configuration
+test_async_config: $(COMMON_OBJECTS) config/test_async_config.o
+	@echo "Building Async Config Test..."
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $@ $^ $(LIB_DIRS)
+
+# ✅ Async performance benchmarking
+async_performance_test: $(COMMON_OBJECTS) $(ASYNC_OBJECTS) tests/async_performance_test.o
+	@echo "Building Async Performance Test..."
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -o $@ $^ $(LIB_DIRS)
+
+# ✅ Debug builds
+async-debug: CFLAGS += $(DEBUG_FLAGS)
+async-debug: async
+
+# ✅ Object file compilation rules
+%.o: %.c
+	@echo "Compiling $<..."
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+
+# ✅ Specific object dependencies
+neural/pipeline_queue.o: neural/pipeline_queue.c neural/pipeline_queue.h
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+
+neural/batch_storage.o: neural/batch_storage.c neural/batch_storage.h
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+
+apps/async_worker_stage1.o: apps/async_worker_stage1.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+
+apps/async_worker_stage2.o: apps/async_worker_stage2.c
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+
+# ✅ Docker build targets
+docker-async: 
+	@echo "Building Async Docker images..."
+	docker build -f dockerfiles/Dockerfile.async_worker_stage1 -t async_worker_stage1 .
+	docker build -f dockerfiles/Dockerfile.async_worker_stage2 -t async_worker_stage2 .
+	docker build -f dockerfiles/Dockerfile.async_monitor -t async_monitor .
+
+# ✅ Run targets
+run-async-local: async
+	@echo "Starting local async pipeline..."
+	./async_parameter_server config_async.yml &
+	sleep 2
+	./async_worker_stage1 config_async.yml 1 127.0.0.1 13001 127.0.0.1 12345 &
+	./async_worker_stage2 config_async.yml 1 13001 127.0.0.1 12345 &
+	wait
+
+run-async-docker:
+	@echo "Starting async pipeline with Docker Compose..."
+	docker-compose -f docker-compose-async.yml up --build
+
+# ✅ Performance testing
+perf-test-async: async_performance_test
+	@echo "Running async pipeline performance tests..."
+	./async_performance_test config_async.yml
+
+# ✅ Validation and testing
+validate-async: test_async_config
+	@echo "Validating async configuration..."
+	./test_async_config config/config_async.yml
+
+test-queues: async
+	@echo "Testing async queue implementation..."
+	./tests/test_pipeline_queues
+
+# ✅ Monitoring and debugging
+monitor-async:
+	@echo "Monitoring async pipeline performance..."
+	docker-compose -f docker-compose-async.yml --profile monitor up
+
+debug-shared-memory:
+	@echo "Debugging shared memory segments..."
+	ipcs -m | grep async_pipeline
+
+clean-shared-memory:
+	@echo "Cleaning up shared memory segments..."
+	@for key in $$(ipcs -m | grep async_pipeline | awk '{print $$2}'); do \
+		ipcrm -m $$key 2>/dev/null || true; \
+	done
+
+# ✅ Cleanup targets
+clean-async:
+	@echo "Cleaning async build artifacts..."
+	rm -f $(ASYNC_TARGETS)
+	rm -f $(ASYNC_OBJECTS)
+	rm -f apps/async_worker_stage1.o apps/async_worker_stage2.o
+	rm -f config/test_async_config.o tests/async_performance_test.o
+	make clean-shared-memory
+
+clean-docker-async:
+	@echo "Cleaning async Docker resources..."
+	docker-compose -f docker-compose-async.yml down -v --remove-orphans
+	docker rmi async_worker_stage1 async_worker_stage2 async_monitor 2>/dev/null || true
+
+# ✅ Full cleanup
+clean-all-async: clean-async clean-docker-async
+
+# ✅ Help target
+help-async:
+	@echo "Async Pipeline Build Targets:"
+	@echo "  async              - Build all async components"
+	@echo "  async-debug        - Build with debug symbols"
+	@echo "  docker-async       - Build Docker images"
+	@echo "  run-async-local    - Run locally"
+	@echo "  run-async-docker   - Run with Docker"
+	@echo "  perf-test-async    - Performance testing"
+	@echo "  validate-async     - Configuration validation"
+	@echo "  monitor-async      - Start with monitoring"
+	@echo "  clean-async        - Clean async artifacts"
+	@echo "  clean-all-async    - Full cleanup"
+
+# ✅ Include common makefile if exists
+-include Makefile.common

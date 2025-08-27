@@ -1,0 +1,182 @@
+# docker-compose-async.yml - Async Pipeline Version
+version: "3.9"
+
+services:
+  parameter_server:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.server
+    command: ["config.yml"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "1G"
+    ports:
+      - "${SERVER_PORT:-12345}:${SERVER_PORT:-12345}"
+    volumes:
+      - ./config/config.yml:/app/config.yml:ro
+      - ./results/server_logs:/app/server_logs
+      - ./logs:/app/logs
+      - /dev/shm:/dev/shm  # ✅ Shared memory for async communication
+    networks:
+      async_net:
+        ipv4_address: 172.33.0.10
+    environment:
+      - CONFIG_FILE=config.yml
+    healthcheck:
+      test: ["CMD", "netstat", "-ln", "|", "grep", ":12345"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ✅ Async Pipeline Group 1
+  async_worker1_stage1:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage1
+    command: ["config_async.yml", "1", "172.33.0.12", "13001", "172.33.0.10", "${SERVER_PORT:-12345}"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"  # More CPU for async processing
+          memory: "1G"
+    depends_on:
+      parameter_server:
+        condition: service_healthy
+    volumes:
+      - ./config/config.yml:/app/config.yml:ro
+      - ./results/worker1_stage1:/app/stage1_group_1
+      - ./logs:/app/logs
+      - /dev/shm:/dev/shm  # ✅ Shared memory
+    networks:
+      async_net:
+        ipv4_address: 172.33.0.11
+    restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=1
+      - WORKER_STAGE=1
+      - SHARED_MEMORY_KEY=/pipeline_group_1
+
+  async_worker1_stage2:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage2
+    command: ["config.yml", "1", "13001", "172.33.0.10", "${SERVER_PORT:-12345}"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: "1G"
+    depends_on:
+      parameter_server:
+        condition: service_healthy
+    volumes:
+      - ./config/config.yml:/app/config.yml:ro
+      - ./results/worker1_stage2:/app/stage2_group_1
+      - ./logs:/app/logs
+      - /dev/shm:/dev/shm  # ✅ Shared memory
+    networks:
+      async_net:
+        ipv4_address: 172.33.0.12
+    ports:
+      - "13001:13001"
+    restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=1
+      - WORKER_STAGE=2
+      - SHARED_MEMORY_KEY=/pipeline_group_1
+
+  # ✅ Async Pipeline Group 2  
+  async_worker2_stage1:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage1
+    command: ["config.yml", "2", "172.33.0.14", "13002", "172.33.0.10", "${SERVER_PORT:-12345}"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: "1G"
+    depends_on:
+      parameter_server:
+        condition: service_healthy
+    volumes:
+      - ./config/config.yml:/app/config.yml:ro
+      - ./results/worker2_stage1:/app/stage1_group_2
+      - ./logs:/app/logs
+      - /dev/shm:/dev/shm
+    networks:
+      async_net:
+        ipv4_address: 172.33.0.13
+    restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=2
+      - WORKER_STAGE=1
+      - SHARED_MEMORY_KEY=/pipeline_group_2
+
+  async_worker2_stage2:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.worker_stage2
+    command: ["config.yml", "2", "13002", "172.33.0.10", "${SERVER_PORT:-12345}"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: "1G"
+    depends_on:
+      parameter_server:
+        condition: service_healthy
+    volumes:
+      - ./config/config.yml:/app/config.yml:ro
+      - ./results/worker2_stage2:/app/stage2_group_2
+      - ./logs:/app/logs
+      - /dev/shm:/dev/shm
+    networks:
+      async_net:
+        ipv4_address: 172.33.0.14
+    ports:
+      - "13002:13002"
+    restart: on-failure
+    environment:
+      - CONFIG_FILE=config.yml
+      - WORKER_GROUP=2
+      - WORKER_STAGE=2
+      - SHARED_MEMORY_KEY=/pipeline_group_2
+
+  # ✅ Performance Monitoring Service
+  async_monitor:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.monitor
+    command: ["python3", "/app/monitor.py"]
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512m"
+    volumes:
+      - ./logs:/app/logs:ro
+      - ./monitoring:/app/monitoring
+      - /dev/shm:/dev/shm:ro
+    networks:
+      async_net:
+        ipv4_address: 172.33.0.20
+    profiles: ["monitor"]  # Optional monitoring service
+
+networks:
+  async_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.33.0.0/16
+
+# ✅ Usage commands:
+# Start async training:     docker-compose -f docker-compose-async.yml up
+# Start with monitoring:    docker-compose -f docker-compose-async.yml --profile monitor up
+# View logs:                docker-compose -f docker-compose-async.yml logs -f
+# Stop gracefully:          docker-compose -f docker-compose-async.yml down

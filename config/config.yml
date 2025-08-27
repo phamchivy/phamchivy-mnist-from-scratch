@@ -96,3 +96,29 @@ advanced:
   gradient_clipping: false
   weight_decay: 0.0001
   momentum: 0.9
+
+# Thêm section này vào config.yml hiện tại
+# async_pipeline:
+#   enabled: true
+#   queue_size: 5              # Activation/gradient queue size
+#   enable_profiling: true     # Track queue performance
+#   timeout_ms: 1000          # Queue operation timeout
+#   backpressure_threshold: 0.8  # Queue full warning threshold
+# Asynchronous Pipeline Configuration (Optional)
+async_pipeline:
+  enabled: true
+  queue_size: 10
+  timeout_ms: 5000
+  backpressure_threshold: 0.8
+  enable_profiling: true
+  
+  # Advanced settings
+  max_gradients_per_iter: 5
+  batch_storage_cleanup_interval: 100
+  batch_max_age_us: 10000000  # 10 seconds
+  use_shared_memory: true
+  
+  # Performance tuning  
+  stage1_thread_priority: 0
+  stage2_thread_priority: 0
+  enable_cpu_affinity: false

@@ -67,7 +67,7 @@ predict: predict.o $(COMMON_OBJS)
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 # Build all hybrid components
-hybrid: setup_hybrid worker_stage1 worker_stage2 parameter_server
+hybrid: setup_hybrid worker_stage1 worker_stage2 parameter_server async_worker_stage1 async_worker_stage2
 	@echo "=== Hybrid Parallelism Built Successfully ==="
 	@echo "Available executables:"
 	@echo "  - parameter_server (with config support)"
@@ -81,6 +81,13 @@ hybrid: setup_hybrid worker_stage1 worker_stage2 parameter_server
 
 # Legacy app (for backward compatibility)
 app: $(COMMON_OBJS) train.o
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+# Thêm async targets
+async_worker_stage1: $(HYBRID_OBJS) $(APPS_DIR)/async_worker_stage1.o
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+async_worker_stage2: $(HYBRID_OBJS) $(APPS_DIR)/async_worker_stage2.o
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 # Server target alias
@@ -173,6 +180,7 @@ check:
 clean:
 	rm -f $(COMMON_OBJS) $(CONFIG_OBJS) $(APPS_DIR)/*.o train.o test_config.o predict.o
 	rm -f parameter_server worker app test_config predict
+	rm -f async_worker_stage1 async_worker_stage2
 
 # Clean hybrid targets
 clean_hybrid: clean
