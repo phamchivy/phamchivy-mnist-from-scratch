@@ -1,3 +1,4 @@
+// async_worker_stage1.c - Complete socket-based async with queues
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,45 +15,139 @@
 #include "../config/config_loader.h"
 
 // Global context for signal handling
-static AsyncPipelineContext* global_ctx = NULL;
 static volatile bool shutdown_requested = false;
+static ActivationQueue* global_activation_queue = NULL;
+static GradientQueue* global_gradient_queue = NULL;
 
 void signal_handler(int sig) {
     shutdown_requested = true;
     printf("\n[Async Stage1] Shutdown signal received\n");
-    if (global_ctx) {
-        activation_queue_shutdown(global_ctx->activation_queue);
-        gradient_queue_shutdown(global_ctx->gradient_queue);
-    }
+    if (global_activation_queue) activation_queue_shutdown(global_activation_queue);
+    if (global_gradient_queue) gradient_queue_shutdown(global_gradient_queue);
 }
 
-// Async Stage 1 worker thread - processes data and feeds activation queue
+// Socket sender thread - sends activations from queue to Stage 2
+void* socket_sender_thread(void* arg) {
+    AsyncPipelineContext* ctx = (AsyncPipelineContext*)arg;
+    HybridConfig* config = ctx->config;
+    int group_id = ctx->group_id;
+    
+    // Extract connection info from context (stored in config pointer hack)
+    char next_stage_ip[64];
+    strcpy(next_stage_ip, "172.32.0.12"); // Group 1 -> worker1_stage2
+    if (group_id == 2) {
+        strcpy(next_stage_ip, "172.32.0.14"); // Group 2 -> worker2_stage2
+    }
+    int next_stage_port = 13000 + group_id; // 13001 or 13002
+    
+    printf("[Socket Sender Group %d] Thread started, sending to %s:%d\n", 
+           group_id, next_stage_ip, next_stage_port);
+    
+    int sent_count = 0;
+    
+    while (!shutdown_requested) {
+        // Dequeue activation from queue
+        ActivationMessage activation_msg;
+        bool got_activation = activation_queue_dequeue(ctx->activation_queue, 
+                                                     &activation_msg, 
+                                                     100); // 1 second timeout
+        
+        if (!got_activation) {
+            // Check if queue is shutdown
+            pthread_mutex_lock(&ctx->activation_queue->mutex);
+            bool queue_shutdown = ctx->activation_queue->shutdown;
+            int queue_size = ctx->activation_queue->size;
+            pthread_mutex_unlock(&ctx->activation_queue->mutex);
+            
+            if (queue_shutdown && queue_size == 0) {
+                printf("[Socket Sender Group %d] Queue shutdown, no more activations\n", group_id);
+                break;
+            }
+            continue; // Timeout, try again
+        }
+        
+        // Send activation to Stage 2 via socket
+        int stage2_sock = connect_to_next_stage(next_stage_ip, next_stage_port);
+        if (stage2_sock < 0) {
+            printf("[Socket Sender Group %d] Failed to connect to Stage 2\n", group_id);
+            matrix_free(activation_msg.activation);
+            continue;
+        }
+        
+        // Send batch_id, label, and activation
+        if (send_all(stage2_sock, &activation_msg.batch_id, sizeof(int)) != sizeof(int) ||
+            send_all(stage2_sock, &activation_msg.label, sizeof(int)) != sizeof(int) ||
+            send_activation(stage2_sock, activation_msg.activation) != 0) {
+            printf("[Socket Sender Group %d] Failed to send activation for batch %d\n", 
+                   group_id, activation_msg.batch_id);
+            close(stage2_sock);
+            matrix_free(activation_msg.activation);
+            continue;
+        }
+        
+        // Receive gradient response
+        Matrix* grad_from_stage2 = receive_gradient(stage2_sock, config->network.hidden_size, 1);
+        close(stage2_sock);
+        
+        if (grad_from_stage2) {
+            // Enqueue gradient for processing
+            double loss = 0.0; // Loss will be calculated in Stage 1 backward
+            bool gradient_enqueued = gradient_queue_enqueue(ctx->gradient_queue, 
+                                                          grad_from_stage2, 
+                                                          activation_msg.batch_id, 
+                                                          loss);
+            if (!gradient_enqueued) {
+                printf("[Socket Sender Group %d] Failed to enqueue gradient for batch %d\n",
+                       group_id, activation_msg.batch_id);
+                matrix_free(grad_from_stage2);
+            }
+        } else {
+            printf("[Socket Sender Group %d] Failed to receive gradient for batch %d\n",
+                   group_id, activation_msg.batch_id);
+        }
+        
+        // Cleanup activation message
+        matrix_free(activation_msg.activation);
+        sent_count++;
+        
+        if (sent_count % 1000 == 0) {
+            printf("[Socket Sender Group %d] Sent %d activations\n", group_id, sent_count);
+        }
+    }
+    
+    printf("[Socket Sender Group %d] Thread completed, sent %d total activations\n", 
+           group_id, sent_count);
+    return NULL;
+}
+
+// Main worker thread - processes data and fills activation queue
 void* async_stage1_worker(void* arg) {
     AsyncPipelineContext* ctx = (AsyncPipelineContext*)arg;
     PipelineStage* stage1 = ctx->stage1;
     HybridConfig* config = ctx->config;
+    int group_id = ctx->group_id;
     
-    printf("[Async Stage1 Group %d] Worker thread started\n", ctx->group_id);
+    printf("[Async Stage1 Worker Group %d] Thread started\n", group_id);
     
     // Create batch storage for gradient matching
     BatchStorage* batch_storage = batch_storage_create();
     if (!batch_storage) {
-        printf("[Async Stage1 Group %d] Failed to create batch storage\n", ctx->group_id);
+        printf("[Async Stage1 Group %d] Failed to create batch storage\n", group_id);
         return NULL;
     }
     
     // Load training data
     Img** imgs = csv_to_imgs(config->data.train_path, config->training.total_images);
     if (!imgs) {
-        printf("[Async Stage1 Group %d] Failed to load training data\n", ctx->group_id);
+        printf("[Async Stage1 Group %d] Failed to load training data\n", group_id);
         batch_storage_destroy(batch_storage);
         return NULL;
     }
     
     // Data partitioning based on group
     int images_per_group = config->training.total_images / config->pipeline.num_groups;
-    int start_index = (ctx->group_id - 1) * images_per_group;
-    int end_index = ctx->group_id * images_per_group;
+    int start_index = (group_id - 1) * images_per_group;
+    int end_index = group_id * images_per_group;
     
     int processed_count = 0;
     int sync_count = 0;
@@ -61,11 +156,11 @@ void* async_stage1_worker(void* arg) {
     double start_time = get_timestamp_us() / 1000000.0;
     
     printf("[Async Stage1 Group %d] Processing images %d to %d (%d total)\n", 
-           ctx->group_id, start_index, end_index-1, end_index - start_index);
+           group_id, start_index, end_index-1, end_index - start_index);
     
     for (int epoch = 0; epoch < config->training.epochs && !shutdown_requested; epoch++) {
         printf("[Async Stage1 Group %d] Starting epoch %d/%d\n", 
-               ctx->group_id, epoch + 1, config->training.epochs);
+               group_id, epoch + 1, config->training.epochs);
         
         for (int i = start_index; i < end_index && !shutdown_requested; i++) {
             Img* cur_img = imgs[i];
@@ -82,10 +177,10 @@ void* async_stage1_worker(void* arg) {
             bool stored = batch_storage_store(batch_storage, batch_id, input, hidden_activation);
             if (!stored) {
                 printf("[Async Stage1 Group %d] Warning: Failed to store batch %d\n",
-                       ctx->group_id, batch_id);
+                       group_id, batch_id);
             }
             
-            // Enqueue activation for Stage 2 (blocking with timeout)
+            // Enqueue activation for socket sender thread
             bool enqueued = activation_queue_enqueue_timeout(ctx->activation_queue, 
                                                            hidden_activation, 
                                                            cur_img->label, 
@@ -94,15 +189,15 @@ void* async_stage1_worker(void* arg) {
             
             if (!enqueued) {
                 printf("[Async Stage1 Group %d] Failed to enqueue activation for batch %d\n",
-                       ctx->group_id, batch_id);
+                       group_id, batch_id);
                 matrix_free(input);
                 matrix_free(hidden_activation);
                 continue;
             }
             
-            // ✅ SOLUTION 1: Process available gradients (non-blocking, multiple per iteration)
+            // Process available gradients (non-blocking, multiple per iteration)
             int gradients_processed_this_iter = 0;
-            const int MAX_GRADIENTS_PER_ITER = 5; // Process up to 5 gradients per forward pass
+            const int MAX_GRADIENTS_PER_ITER = 3;
             
             for (int g = 0; g < MAX_GRADIENTS_PER_ITER; g++) {
                 GradientMessage grad_msg;
@@ -131,11 +226,11 @@ void* async_stage1_worker(void* arg) {
                     gradients_applied++;
                     gradients_processed_this_iter++;
                     
-                    if (config->async_pipeline.enable_profiling) {
+                    if (true && grad_msg.batch_id % 100 == 0 ) { // Fix cứng tham số async_pipeline.enable_profiling == true
                         long long latency = get_timestamp_us() - grad_msg.timestamp;
                         printf("[Async Stage1 Group %d] Applied gradient for batch %d "
                                "(latency: %.2fms, backward: %.2fms)\n",
-                               ctx->group_id, grad_msg.batch_id,
+                               group_id, grad_msg.batch_id,
                                latency / 1000.0, (backward_end - backward_start) / 1000.0);
                     }
                     
@@ -144,7 +239,7 @@ void* async_stage1_worker(void* arg) {
                     matrix_free(stored_hidden_output);
                 } else {
                     printf("[Async Stage1 Group %d] Warning: Could not retrieve batch %d for gradient\n",
-                           ctx->group_id, grad_msg.batch_id);
+                           group_id, grad_msg.batch_id);
                 }
                 
                 matrix_free(grad_msg.gradient);
@@ -156,7 +251,7 @@ void* async_stage1_worker(void* arg) {
             processed_count++;
             ctx->samples_processed++;
             
-            // Periodic cleanup of old batches (every 100 samples)
+            // Periodic cleanup of old batches
             if (processed_count % 100 == 0) {
                 batch_storage_cleanup_old(batch_storage, 10000000); // 10 seconds
             }
@@ -168,10 +263,10 @@ void* async_stage1_worker(void* arg) {
                 if (config->logging.log_loss) {
                     printf("[Async Stage1 Group %d] Syncing after %d images (sync #%d), "
                            "gradients_applied=%d, avg_loss=%.6f\n", 
-                           ctx->group_id, processed_count, ++sync_count, gradients_applied, avg_loss);
+                           group_id, processed_count, ++sync_count, gradients_applied, avg_loss);
                 } else {
                     printf("[Async Stage1 Group %d] Syncing after %d images (sync #%d)\n", 
-                           ctx->group_id, processed_count, ++sync_count);
+                           group_id, processed_count, ++sync_count);
                 }
                 
                 // Get stage 1 weights
@@ -180,13 +275,13 @@ void* async_stage1_worker(void* arg) {
                 
                 // Send to parameter server
                 if (send_weights_to_parameter_server(config->server.ip, 12345, 
-                                                   ctx->group_id, WEIGHT_TYPE_HIDDEN, 
+                                                   group_id, WEIGHT_TYPE_HIDDEN, 
                                                    weights, weight_count) == 0) {
                     if (config->logging.log_sync_details) {
-                        printf("[Async Stage1 Group %d] Successfully synced weights\n", ctx->group_id);
+                        printf("[Async Stage1 Group %d] Successfully synced weights\n", group_id);
                     }
                 } else {
-                    printf("[Async Stage1 Group %d] Failed to sync weights\n", ctx->group_id);
+                    printf("[Async Stage1 Group %d] Failed to sync weights\n", group_id);
                 }
                 
                 free(weights);
@@ -196,7 +291,7 @@ void* async_stage1_worker(void* arg) {
                 gradients_applied = 0;
                 
                 // Print queue and batch storage statistics
-                if (config->async_pipeline.enable_profiling) {
+                if (true) { // Fix cứng tham số async_pipeline.enable_profiling == true
                     print_queue_stats(ctx->activation_queue, ctx->gradient_queue);
                     batch_storage_print_stats(batch_storage);
                 }
@@ -208,22 +303,22 @@ void* async_stage1_worker(void* arg) {
                 double throughput = processed_count / elapsed;
                 printf("[Async Stage1 Group %d] Processed %d images (%.1f imgs/sec), "
                        "gradients_applied=%d\n", 
-                       ctx->group_id, processed_count, throughput, gradients_applied);
+                       group_id, processed_count, throughput, gradients_applied);
             }
         }
         
-        printf("[Async Stage1 Group %d] Epoch %d completed\n", ctx->group_id, epoch + 1);
+        printf("[Async Stage1 Group %d] Epoch %d completed\n", group_id, epoch + 1);
     }
     
     // Final gradient processing - drain the gradient queue
-    printf("[Async Stage1 Group %d] Draining remaining gradients...\n", ctx->group_id);
+    printf("[Async Stage1 Group %d] Draining remaining gradients...\n", group_id);
     int remaining_gradients = 0;
     
     while (true) {
         GradientMessage grad_msg;
         bool gradient_available = gradient_queue_dequeue(ctx->gradient_queue, 
                                                        &grad_msg, 
-                                                       100); // 100ms timeout
+                                                       1000); // 100ms timeout
         
         if (!gradient_available) break;
         
@@ -244,11 +339,11 @@ void* async_stage1_worker(void* arg) {
     
     double end_time = get_timestamp_us() / 1000000.0;
     printf("[Async Stage1 Group %d] Worker completed in %.2f seconds\n", 
-           ctx->group_id, end_time - start_time);
+           group_id, end_time - start_time);
     printf("[Async Stage1 Group %d] Total syncs: %d, remaining gradients processed: %d\n",
-           ctx->group_id, sync_count, remaining_gradients);
+           group_id, sync_count, remaining_gradients);
     
-    // Signal shutdown to Stage 2
+    // Signal shutdown to socket sender
     activation_queue_shutdown(ctx->activation_queue);
     
     // Final cleanup
@@ -264,71 +359,44 @@ int main(int argc, char** argv) {
         return 1;
     }
     
-    // Setup signal handlers for graceful shutdown
+    // Setup signal handlers
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
     
     // Load configuration
-    // HybridConfig* config = load_config(argv[1]);
-    // int group_id = atoi(argv[2]);
-    // char next_stage_ip[64], server_ip[64];
-    // strcpy(next_stage_ip, argv[3]);
-    // int next_stage_port = atoi(argv[4]);
-    // strcpy(server_ip, argv[5]);
-    // int server_port = atoi(argv[6]);
-
-    // Load configuration
-    HybridConfig* config;
-    int group_id, next_stage_port, server_port;
+    HybridConfig* config = load_config(argv[1]);
+    int group_id = atoi(argv[2]);
     char next_stage_ip[64], server_ip[64];
-
-    if (argc == 6) {
-        // Old format - use default config
-        config = load_config("config.yml");
-        group_id = atoi(argv[1]);
-        strcpy(next_stage_ip, argv[2]);
-        next_stage_port = atoi(argv[3]);
-        strcpy(server_ip, argv[4]);
-        server_port = atoi(argv[5]);
-    } else {
-        // New format - config file specified
-        config = load_config(argv[1]);
-        group_id = atoi(argv[2]);
-        strcpy(next_stage_ip, argv[3]);
-        next_stage_port = atoi(argv[4]);
-        strcpy(server_ip, argv[5]);
-        server_port = atoi(argv[6]);
-    }
+    strcpy(next_stage_ip, argv[3]);
+    int next_stage_port = atoi(argv[4]);
+    strcpy(server_ip, argv[5]);
+    int server_port = atoi(argv[6]);
     
     if (!config) {
         printf("Failed to load configuration\n");
         return 1;
     }
     
-    printf("[Async Stage1 Group %d] Starting with asynchronous pipeline\n", group_id);
+    printf("[Async Stage1 Group %d] Starting socket-based async pipeline with queues\n", group_id);
     printf("[Async Stage1 Group %d] Queue size: %d, Timeout: %dms\n", 
            group_id, config->async_pipeline.queue_size, config->async_pipeline.timeout_ms);
+    printf("[Async Stage1 Group %d] Next stage: %s:%d, Server: %s:%d\n", 
+           group_id, next_stage_ip, next_stage_port, server_ip, server_port);
     
     srand(time(NULL) + group_id);
     
-    // ✅ SOLUTION 2: Shared memory connection setup
-    // Create shared pipeline context between Stage1 and Stage2
-    // Trong async_worker_stage2.c:
-    char shared_memory_key[64];
-    snprintf(shared_memory_key, sizeof(shared_memory_key), "/async_pipeline_group_%d", group_id); // ✅ SAME KEY
-
-    AsyncPipelineContext* async_ctx = async_pipeline_create_shared(config->async_pipeline.queue_size, 
-                                                                group_id, 
-                                                                shared_memory_key);
+    // Create async pipeline context with queues
+    AsyncPipelineContext* async_ctx = async_pipeline_create(config->async_pipeline.queue_size, group_id);
     if (!async_ctx) {
-        printf("[Async Stage1 Group %d] Failed to create shared async pipeline context\n", group_id);
+        printf("[Async Stage1 Group %d] Failed to create async pipeline context\n", group_id);
         free_config(config);
         return 1;
     }
     
-    // Store configuration in context for worker thread
+    // Store configuration and connection info
     async_ctx->config = config;
-    global_ctx = async_ctx;
+    global_activation_queue = async_ctx->activation_queue;
+    global_gradient_queue = async_ctx->gradient_queue;
     
     // Initialize pipeline stage 1
     PipelineStage* stage1 = pipeline_stage_create(config->network.input_size, 
@@ -344,35 +412,17 @@ int main(int argc, char** argv) {
            group_id, config->network.input_size, config->network.hidden_size,
            config->training.learning_rate);
     
-    // ✅ Handshake with Stage 2 via shared memory flag
-    printf("[Async Stage1 Group %d] Waiting for Stage 2 connection...\n", group_id);
-    
-    // Set Stage1 ready flag
-    async_pipeline_set_stage1_ready(async_ctx);
-    
-    // Wait for Stage2 ready flag (with timeout)
-    int connection_timeout = 30; // 30 seconds
-    int waited = 0;
-    while (!async_pipeline_is_stage2_ready(async_ctx) && waited < connection_timeout && !shutdown_requested) {
-        sleep(1);
-        waited++;
-        if (waited % 5 == 0) {
-            printf("[Async Stage1 Group %d] Still waiting for Stage 2... (%d/%d)\n", 
-                   group_id, waited, connection_timeout);
-        }
-    }
-    
-    if (!async_pipeline_is_stage2_ready(async_ctx)) {
-        printf("[Async Stage1 Group %d] ERROR: Stage 2 connection timeout\n", group_id);
+    // Start socket sender thread
+    pthread_t sender_thread;
+    if (pthread_create(&sender_thread, NULL, socket_sender_thread, async_ctx) != 0) {
+        printf("[Async Stage1 Group %d] Failed to create socket sender thread\n", group_id);
         async_pipeline_destroy(async_ctx);
         pipeline_stage_free(stage1);
         free_config(config);
         return 1;
     }
     
-    printf("[Async Stage1 Group %d] Connected to Stage 2, starting training\n", group_id);
-    
-    // Start the worker thread
+    // Start main worker thread
     pthread_t worker_thread;
     if (pthread_create(&worker_thread, NULL, async_stage1_worker, async_ctx) != 0) {
         printf("[Async Stage1 Group %d] Failed to create worker thread\n", group_id);
@@ -381,6 +431,8 @@ int main(int argc, char** argv) {
         free_config(config);
         return 1;
     }
+    
+    printf("[Async Stage1 Group %d] Both threads started successfully\n", group_id);
     
     // Main monitoring loop
     while (!shutdown_requested) {
@@ -412,8 +464,9 @@ int main(int argc, char** argv) {
     // Graceful shutdown
     printf("[Async Stage1 Group %d] Shutting down...\n", group_id);
     
-    // Signal shutdown and wait for worker thread
+    // Signal shutdown and wait for threads
     pthread_join(worker_thread, NULL);
+    pthread_join(sender_thread, NULL);
     
     // Save final model if configured
     if (config->model.save_individual_stages) {

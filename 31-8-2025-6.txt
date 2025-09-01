@@ -1,0 +1,989 @@
+parameter_server-1  | DEBUG: Set server port to: 12445
+parameter_server-1  | === Hybrid Parallelism Configuration ===
+parameter_server-1  | Training: epochs=1, batch_size=1000, lr=0.100
+parameter_server-1  | EASGD: alpha=0.010, beta=0.001, enabled=false
+parameter_server-1  | Network: 784->300->10 (sigmoid)
+parameter_server-1  | Pipeline: 2 groups, 2 stages, sync every 1000 images
+parameter_server-1  | Server: 172.32.0.10:12445, expecting 120 requests
+parameter_server-1  | Async Pipeline: disabled, queue_size=10, profiling=off
+parameter_server-1  | =========================================
+parameter_server-1  | [Parameter Server] Starting on port 12345 (Hybrid Mode)
+parameter_server-1  | [Parameter Server] EASGD: α=0.010, β=0.001
+parameter_server-1  | [Parameter Server] Expected requests: 120
+parameter_server-1  | [Parameter Server] Hidden elastic center initialized (300x784)
+parameter_server-1  | [Parameter Server] Output elastic center initialized (10x300)
+parameter_server-1  | [Parameter Server] Separate elastic centers initialized
+parameter_server-1  | [Parameter Server] Server socket ready, waiting for workers...
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #1)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.041ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.520ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.341ms
+parameter_server-1  | [Parameter Server] Request #1 (OUTPUT) processed in 1.249ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #2)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 4.334ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 30.244ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.106ms
+parameter_server-1  | [Parameter Server] Request #2 (HIDDEN) processed in 39.639ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #3)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.545ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.570ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.379ms
+parameter_server-1  | [Parameter Server] Request #3 (OUTPUT) processed in 2.136ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #4)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 15.334ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 12.434ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 9.441ms
+parameter_server-1  | [Parameter Server] Request #4 (HIDDEN) processed in 40.490ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | DEBUG: Set server port to: 12445
+worker2_stage2-1    | DEBUG: Set server port to: 12445
+worker2_stage2-1    | [Async Stage2 Group 2] Starting socket-based async pipeline with queues
+worker2_stage2-1    | [Async Stage2 Group 2] Config: queue_size=10, timeout=5000ms, profiling=disabled
+worker2_stage2-1    | [Async Stage2 Group 2] Listen port: 13002, Server: 172.32.0.10:12345
+worker2_stage2-1    | [Async Stage2 Group 2] Queues created successfully
+worker2_stage2-1    | [Async Stage2 Group 2] Pipeline stage initialized: 300→10, lr=0.100
+worker2_stage2-1    | [Async Stage2 Group 2] Starting socket receiver and processing threads
+worker2_stage2-1    | [Async Stage2 Group 2] Both threads started successfully
+worker2_stage2-1    | [Async Stage2 Worker Group 2] Thread started
+worker2_stage2-1    | [Async Stage2 Group 2] Processing up to 30000 images
+worker2_stage2-1    | [Socket Receiver Group 2] Thread started, listening on port 13002
+worker2_stage2-1    | [Socket Receiver Group 2] Activation server ready on port 13002
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 0
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 99: loss=0.852025, latency=0.30ms, stage2_time=0.29ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 199: loss=0.916242, latency=2.82ms, stage2_time=2.77ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 299: loss=0.414617, latency=0.64ms, stage2_time=0.60ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 399: loss=0.676007, latency=0.69ms, stage2_time=0.64ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 499: loss=1.511735, latency=0.46ms, stage2_time=0.43ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 599: loss=0.640123, latency=0.60ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 699: loss=0.650178, latency=0.54ms, stage2_time=0.48ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 799: loss=0.112272, latency=0.60ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 899: loss=0.099767, latency=0.69ms, stage2_time=0.64ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 900
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 999: loss=1.111548, latency=0.37ms, stage2_time=0.35ms
+worker2_stage2-1    | [Async Stage2 Group 2] Syncing after 1000 images (sync #1), avg_loss=0.726959
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.074ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.264ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.789ms
+worker2_stage2-1    | [Async Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | === Pipeline Queue Statistics ===
+worker2_stage2-1    | Activation Queue: size=0/10, enqueued=1000, dequeued=1000
+worker2_stage2-1    | Gradient Queue: size=0/10, enqueued=1000, dequeued=1000
+worker2_stage2-1    | ================================
+worker2_stage2-1    | [Async Stage2 Group 2] Processed 1000 images (6.5 imgs/sec)
+worker2_stage2-1    | [Socket Receiver Group 2] Received 1000 activations
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1000
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1099: loss=0.893696, latency=0.52ms, stage2_time=0.49ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1199: loss=0.012292, latency=0.70ms, stage2_time=0.66ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1299: loss=0.835170, latency=0.90ms, stage2_time=0.86ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1399: loss=0.674325, latency=0.28ms, stage2_time=0.26ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1499: loss=0.448994, latency=0.85ms, stage2_time=0.74ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1599: loss=0.897531, latency=0.84ms, stage2_time=0.81ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1699: loss=0.866717, latency=0.37ms, stage2_time=0.35ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1799: loss=0.017484, latency=0.52ms, stage2_time=0.48ms
+worker2_stage2-1    | [Async Stage2 Group 2] Starting socket-based async pipeline with queues
+worker2_stage2-1    | [Async Stage2 Group 2] Config: queue_size=10, timeout=5000ms, profiling=disabled
+worker2_stage2-1    | [Async Stage2 Group 2] Listen port: 13002, Server: 172.32.0.10:12345
+worker2_stage2-1    | [Async Stage2 Group 2] Queues created successfully
+worker2_stage2-1    | [Async Stage2 Group 2] Pipeline stage initialized: 300→10, lr=0.100
+worker2_stage2-1    | [Async Stage2 Group 2] Starting socket receiver and processing threads
+worker2_stage2-1    | [Async Stage2 Group 2] Both threads started successfully
+worker2_stage2-1    | [Async Stage2 Worker Group 2] Thread started
+worker2_stage2-1    | [Async Stage2 Group 2] Processing up to 30000 images
+worker2_stage2-1    | [Socket Receiver Group 2] Thread started, listening on port 13002
+worker2_stage2-1    | [Socket Receiver Group 2] Activation server ready on port 13002
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Async Stage2 Group 2] Waiting for activations (timeout)
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 0
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 99: loss=0.852025, latency=0.30ms, stage2_time=0.29ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 199: loss=0.916242, latency=2.82ms, stage2_time=2.77ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 299: loss=0.414617, latency=0.64ms, stage2_time=0.60ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 399: loss=0.676007, latency=0.69ms, stage2_time=0.64ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 499: loss=1.511735, latency=0.46ms, stage2_time=0.43ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 599: loss=0.640123, latency=0.60ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 699: loss=0.650178, latency=0.54ms, stage2_time=0.48ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 799: loss=0.112272, latency=0.60ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 899: loss=0.099767, latency=0.69ms, stage2_time=0.64ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 900
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 999: loss=1.111548, latency=0.37ms, stage2_time=0.35ms
+worker2_stage2-1    | [Async Stage2 Group 2] Syncing after 1000 images (sync #1), avg_loss=0.726959
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.074ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.264ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.789ms
+worker2_stage2-1    | [Async Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | === Pipeline Queue Statistics ===
+worker2_stage2-1    | Activation Queue: size=0/10, enqueued=1000, dequeued=1000
+worker2_stage2-1    | Gradient Queue: size=0/10, enqueued=1000, dequeued=1000
+worker2_stage2-1    | ================================
+worker2_stage2-1    | [Async Stage2 Group 2] Processed 1000 images (6.5 imgs/sec)
+worker2_stage2-1    | [Socket Receiver Group 2] Received 1000 activations
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1000
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1099: loss=0.893696, latency=0.52ms, stage2_time=0.49ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1199: loss=0.012292, latency=0.70ms, stage2_time=0.66ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1299: loss=0.835170, latency=0.90ms, stage2_time=0.86ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1399: loss=0.674325, latency=0.28ms, stage2_time=0.26ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1499: loss=0.448994, latency=0.85ms, stage2_time=0.74ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1599: loss=0.897531, latency=0.84ms, stage2_time=0.81ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1699: loss=0.866717, latency=0.37ms, stage2_time=0.35ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1799: loss=0.017484, latency=0.52ms, stage2_time=0.48ms
+worker1_stage2-1    | DEBUG: Set server port to: 12445
+worker1_stage2-1    | [Async Stage2 Group 1] Starting socket-based async pipeline with queues
+worker1_stage2-1    | [Async Stage2 Group 1] Config: queue_size=10, timeout=5000ms, profiling=disabled
+worker1_stage2-1    | [Async Stage2 Group 1] Listen port: 13001, Server: 172.32.0.10:12345
+worker1_stage2-1    | [Async Stage2 Group 1] Queues created successfully
+worker1_stage2-1    | [Async Stage2 Group 1] Pipeline stage initialized: 300→10, lr=0.100
+worker1_stage2-1    | [Async Stage2 Group 1] Starting socket receiver and processing threads
+worker1_stage2-1    | [Async Stage2 Group 1] Both threads started successfully
+worker1_stage2-1    | [Async Stage2 Worker Group 1] Thread started
+worker1_stage2-1    | [Async Stage2 Group 1] Processing up to 30000 images
+worker1_stage2-1    | [Socket Receiver Group 1] Thread started, listening on port 13001
+worker1_stage2-1    | [Socket Receiver Group 1] Activation server ready on port 13001
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 0
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 99: loss=0.913101, latency=1.05ms, stage2_time=0.86ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 199: loss=0.846388, latency=0.52ms, stage2_time=0.42ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 299: loss=0.965582, latency=0.78ms, stage2_time=0.59ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 399: loss=0.516590, latency=0.72ms, stage2_time=0.53ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 499: loss=0.983170, latency=0.87ms, stage2_time=0.65ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 599: loss=0.803932, latency=0.43ms, stage2_time=0.33ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 699: loss=0.976920, latency=0.78ms, stage2_time=0.61ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 799: loss=0.909665, latency=0.65ms, stage2_time=0.51ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 899: loss=1.024795, latency=0.74ms, stage2_time=0.59ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 900
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 999: loss=0.096950, latency=0.99ms, stage2_time=0.73ms
+worker1_stage2-1    | [Async Stage2 Group 1] Syncing after 1000 images (sync #1), avg_loss=0.692994
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.541ms
+worker1_stage2-1    | [Socket Receiver Group 1] Received 1000 activations
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.117ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 3.338ms
+worker1_stage2-1    | [Async Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | === Pipeline Queue Statistics ===
+worker1_stage2-1    | Activation Queue: size=0/10, enqueued=1000, dequeued=1000
+worker1_stage2-1    | Gradient Queue: size=0/10, enqueued=1000, dequeued=1000
+worker1_stage2-1    | ================================
+worker1_stage2-1    | [Async Stage2 Group 1] Processed 1000 images (6.5 imgs/sec)
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1000
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1099: loss=0.011054, latency=0.72ms, stage2_time=0.57ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1199: loss=0.208410, latency=0.67ms, stage2_time=0.49ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1299: loss=0.790085, latency=0.66ms, stage2_time=0.45ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1399: loss=0.045372, latency=0.52ms, stage2_time=0.38ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1499: loss=0.003463, latency=0.64ms, stage2_time=0.49ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1599: loss=0.099405, latency=0.90ms, stage2_time=0.75ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1699: loss=0.007880, latency=0.72ms, stage2_time=0.55ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1799: loss=0.010038, latency=0.66ms, stage2_time=0.49ms
+worker1_stage2-1    | DEBUG: Set server port to: 12445
+worker1_stage2-1    | [Async Stage2 Group 1] Starting socket-based async pipeline with queues
+worker1_stage2-1    | [Async Stage2 Group 1] Config: queue_size=10, timeout=5000ms, profiling=disabled
+worker1_stage2-1    | [Async Stage2 Group 1] Listen port: 13001, Server: 172.32.0.10:12345
+worker1_stage2-1    | [Async Stage2 Group 1] Queues created successfully
+worker1_stage2-1    | [Async Stage2 Group 1] Pipeline stage initialized: 300→10, lr=0.100
+worker1_stage2-1    | [Async Stage2 Group 1] Starting socket receiver and processing threads
+worker1_stage2-1    | [Async Stage2 Group 1] Both threads started successfully
+worker1_stage2-1    | [Async Stage2 Worker Group 1] Thread started
+worker1_stage2-1    | [Async Stage2 Group 1] Processing up to 30000 images
+worker1_stage2-1    | [Socket Receiver Group 1] Thread started, listening on port 13001
+worker1_stage2-1    | [Socket Receiver Group 1] Activation server ready on port 13001
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Async Stage2 Group 1] Waiting for activations (timeout)
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 0
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 99: loss=0.913101, latency=1.05ms, stage2_time=0.86ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 199: loss=0.846388, latency=0.52ms, stage2_time=0.42ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 299: loss=0.965582, latency=0.78ms, stage2_time=0.59ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 399: loss=0.516590, latency=0.72ms, stage2_time=0.53ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 499: loss=0.983170, latency=0.87ms, stage2_time=0.65ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 599: loss=0.803932, latency=0.43ms, stage2_time=0.33ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 699: loss=0.976920, latency=0.78ms, stage2_time=0.61ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 799: loss=0.909665, latency=0.65ms, stage2_time=0.51ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 899: loss=1.024795, latency=0.74ms, stage2_time=0.59ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 900
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 999: loss=0.096950, latency=0.99ms, stage2_time=0.73ms
+worker1_stage2-1    | [Async Stage2 Group 1] Syncing after 1000 images (sync #1), avg_loss=0.692994
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.541ms
+worker1_stage2-1    | [Socket Receiver Group 1] Received 1000 activations
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.117ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 3.338ms
+worker1_stage2-1    | [Async Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | === Pipeline Queue Statistics ===
+worker1_stage2-1    | Activation Queue: size=0/10, enqueued=1000, dequeued=1000
+worker1_stage2-1    | Gradient Queue: size=0/10, enqueued=1000, dequeued=1000
+worker1_stage2-1    | ================================
+worker1_stage2-1    | [Async Stage2 Group 1] Processed 1000 images (6.5 imgs/sec)
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1000
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1099: loss=0.011054, latency=0.72ms, stage2_time=0.57ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1199: loss=0.208410, latency=0.67ms, stage2_time=0.49ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1299: loss=0.790085, latency=0.66ms, stage2_time=0.45ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1399: loss=0.045372, latency=0.52ms, stage2_time=0.38ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1499: loss=0.003463, latency=0.64ms, stage2_time=0.49ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1599: loss=0.099405, latency=0.90ms, stage2_time=0.75ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1699: loss=0.007880, latency=0.72ms, stage2_time=0.55ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1799: loss=0.010038, latency=0.66ms, stage2_time=0.49ms
+parameter_server-1  | [Parameter Server] Worker connected (request #5)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.013ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.286ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.316ms
+parameter_server-1  | [Parameter Server] Request #5 (OUTPUT) processed in 0.973ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #6)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 5.237ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 12.928ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 8.729ms
+parameter_server-1  | [Parameter Server] Request #6 (HIDDEN) processed in 32.402ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | DEBUG: Set server port to: 12445
+worker2_stage1-1    | [Async Stage1 Group 2] Starting socket-based async pipeline with queues
+worker2_stage1-1    | [Async Stage1 Group 2] Queue size: 10, Timeout: 5000ms
+worker2_stage1-1    | [Async Stage1 Group 2] Next stage: 172.32.0.14:13002, Server: 172.32.0.10:12345
+worker2_stage1-1    | [Async Stage1 Group 2] Pipeline stage initialized: 784→300, lr=0.100
+worker2_stage1-1    | [Async Stage1 Group 2] Both threads started successfully
+worker2_stage1-1    | [Async Stage1 Worker Group 2] Thread started
+worker2_stage1-1    | [Socket Sender Group 2] Thread started, sending to 172.32.0.14:13002
+worker2_stage1-1    | [Async Stage1 Group 2] Processing images 30000 to 59999 (30000 total)
+worker2_stage1-1    | [Async Stage1 Group 2] Starting epoch 1/1
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 0 (latency: 32.73ms, backward: 32.70ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 100 (latency: 13.17ms, backward: 13.14ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 200 (latency: 13.46ms, backward: 13.42ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 300 (latency: 33.71ms, backward: 33.65ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 400 (latency: 23.24ms, backward: 23.03ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 500 (latency: 28.01ms, backward: 27.95ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 600 (latency: 10.66ms, backward: 10.63ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 700 (latency: 13.93ms, backward: 13.88ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 800 (latency: 17.83ms, backward: 17.80ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 900 (latency: 17.69ms, backward: 17.63ms)
+worker2_stage1-1    | [Socket Sender Group 2] Sent 1000 activations
+worker2_stage1-1    | [Async Stage1 Group 2] Syncing after 1000 images (sync #1), gradients_applied=1000, avg_loss=0.000000
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 3.386ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.876ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 39.998ms
+worker2_stage1-1    | [Async Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | === Pipeline Queue Statistics ===
+worker2_stage1-1    | Activation Queue: size=0/10, enqueued=1000, dequeued=1000
+worker2_stage1-1    | Gradient Queue: size=0/10, enqueued=1000, dequeued=1000
+worker2_stage1-1    | ================================
+worker2_stage1-1    | === Batch Storage Statistics ===
+worker2_stage1-1    | Current stored: 0/100 (0.0% full)
+worker2_stage1-1    | Total stored: 1000
+worker2_stage1-1    | Total retrieved: 1000
+worker2_stage1-1    | Total cleaned up: 0
+worker2_stage1-1    | Hit rate: 100.00% (1000/1000)
+worker2_stage1-1    | ===============================
+worker2_stage1-1    | [Async Stage1 Group 2] Processed 1000 images (7.8 imgs/sec), gradients_applied=0
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1000 (latency: 10.27ms, backward: 10.23ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1100 (latency: 9.50ms, backward: 9.47ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1200 (latency: 15.65ms, backward: 15.60ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1300 (latency: 17.96ms, backward: 17.89ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1400 (latency: 10.27ms, backward: 10.24ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1500 (latency: 16.91ms, backward: 16.86ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1600 (latency: 15.91ms, backward: 15.87ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1700 (latency: 20.05ms, backward: 19.99ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1800 (latency: 30.49ms, backward: 30.46ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 1900 (latency: 13.10ms, backward: 13.07ms)
+worker2_stage1-1    | [Socket Sender Group 2] Sent 2000 activations
+worker2_stage1-1    | [Async Stage1 Group 2] Syncing after 2000 images (sync #2), gradients_applied=1000, avg_loss=0.000000
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 5.085ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 9.246ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 33.567ms
+worker2_stage1-1    | [Async Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | === Pipeline Queue Statistics ===
+worker2_stage1-1    | Activation Queue: size=0/10, enqueued=2000, dequeued=2000
+worker2_stage1-1    | Gradient Queue: size=0/10, enqueued=2000, dequeued=2000
+worker2_stage1-1    | ================================
+worker2_stage1-1    | === Batch Storage Statistics ===
+worker2_stage1-1    | Current stored: 0/100 (0.0% full)
+worker2_stage1-1    | Total stored: 2000
+worker2_stage1-1    | Total retrieved: 2000
+worker2_stage1-1    | Total cleaned up: 0
+worker2_stage1-1    | Hit rate: 100.00% (2000/2000)
+worker2_stage1-1    | ===============================
+worker2_stage1-1    | [Async Stage1 Group 2] Processed 2000 images (7.9 imgs/sec), gradients_applied=0
+parameter_server-1  | [Parameter Server] Worker connected (request #7)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.773ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.250ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.263ms
+parameter_server-1  | [Parameter Server] Request #7 (OUTPUT) processed in 1.661ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #8)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.307ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 20.887ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 4.999ms
+parameter_server-1  | [Parameter Server] Request #8 (HIDDEN) processed in 29.891ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | DEBUG: Set server port to: 12445
+worker1_stage1-1    | [Async Stage1 Group 1] Starting socket-based async pipeline with queues
+worker1_stage1-1    | [Async Stage1 Group 1] Queue size: 10, Timeout: 5000ms
+worker1_stage1-1    | [Async Stage1 Group 1] Next stage: 172.32.0.12:13001, Server: 172.32.0.10:12345
+worker1_stage1-1    | [Async Stage1 Group 1] Pipeline stage initialized: 784→300, lr=0.100
+worker1_stage1-1    | [Async Stage1 Group 1] Both threads started successfully
+worker1_stage1-1    | [Socket Sender Group 1] Thread started, sending to 172.32.0.12:13001
+worker1_stage1-1    | [Async Stage1 Worker Group 1] Thread started
+worker1_stage1-1    | [Async Stage1 Group 1] Processing images 0 to 29999 (30000 total)
+worker1_stage1-1    | [Async Stage1 Group 1] Starting epoch 1/1
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 0 (latency: 29.02ms, backward: 28.88ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 100 (latency: 11.18ms, backward: 11.02ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 200 (latency: 13.71ms, backward: 13.60ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 300 (latency: 19.51ms, backward: 19.35ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 400 (latency: 40.65ms, backward: 40.45ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 500 (latency: 29.69ms, backward: 29.49ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 600 (latency: 11.80ms, backward: 11.71ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 700 (latency: 10.99ms, backward: 10.88ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 800 (latency: 21.52ms, backward: 21.35ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 900 (latency: 19.40ms, backward: 19.26ms)
+worker1_stage1-1    | [Socket Sender Group 1] Sent 1000 activations
+worker1_stage1-1    | [Async Stage1 Group 1] Syncing after 1000 images (sync #1), gradients_applied=1000, avg_loss=0.000000
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 15.247ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 13.954ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 45.782ms
+worker1_stage1-1    | [Async Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | === Pipeline Queue Statistics ===
+worker1_stage1-1    | Activation Queue: size=0/10, enqueued=1000, dequeued=1000
+worker1_stage1-1    | Gradient Queue: size=0/10, enqueued=1000, dequeued=1000
+worker1_stage1-1    | ================================
+worker1_stage1-1    | === Batch Storage Statistics ===
+worker1_stage1-1    | Current stored: 0/100 (0.0% full)
+worker1_stage1-1    | Total stored: 1000
+worker1_stage1-1    | Total retrieved: 1000
+worker1_stage1-1    | Total cleaned up: 0
+worker1_stage1-1    | Hit rate: 100.00% (1000/1000)
+worker1_stage1-1    | ===============================
+worker1_stage1-1    | [Async Stage1 Group 1] Processed 1000 images (7.8 imgs/sec), gradients_applied=0
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1000 (latency: 9.28ms, backward: 9.14ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1100 (latency: 22.99ms, backward: 22.86ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1200 (latency: 18.38ms, backward: 18.25ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1300 (latency: 16.34ms, backward: 16.17ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1400 (latency: 16.49ms, backward: 16.32ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1500 (latency: 17.18ms, backward: 16.99ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1600 (latency: 16.98ms, backward: 16.81ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1700 (latency: 18.13ms, backward: 17.96ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1800 (latency: 23.12ms, backward: 22.94ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 1900 (latency: 14.38ms, backward: 14.17ms)
+worker1_stage1-1    | [Socket Sender Group 1] Sent 2000 activations
+worker1_stage1-1    | [Async Stage1 Group 1] Syncing after 2000 images (sync #2), gradients_applied=1000, avg_loss=0.000000
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 2.210ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 10.765ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 36.275ms
+worker1_stage1-1    | [Async Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | === Pipeline Queue Statistics ===
+worker1_stage1-1    | Activation Queue: size=0/10, enqueued=2000, dequeued=2000
+worker1_stage1-1    | Gradient Queue: size=0/10, enqueued=2000, dequeued=2000
+worker1_stage1-1    | ================================
+worker1_stage1-1    | === Batch Storage Statistics ===
+worker1_stage1-1    | Current stored: 0/100 (0.0% full)
+worker1_stage1-1    | Total stored: 2000
+worker1_stage1-1    | Total retrieved: 2000
+worker1_stage1-1    | Total cleaned up: 0
+worker1_stage1-1    | Hit rate: 100.00% (2000/2000)
+worker1_stage1-1    | ===============================
+worker1_stage1-1    | [Async Stage1 Group 1] Processed 2000 images (7.8 imgs/sec), gradients_applied=0
+parameter_server-1  | [Parameter Server] Worker connected (request #9)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.196ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.238ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.228ms
+parameter_server-1  | [Parameter Server] Request #9 (OUTPUT) processed in 1.339ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #10)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.933ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 13.594ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 5.024ms
+parameter_server-1  | [Parameter Server] Request #10 (HIDDEN) processed in 23.807ms
+parameter_server-1  | [Parameter Server] === Processed 10 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #11)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.014ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.302ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.283ms
+parameter_server-1  | [Parameter Server] Request #11 (OUTPUT) processed in 1.003ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #12)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 4.878ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 14.656ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.945ms
+parameter_server-1  | [Parameter Server] Request #12 (HIDDEN) processed in 24.130ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1899: loss=0.349700, latency=0.44ms, stage2_time=0.41ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1900
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1999: loss=0.800492, latency=0.50ms, stage2_time=0.47ms
+worker2_stage2-1    | [Async Stage2 Group 2] Syncing after 2000 images (sync #2), avg_loss=0.446805
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.110ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.271ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.337ms
+worker2_stage2-1    | [Async Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | === Pipeline Queue Statistics ===
+worker2_stage2-1    | Activation Queue: size=0/10, enqueued=2000, dequeued=2000
+worker2_stage2-1    | Gradient Queue: size=0/10, enqueued=2000, dequeued=2000
+worker2_stage2-1    | ================================
+worker2_stage2-1    | [Async Stage2 Group 2] Processed 2000 images (7.1 imgs/sec)
+worker2_stage2-1    | [Socket Receiver Group 2] Received 2000 activations
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2000
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2099: loss=0.004564, latency=0.61ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2199: loss=0.509045, latency=0.58ms, stage2_time=0.54ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2299: loss=0.815132, latency=0.86ms, stage2_time=0.83ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2399: loss=0.436935, latency=0.61ms, stage2_time=0.56ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2499: loss=0.894343, latency=0.59ms, stage2_time=0.55ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2599: loss=0.143323, latency=0.50ms, stage2_time=0.47ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2699: loss=0.036477, latency=0.48ms, stage2_time=0.45ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2799: loss=0.000777, latency=0.62ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2899: loss=0.248998, latency=0.43ms, stage2_time=0.40ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2900
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2999: loss=0.112678, latency=0.82ms, stage2_time=0.78ms
+worker2_stage2-1    | [Async Stage2 Group 2] Syncing after 3000 images (sync #3), avg_loss=0.331804
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.188ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.068ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 2.164ms
+worker2_stage2-1    | [Async Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | === Pipeline Queue Statistics ===
+worker2_stage2-1    | Activation Queue: size=0/10, enqueued=3000, dequeued=3000
+worker2_stage2-1    | Gradient Queue: size=0/10, enqueued=3000, dequeued=3000
+worker2_stage2-1    | ================================
+worker2_stage2-1    | [Async Stage2 Group 2] Processed 3000 images (7.4 imgs/sec)
+worker2_stage2-1    | [Socket Receiver Group 2] Received 3000 activations
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3000
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1899: loss=0.349700, latency=0.44ms, stage2_time=0.41ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 1900
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 1999: loss=0.800492, latency=0.50ms, stage2_time=0.47ms
+worker2_stage2-1    | [Async Stage2 Group 2] Syncing after 2000 images (sync #2), avg_loss=0.446805
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.110ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.271ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 1.337ms
+worker2_stage2-1    | [Async Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | === Pipeline Queue Statistics ===
+worker2_stage2-1    | Activation Queue: size=0/10, enqueued=2000, dequeued=2000
+worker2_stage2-1    | Gradient Queue: size=0/10, enqueued=2000, dequeued=2000
+worker2_stage2-1    | ================================
+worker2_stage2-1    | [Async Stage2 Group 2] Processed 2000 images (7.1 imgs/sec)
+worker2_stage2-1    | [Socket Receiver Group 2] Received 2000 activations
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2000
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2099: loss=0.004564, latency=0.61ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2199: loss=0.509045, latency=0.58ms, stage2_time=0.54ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2299: loss=0.815132, latency=0.86ms, stage2_time=0.83ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2399: loss=0.436935, latency=0.61ms, stage2_time=0.56ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2499: loss=0.894343, latency=0.59ms, stage2_time=0.55ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2599: loss=0.143323, latency=0.50ms, stage2_time=0.47ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2699: loss=0.036477, latency=0.48ms, stage2_time=0.45ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2799: loss=0.000777, latency=0.62ms, stage2_time=0.57ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2899: loss=0.248998, latency=0.43ms, stage2_time=0.40ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 2900
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 2999: loss=0.112678, latency=0.82ms, stage2_time=0.78ms
+worker2_stage2-1    | [Async Stage2 Group 2] Syncing after 3000 images (sync #3), avg_loss=0.331804
+worker2_stage2-1    | [Worker 2] Sent 3000 OUTPUT weights in 0.188ms
+worker2_stage2-1    | [Worker 2] Received 3000 OUTPUT center weights in 0.068ms
+worker2_stage2-1    | [Worker 2] OUTPUT sync completed in 2.164ms
+worker2_stage2-1    | [Async Stage2 Group 2] Successfully synced weights
+worker2_stage2-1    | === Pipeline Queue Statistics ===
+worker2_stage2-1    | Activation Queue: size=0/10, enqueued=3000, dequeued=3000
+worker2_stage2-1    | Gradient Queue: size=0/10, enqueued=3000, dequeued=3000
+worker2_stage2-1    | ================================
+worker2_stage2-1    | [Async Stage2 Group 2] Processed 3000 images (7.4 imgs/sec)
+worker2_stage2-1    | [Socket Receiver Group 2] Received 3000 activations
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3000
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3099: loss=0.944119, latency=0.58ms, stage2_time=0.53ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3199: loss=0.934327, latency=0.79ms, stage2_time=0.74ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3299: loss=0.119163, latency=0.51ms, stage2_time=0.47ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3399: loss=0.382157, latency=0.27ms, stage2_time=0.25ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3499: loss=0.014994, latency=0.22ms, stage2_time=0.21ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3599: loss=0.010447, latency=0.53ms, stage2_time=0.50ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3699: loss=0.009245, latency=0.68ms, stage2_time=0.65ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3799: loss=0.032384, latency=0.81ms, stage2_time=0.78ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3899: loss=0.027855, latency=0.55ms, stage2_time=0.52ms
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3099: loss=0.944119, latency=0.58ms, stage2_time=0.53ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3100
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3199: loss=0.934327, latency=0.79ms, stage2_time=0.74ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3200
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3299: loss=0.119163, latency=0.51ms, stage2_time=0.47ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3300
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3399: loss=0.382157, latency=0.27ms, stage2_time=0.25ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3400
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3499: loss=0.014994, latency=0.22ms, stage2_time=0.21ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3500
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3599: loss=0.010447, latency=0.53ms, stage2_time=0.50ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3600
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3699: loss=0.009245, latency=0.68ms, stage2_time=0.65ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3700
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3799: loss=0.032384, latency=0.81ms, stage2_time=0.78ms
+worker2_stage2-1    | [Socket Receiver Group 2] Sent gradient for batch 3800
+worker2_stage2-1    | [Async Stage2 Group 2] Batch 3899: loss=0.027855, latency=0.55ms, stage2_time=0.52ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1899: loss=0.417421, latency=0.45ms, stage2_time=0.33ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1900
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1999: loss=0.025270, latency=0.81ms, stage2_time=0.61ms
+worker1_stage2-1    | [Async Stage2 Group 1] Syncing after 2000 images (sync #2), avg_loss=0.386888
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.271ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.082ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 2.300ms
+worker1_stage2-1    | [Async Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | === Pipeline Queue Statistics ===
+worker1_stage2-1    | Activation Queue: size=0/10, enqueued=2000, dequeued=2000
+worker1_stage2-1    | Gradient Queue: size=0/10, enqueued=2000, dequeued=2000
+worker1_stage2-1    | ================================
+worker1_stage2-1    | [Async Stage2 Group 1] Processed 2000 images (7.1 imgs/sec)
+worker1_stage2-1    | [Socket Receiver Group 1] Received 2000 activations
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2000
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2099: loss=0.473391, latency=0.91ms, stage2_time=0.71ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2199: loss=0.977792, latency=0.97ms, stage2_time=0.75ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2299: loss=0.473398, latency=0.68ms, stage2_time=0.52ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2399: loss=0.171857, latency=0.60ms, stage2_time=0.46ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2499: loss=0.021572, latency=0.63ms, stage2_time=0.49ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2599: loss=0.034892, latency=0.64ms, stage2_time=0.44ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2699: loss=0.398116, latency=0.57ms, stage2_time=0.44ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2799: loss=0.237229, latency=0.67ms, stage2_time=0.50ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2899: loss=0.002022, latency=0.35ms, stage2_time=0.27ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2900
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2999: loss=0.018651, latency=0.68ms, stage2_time=0.49ms
+worker1_stage2-1    | [Async Stage2 Group 1] Syncing after 3000 images (sync #3), avg_loss=0.266987
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.100ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.129ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.366ms
+worker1_stage2-1    | [Async Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | === Pipeline Queue Statistics ===
+worker1_stage2-1    | Activation Queue: size=0/10, enqueued=3000, dequeued=3000
+worker1_stage2-1    | Gradient Queue: size=0/10, enqueued=3000, dequeued=3000
+worker1_stage2-1    | ================================
+worker1_stage2-1    | [Async Stage2 Group 1] Processed 3000 images (7.4 imgs/sec)
+worker1_stage2-1    | [Socket Receiver Group 1] Received 3000 activations
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3000
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3099: loss=0.007794, latency=0.45ms, stage2_time=0.42ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3199: loss=0.013110, latency=0.79ms, stage2_time=0.61ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3299: loss=0.012434, latency=0.48ms, stage2_time=0.35ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3399: loss=0.047939, latency=0.31ms, stage2_time=0.23ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3499: loss=0.013806, latency=0.76ms, stage2_time=0.60ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3599: loss=0.453442, latency=0.72ms, stage2_time=0.52ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3699: loss=0.005294, latency=0.73ms, stage2_time=0.54ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3799: loss=0.005313, latency=0.71ms, stage2_time=0.56ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3899: loss=0.001023, latency=0.84ms, stage2_time=0.68ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1899: loss=0.417421, latency=0.45ms, stage2_time=0.33ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 1900
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 1999: loss=0.025270, latency=0.81ms, stage2_time=0.61ms
+worker1_stage2-1    | [Async Stage2 Group 1] Syncing after 2000 images (sync #2), avg_loss=0.386888
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.271ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.082ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 2.300ms
+worker1_stage2-1    | [Async Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | === Pipeline Queue Statistics ===
+worker1_stage2-1    | Activation Queue: size=0/10, enqueued=2000, dequeued=2000
+worker1_stage2-1    | Gradient Queue: size=0/10, enqueued=2000, dequeued=2000
+worker1_stage2-1    | ================================
+worker1_stage2-1    | [Async Stage2 Group 1] Processed 2000 images (7.1 imgs/sec)
+worker1_stage2-1    | [Socket Receiver Group 1] Received 2000 activations
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2000
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2099: loss=0.473391, latency=0.91ms, stage2_time=0.71ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2199: loss=0.977792, latency=0.97ms, stage2_time=0.75ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2299: loss=0.473398, latency=0.68ms, stage2_time=0.52ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2399: loss=0.171857, latency=0.60ms, stage2_time=0.46ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2499: loss=0.021572, latency=0.63ms, stage2_time=0.49ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2599: loss=0.034892, latency=0.64ms, stage2_time=0.44ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2699: loss=0.398116, latency=0.57ms, stage2_time=0.44ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2799: loss=0.237229, latency=0.67ms, stage2_time=0.50ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2899: loss=0.002022, latency=0.35ms, stage2_time=0.27ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 2900
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 2999: loss=0.018651, latency=0.68ms, stage2_time=0.49ms
+worker1_stage2-1    | [Async Stage2 Group 1] Syncing after 3000 images (sync #3), avg_loss=0.266987
+worker1_stage2-1    | [Worker 1] Sent 3000 OUTPUT weights in 0.100ms
+worker1_stage2-1    | [Worker 1] Received 3000 OUTPUT center weights in 0.129ms
+worker1_stage2-1    | [Worker 1] OUTPUT sync completed in 1.366ms
+worker1_stage2-1    | [Async Stage2 Group 1] Successfully synced weights
+worker1_stage2-1    | === Pipeline Queue Statistics ===
+worker1_stage2-1    | Activation Queue: size=0/10, enqueued=3000, dequeued=3000
+worker1_stage2-1    | Gradient Queue: size=0/10, enqueued=3000, dequeued=3000
+worker1_stage2-1    | ================================
+worker1_stage2-1    | [Async Stage2 Group 1] Processed 3000 images (7.4 imgs/sec)
+worker1_stage2-1    | [Socket Receiver Group 1] Received 3000 activations
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3000
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3099: loss=0.007794, latency=0.45ms, stage2_time=0.42ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3100
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3199: loss=0.013110, latency=0.79ms, stage2_time=0.61ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3200
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3299: loss=0.012434, latency=0.48ms, stage2_time=0.35ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3300
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3399: loss=0.047939, latency=0.31ms, stage2_time=0.23ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3400
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3499: loss=0.013806, latency=0.76ms, stage2_time=0.60ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3500
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3599: loss=0.453442, latency=0.72ms, stage2_time=0.52ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3600
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3699: loss=0.005294, latency=0.73ms, stage2_time=0.54ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3700
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3799: loss=0.005313, latency=0.71ms, stage2_time=0.56ms
+worker1_stage2-1    | [Socket Receiver Group 1] Sent gradient for batch 3800
+worker1_stage2-1    | [Async Stage2 Group 1] Batch 3899: loss=0.001023, latency=0.84ms, stage2_time=0.68ms
+parameter_server-1  | [Parameter Server] Worker connected (request #13)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 1.208ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.274ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.272ms
+parameter_server-1  | [Parameter Server] Request #13 (OUTPUT) processed in 2.091ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #14)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.394ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 17.074ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.476ms
+parameter_server-1  | [Parameter Server] Request #14 (HIDDEN) processed in 26.290ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #15)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.061ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.302ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.324ms
+parameter_server-1  | [Parameter Server] Request #15 (OUTPUT) processed in 1.017ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #16)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.357ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 23.742ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.453ms
+parameter_server-1  | [Parameter Server] Request #16 (HIDDEN) processed in 32.306ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2000 (latency: 7.92ms, backward: 7.89ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2100 (latency: 16.47ms, backward: 16.42ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2200 (latency: 13.29ms, backward: 13.26ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2300 (latency: 9.25ms, backward: 9.22ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2400 (latency: 14.53ms, backward: 14.48ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2500 (latency: 22.45ms, backward: 22.40ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2600 (latency: 17.14ms, backward: 17.09ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2700 (latency: 7.30ms, backward: 7.28ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2800 (latency: 18.76ms, backward: 18.72ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 2900 (latency: 11.24ms, backward: 11.20ms)
+worker2_stage1-1    | [Socket Sender Group 2] Sent 3000 activations
+worker2_stage1-1    | [Async Stage1 Group 2] Syncing after 3000 images (sync #3), gradients_applied=1000, avg_loss=0.000000
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 1.820ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 5.192ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 24.399ms
+worker2_stage1-1    | [Async Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | === Pipeline Queue Statistics ===
+worker2_stage1-1    | Activation Queue: size=0/10, enqueued=3000, dequeued=3000
+worker2_stage1-1    | Gradient Queue: size=0/10, enqueued=3000, dequeued=3000
+worker2_stage1-1    | ================================
+worker2_stage1-1    | === Batch Storage Statistics ===
+worker2_stage1-1    | Current stored: 0/100 (0.0% full)
+worker2_stage1-1    | Total stored: 3000
+worker2_stage1-1    | Total retrieved: 3000
+worker2_stage1-1    | Total cleaned up: 0
+worker2_stage1-1    | Hit rate: 100.00% (3000/3000)
+worker2_stage1-1    | ===============================
+worker2_stage1-1    | [Async Stage1 Group 2] Processed 3000 images (7.9 imgs/sec), gradients_applied=0
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3000 (latency: 11.67ms, backward: 11.62ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3100 (latency: 15.91ms, backward: 15.87ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3200 (latency: 16.20ms, backward: 16.16ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3300 (latency: 20.40ms, backward: 20.36ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3400 (latency: 9.40ms, backward: 9.37ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3500 (latency: 12.63ms, backward: 12.59ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3600 (latency: 20.28ms, backward: 20.23ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3700 (latency: 18.82ms, backward: 18.78ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3800 (latency: 18.31ms, backward: 18.26ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 3900 (latency: 22.41ms, backward: 22.36ms)
+worker2_stage1-1    | [Socket Sender Group 2] Sent 4000 activations
+worker2_stage1-1    | [Async Stage1 Group 2] Syncing after 4000 images (sync #4), gradients_applied=1000, avg_loss=0.000000
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 2.084ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.271ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 26.667ms
+worker2_stage1-1    | [Async Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | === Pipeline Queue Statistics ===
+worker2_stage1-1    | Activation Queue: size=0/10, enqueued=4000, dequeued=4000
+worker2_stage1-1    | Gradient Queue: size=0/10, enqueued=4000, dequeued=4000
+worker2_stage1-1    | ================================
+worker2_stage1-1    | === Batch Storage Statistics ===
+worker2_stage1-1    | Current stored: 0/100 (0.0% full)
+worker2_stage1-1    | Total stored: 4000
+worker2_stage1-1    | Total retrieved: 4000
+worker2_stage1-1    | Total cleaned up: 0
+worker2_stage1-1    | Hit rate: 100.00% (4000/4000)
+worker2_stage1-1    | ===============================
+worker2_stage1-1    | [Async Stage1 Group 2] Processed 4000 images (7.9 imgs/sec), gradients_applied=0
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4000 (latency: 15.58ms, backward: 15.55ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4100 (latency: 17.73ms, backward: 17.54ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4200 (latency: 18.91ms, backward: 18.87ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4300 (latency: 11.96ms, backward: 11.93ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4400 (latency: 12.66ms, backward: 12.58ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4500 (latency: 15.60ms, backward: 15.55ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4600 (latency: 13.70ms, backward: 13.65ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2000 (latency: 9.77ms, backward: 9.68ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2100 (latency: 16.12ms, backward: 15.93ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2200 (latency: 14.63ms, backward: 14.47ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2300 (latency: 15.63ms, backward: 15.42ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2400 (latency: 13.18ms, backward: 12.96ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2500 (latency: 21.00ms, backward: 20.82ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2600 (latency: 9.22ms, backward: 9.11ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2700 (latency: 14.97ms, backward: 14.84ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2800 (latency: 21.00ms, backward: 20.85ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 2900 (latency: 10.43ms, backward: 10.34ms)
+worker1_stage1-1    | [Socket Sender Group 1] Sent 3000 activations
+worker1_stage1-1    | [Async Stage1 Group 1] Syncing after 3000 images (sync #3), gradients_applied=1000, avg_loss=0.000000
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 3.308ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 4.337ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 26.055ms
+worker1_stage1-1    | [Async Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | === Pipeline Queue Statistics ===
+worker1_stage1-1    | Activation Queue: size=0/10, enqueued=3000, dequeued=3000
+worker1_stage1-1    | Gradient Queue: size=0/10, enqueued=3000, dequeued=3000
+worker1_stage1-1    | ================================
+worker1_stage1-1    | === Batch Storage Statistics ===
+worker1_stage1-1    | Current stored: 0/100 (0.0% full)
+worker1_stage1-1    | Total stored: 3000
+worker1_stage1-1    | Total retrieved: 3000
+worker1_stage1-1    | Total cleaned up: 0
+worker1_stage1-1    | Hit rate: 100.00% (3000/3000)
+worker1_stage1-1    | ===============================
+worker1_stage1-1    | [Async Stage1 Group 1] Processed 3000 images (7.9 imgs/sec), gradients_applied=0
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3000 (latency: 9.39ms, backward: 9.24ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3100 (latency: 16.71ms, backward: 16.63ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3200 (latency: 16.55ms, backward: 16.34ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3300 (latency: 16.55ms, backward: 16.41ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3400 (latency: 7.99ms, backward: 7.92ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3500 (latency: 16.62ms, backward: 16.46ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3600 (latency: 21.28ms, backward: 21.12ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3700 (latency: 13.66ms, backward: 13.54ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3800 (latency: 12.15ms, backward: 12.11ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 3900 (latency: 9.70ms, backward: 9.64ms)
+worker1_stage1-1    | [Socket Sender Group 1] Sent 4000 activations
+worker1_stage1-1    | [Async Stage1 Group 1] Syncing after 4000 images (sync #4), gradients_applied=1000, avg_loss=0.000000
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 2.160ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 2.997ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 32.672ms
+worker1_stage1-1    | [Async Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | === Pipeline Queue Statistics ===
+worker1_stage1-1    | Activation Queue: size=0/10, enqueued=4000, dequeued=4000
+worker1_stage1-1    | Gradient Queue: size=0/10, enqueued=4000, dequeued=4000
+worker1_stage1-1    | ================================
+worker1_stage1-1    | === Batch Storage Statistics ===
+worker1_stage1-1    | Current stored: 0/100 (0.0% full)
+worker1_stage1-1    | Total stored: 4000
+worker1_stage1-1    | Total retrieved: 4000
+worker1_stage1-1    | Total cleaned up: 0
+worker1_stage1-1    | Hit rate: 100.00% (4000/4000)
+worker1_stage1-1    | ===============================
+worker1_stage1-1    | [Async Stage1 Group 1] Processed 4000 images (7.9 imgs/sec), gradients_applied=0
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4000 (latency: 15.47ms, backward: 15.22ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4100 (latency: 13.17ms, backward: 13.05ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4200 (latency: 13.70ms, backward: 13.54ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4300 (latency: 16.51ms, backward: 16.35ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4400 (latency: 17.27ms, backward: 17.07ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4500 (latency: 16.74ms, backward: 16.60ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4600 (latency: 17.02ms, backward: 16.87ms)
+parameter_server-1  | [Parameter Server] Worker connected (request #17)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.098ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.598ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.297ms
+parameter_server-1  | [Parameter Server] Request #17 (OUTPUT) processed in 1.369ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #18)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 2 in 11.949ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 29.145ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.374ms
+parameter_server-1  | [Parameter Server] Request #18 (HIDDEN) processed in 47.321ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #19)
+parameter_server-1  | [Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.010ms
+parameter_server-1  | [Parameter Server] Updated OUTPUT elastic center in 0.305ms
+parameter_server-1  | [Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.315ms
+parameter_server-1  | [Parameter Server] Request #19 (OUTPUT) processed in 0.971ms
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+parameter_server-1  | [Parameter Server] Worker connected (request #20)
+parameter_server-1  | [Parameter Server] Received 235200 HIDDEN weights from worker 1 in 9.289ms
+parameter_server-1  | [Parameter Server] Updated HIDDEN elastic center in 18.812ms
+parameter_server-1  | [Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.521ms
+parameter_server-1  | [Parameter Server] Request #20 (HIDDEN) processed in 32.619ms
+parameter_server-1  | [Parameter Server] === Processed 20 total requests ===
+parameter_server-1  | [Parameter Server] Waiting for worker connection...
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4700 (latency: 8.18ms, backward: 8.10ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4800 (latency: 9.04ms, backward: 8.94ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 4900 (latency: 16.98ms, backward: 16.84ms)
+worker1_stage1-1    | [Socket Sender Group 1] Sent 5000 activations
+worker1_stage1-1    | [Async Stage1 Group 1] Syncing after 5000 images (sync #5), gradients_applied=1000, avg_loss=0.000000
+worker1_stage1-1    | [Worker 1] Sent 235200 HIDDEN weights in 8.692ms
+worker1_stage1-1    | [Worker 1] Received 235200 HIDDEN center weights in 20.494ms
+worker1_stage1-1    | [Worker 1] HIDDEN sync completed in 51.408ms
+worker1_stage1-1    | [Async Stage1 Group 1] Successfully synced weights
+worker1_stage1-1    | === Pipeline Queue Statistics ===
+worker1_stage1-1    | Activation Queue: size=0/10, enqueued=5000, dequeued=5000
+worker1_stage1-1    | Gradient Queue: size=0/10, enqueued=5000, dequeued=5000
+worker1_stage1-1    | ================================
+worker1_stage1-1    | === Batch Storage Statistics ===
+worker1_stage1-1    | Current stored: 0/100 (0.0% full)
+worker1_stage1-1    | Total stored: 5000
+worker1_stage1-1    | Total retrieved: 5000
+worker1_stage1-1    | Total cleaned up: 0
+worker1_stage1-1    | Hit rate: 100.00% (5000/5000)
+worker1_stage1-1    | ===============================
+worker1_stage1-1    | [Async Stage1 Group 1] Processed 5000 images (7.9 imgs/sec), gradients_applied=0
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 5000 (latency: 13.00ms, backward: 12.87ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 5100 (latency: 15.83ms, backward: 15.67ms)
+worker1_stage1-1    | [Async Stage1 Group 1] Applied gradient for batch 5200 (latency: 7.91ms, backward: 7.83ms)
+worker1_stage1-1    | 
+worker1_stage1-1    | [Async Stage1] Shutdown signal received
+worker1_stage1-1    | [Async Stage1 Group 1] Shutting down...
+worker1_stage1-1    | [Socket Sender Group 1] Queue shutdown, no more activations
+worker1_stage1-1    | [Socket Sender Group 1] Thread completed, sent 5278 total activations
+worker1_stage1-1    | [Async Stage1 Group 1] Epoch 1 completed
+worker1_stage1-1    | [Async Stage1 Group 1] Draining remaining gradients...
+worker1_stage1-1    | [Async Stage1 Group 1] Worker completed in 663.23 seconds
+worker1_stage1-1    | [Async Stage1 Group 1] Total syncs: 5, remaining gradients processed: 0
+worker1_stage1-1    | Successfully saved matrix to weights
+worker1_stage1-1    | [Worker] Saved async_stage1 to 'async_stage1_group_1'
+worker1_stage1-1    | [Async Stage1 Group 1] Final model saved
+worker1_stage1-1    | [Async Stage1 Group 1] Shutdown completed
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4700 (latency: 9.04ms, backward: 9.00ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4800 (latency: 10.50ms, backward: 10.47ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 4900 (latency: 19.41ms, backward: 19.35ms)
+worker2_stage1-1    | [Socket Sender Group 2] Sent 5000 activations
+worker2_stage1-1    | [Async Stage1 Group 2] Syncing after 5000 images (sync #5), gradients_applied=1000, avg_loss=0.000000
+worker2_stage1-1    | [Worker 2] Sent 235200 HIDDEN weights in 9.102ms
+worker2_stage1-1    | [Worker 2] Received 235200 HIDDEN center weights in 2.551ms
+worker2_stage1-1    | [Worker 2] HIDDEN sync completed in 48.550ms
+worker2_stage1-1    | [Async Stage1 Group 2] Successfully synced weights
+worker2_stage1-1    | === Pipeline Queue Statistics ===
+worker2_stage1-1    | Activation Queue: size=0/10, enqueued=5000, dequeued=5000
+worker2_stage1-1    | Gradient Queue: size=0/10, enqueued=5000, dequeued=5000
+worker2_stage1-1    | ================================
+worker2_stage1-1    | === Batch Storage Statistics ===
+worker2_stage1-1    | Current stored: 0/100 (0.0% full)
+worker2_stage1-1    | Total stored: 5000
+worker2_stage1-1    | Total retrieved: 5000
+worker2_stage1-1    | Total cleaned up: 0
+worker2_stage1-1    | Hit rate: 100.00% (5000/5000)
+worker2_stage1-1    | ===============================
+worker2_stage1-1    | [Async Stage1 Group 2] Processed 5000 images (8.0 imgs/sec), gradients_applied=0
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 5000 (latency: 14.97ms, backward: 14.93ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 5100 (latency: 15.67ms, backward: 15.62ms)
+worker2_stage1-1    | [Async Stage1 Group 2] Applied gradient for batch 5200 (latency: 8.08ms, backward: 8.05ms)
+worker2_stage1-1    | 
+worker2_stage1-1    | [Async Stage1] Shutdown signal received
+worker2_stage1-1    | [Async Stage1 Group 2] Shutting down...
+worker2_stage1-1    | [Socket Sender Group 2] Queue shutdown, no more activations
+worker2_stage1-1    | [Socket Sender Group 2] Thread completed, sent 5290 total activations
+worker2_stage1-1    | [Async Stage1 Group 2] Failed to enqueue activation for batch 5290
+worker2_stage1-1    | [Async Stage1 Group 2] Epoch 1 completed
+worker2_stage1-1    | [Async Stage1 Group 2] Draining remaining gradients...
+worker2_stage1-1    | [Async Stage1 Group 2] Worker completed in 663.23 seconds
+worker2_stage1-1    | [Async Stage1 Group 2] Total syncs: 5, remaining gradients processed: 0
+worker2_stage1-1    | Successfully saved matrix to weights
+worker2_stage1-1    | [Worker] Saved async_stage1 to 'async_stage1_group_2'
+worker2_stage1-1    | [Async Stage1 Group 2] Final model saved
+worker2_stage1-1    | [Async Stage1 Group 2] Shutdown completed
+[Kworker2_stage1-1 exited with code 0
+[Kworker1_stage1-1 exited with code 0
+[Kparameter_server-1 exited with code 137
+[Kworker2_stage2-1 exited with code 137
+[Kworker1_stage2-1 exited with code 137

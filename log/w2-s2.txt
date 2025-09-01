@@ -1,0 +1,893 @@
+DEBUG: Set server port to: 12445
+[Async Stage2 Group 2] Starting socket-based async pipeline with queues
+[Async Stage2 Group 2] Config: queue_size=10, timeout=5000ms, profiling=disabled
+[Async Stage2 Group 2] Listen port: 13002, Server: 172.32.0.10:12345
+[Async Stage2 Group 2] Queues created successfully
+[Async Stage2 Group 2] Pipeline stage initialized: 300→10, lr=0.100
+[Async Stage2 Group 2] Starting socket receiver and processing threads
+[Async Stage2 Group 2] Both threads started successfully
+[Async Stage2 Worker Group 2] Thread started
+[Async Stage2 Group 2] Processing up to 30000 images
+[Socket Receiver Group 2] Thread started, listening on port 13002
+[Socket Receiver Group 2] Activation server ready on port 13002
+[Socket Receiver Group 2] Sent gradient for batch 0
+[Async Stage2 Group 2] Batch 99: loss=0.857551, latency=0.28ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 100
+[Async Stage2 Group 2] Batch 199: loss=0.917237, latency=0.34ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 200
+[Async Stage2 Group 2] Batch 299: loss=0.464667, latency=0.26ms, stage2_time=0.24ms
+[Socket Receiver Group 2] Sent gradient for batch 300
+[Async Stage2 Group 2] Batch 399: loss=0.643863, latency=0.26ms, stage2_time=0.24ms
+[Socket Receiver Group 2] Sent gradient for batch 400
+[Async Stage2 Group 2] Batch 499: loss=1.481150, latency=0.41ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 500
+[Async Stage2 Group 2] Batch 599: loss=0.640641, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 600
+[Async Stage2 Group 2] Batch 699: loss=0.638763, latency=0.37ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 700
+[Async Stage2 Group 2] Batch 799: loss=0.138319, latency=0.41ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 800
+[Async Stage2 Group 2] Batch 899: loss=0.101261, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 900
+[Async Stage2 Group 2] Batch 999: loss=1.086866, latency=0.43ms, stage2_time=0.40ms
+[Async Stage2 Group 2] Syncing after 1000 images (sync #1), avg_loss=0.726743
+[Worker 2] Sent 3000 OUTPUT weights in 0.254ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.117ms
+[Worker 2] OUTPUT sync completed in 1.439ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=1000, dequeued=1000
+Gradient Queue: size=0/10, enqueued=1000, dequeued=1000
+================================
+[Async Stage2 Group 2] Processed 1000 images (52.8 imgs/sec)
+[Socket Receiver Group 2] Received 1000 activations
+[Socket Receiver Group 2] Sent gradient for batch 1000
+[Async Stage2 Group 2] Batch 1099: loss=0.894393, latency=0.29ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 1100
+[Async Stage2 Group 2] Batch 1199: loss=0.012331, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 1200
+[Async Stage2 Group 2] Batch 1299: loss=0.792874, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 1300
+[Async Stage2 Group 2] Batch 1399: loss=0.631745, latency=0.32ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 1400
+[Async Stage2 Group 2] Batch 1499: loss=0.419767, latency=0.30ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 1500
+[Async Stage2 Group 2] Batch 1599: loss=0.758838, latency=0.37ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 1600
+[Async Stage2 Group 2] Batch 1699: loss=0.965499, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 1700
+[Async Stage2 Group 2] Batch 1799: loss=0.020147, latency=0.40ms, stage2_time=0.37ms
+[Socket Receiver Group 2] Sent gradient for batch 1800
+[Async Stage2 Group 2] Batch 1899: loss=0.389197, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 1900
+[Async Stage2 Group 2] Batch 1999: loss=0.796727, latency=0.25ms, stage2_time=0.23ms
+[Async Stage2 Group 2] Syncing after 2000 images (sync #2), avg_loss=0.446839
+[Worker 2] Sent 3000 OUTPUT weights in 0.051ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.129ms
+[Worker 2] OUTPUT sync completed in 1.481ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=2000, dequeued=2000
+Gradient Queue: size=0/10, enqueued=2000, dequeued=2000
+================================
+[Async Stage2 Group 2] Processed 2000 images (59.0 imgs/sec)
+[Socket Receiver Group 2] Received 2000 activations
+[Socket Receiver Group 2] Sent gradient for batch 2000
+[Async Stage2 Group 2] Batch 2099: loss=0.005316, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 2100
+[Async Stage2 Group 2] Batch 2199: loss=0.542254, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 2200
+[Async Stage2 Group 2] Batch 2299: loss=0.746158, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 2300
+[Async Stage2 Group 2] Batch 2399: loss=0.488142, latency=0.62ms, stage2_time=0.59ms
+[Socket Receiver Group 2] Sent gradient for batch 2400
+[Async Stage2 Group 2] Batch 2499: loss=0.881209, latency=0.46ms, stage2_time=0.44ms
+[Socket Receiver Group 2] Sent gradient for batch 2500
+[Async Stage2 Group 2] Batch 2599: loss=0.161908, latency=0.39ms, stage2_time=0.37ms
+[Socket Receiver Group 2] Sent gradient for batch 2600
+[Async Stage2 Group 2] Batch 2699: loss=0.042873, latency=0.61ms, stage2_time=0.58ms
+[Socket Receiver Group 2] Sent gradient for batch 2700
+[Async Stage2 Group 2] Batch 2799: loss=0.001177, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 2800
+[Async Stage2 Group 2] Batch 2899: loss=0.217939, latency=0.46ms, stage2_time=0.43ms
+[Socket Receiver Group 2] Sent gradient for batch 2900
+[Async Stage2 Group 2] Batch 2999: loss=0.091650, latency=0.31ms, stage2_time=0.29ms
+[Async Stage2 Group 2] Syncing after 3000 images (sync #3), avg_loss=0.333356
+[Worker 2] Sent 3000 OUTPUT weights in 0.065ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.096ms
+[Worker 2] OUTPUT sync completed in 0.871ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=3000, dequeued=3000
+Gradient Queue: size=0/10, enqueued=3000, dequeued=3000
+================================
+[Async Stage2 Group 2] Processed 3000 images (60.7 imgs/sec)
+[Socket Receiver Group 2] Received 3000 activations
+[Socket Receiver Group 2] Sent gradient for batch 3000
+[Async Stage2 Group 2] Batch 3099: loss=0.904433, latency=0.41ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 3100
+[Async Stage2 Group 2] Batch 3199: loss=0.873664, latency=0.44ms, stage2_time=0.41ms
+[Socket Receiver Group 2] Sent gradient for batch 3200
+[Async Stage2 Group 2] Batch 3299: loss=0.111631, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 3300
+[Async Stage2 Group 2] Batch 3399: loss=0.572656, latency=0.39ms, stage2_time=0.36ms
+[Socket Receiver Group 2] Sent gradient for batch 3400
+[Async Stage2 Group 2] Batch 3499: loss=0.011311, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 3500
+[Async Stage2 Group 2] Batch 3599: loss=0.008322, latency=0.45ms, stage2_time=0.43ms
+[Socket Receiver Group 2] Sent gradient for batch 3600
+[Async Stage2 Group 2] Batch 3699: loss=0.007358, latency=0.37ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 3700
+[Async Stage2 Group 2] Batch 3799: loss=0.063345, latency=0.39ms, stage2_time=0.36ms
+[Socket Receiver Group 2] Sent gradient for batch 3800
+[Async Stage2 Group 2] Batch 3899: loss=0.038477, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 3900
+[Async Stage2 Group 2] Batch 3999: loss=0.812591, latency=0.67ms, stage2_time=0.65ms
+[Async Stage2 Group 2] Syncing after 4000 images (sync #4), avg_loss=0.236863
+[Worker 2] Sent 3000 OUTPUT weights in 0.163ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.120ms
+[Worker 2] OUTPUT sync completed in 0.996ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=4000, dequeued=4000
+Gradient Queue: size=0/10, enqueued=4000, dequeued=4000
+================================
+[Async Stage2 Group 2] Processed 4000 images (61.9 imgs/sec)
+[Socket Receiver Group 2] Received 4000 activations
+[Socket Receiver Group 2] Sent gradient for batch 4000
+[Async Stage2 Group 2] Batch 4099: loss=0.578332, latency=0.48ms, stage2_time=0.45ms
+[Socket Receiver Group 2] Sent gradient for batch 4100
+[Async Stage2 Group 2] Batch 4199: loss=0.011174, latency=0.30ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 4200
+[Async Stage2 Group 2] Batch 4299: loss=0.005112, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 4300
+[Async Stage2 Group 2] Batch 4399: loss=0.799856, latency=0.52ms, stage2_time=0.48ms
+[Socket Receiver Group 2] Sent gradient for batch 4400
+[Async Stage2 Group 2] Batch 4499: loss=0.001431, latency=0.39ms, stage2_time=0.37ms
+[Socket Receiver Group 2] Sent gradient for batch 4500
+[Async Stage2 Group 2] Batch 4599: loss=0.035797, latency=0.28ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 4600
+[Async Stage2 Group 2] Batch 4699: loss=0.001344, latency=0.45ms, stage2_time=0.43ms
+[Socket Receiver Group 2] Sent gradient for batch 4700
+[Async Stage2 Group 2] Batch 4799: loss=0.000639, latency=0.32ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 4800
+[Async Stage2 Group 2] Batch 4899: loss=0.336753, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 4900
+[Async Stage2 Group 2] Batch 4999: loss=0.000741, latency=0.27ms, stage2_time=0.25ms
+[Async Stage2 Group 2] Syncing after 5000 images (sync #5), avg_loss=0.229728
+[Worker 2] Sent 3000 OUTPUT weights in 0.036ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.087ms
+[Worker 2] OUTPUT sync completed in 0.707ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=5000, dequeued=5000
+Gradient Queue: size=0/10, enqueued=5000, dequeued=5000
+================================
+[Async Stage2 Group 2] Processed 5000 images (63.1 imgs/sec)
+[Socket Receiver Group 2] Received 5000 activations
+[Socket Receiver Group 2] Sent gradient for batch 5000
+[Async Stage2 Group 2] Batch 5099: loss=0.008168, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 5100
+[Async Stage2 Group 2] Batch 5199: loss=0.002082, latency=0.25ms, stage2_time=0.24ms
+[Socket Receiver Group 2] Sent gradient for batch 5200
+[Async Stage2 Group 2] Batch 5299: loss=0.011832, latency=0.52ms, stage2_time=0.48ms
+[Socket Receiver Group 2] Sent gradient for batch 5300
+[Async Stage2 Group 2] Batch 5399: loss=0.208532, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 5400
+[Async Stage2 Group 2] Batch 5499: loss=0.904179, latency=0.57ms, stage2_time=0.55ms
+[Socket Receiver Group 2] Sent gradient for batch 5500
+[Async Stage2 Group 2] Batch 5599: loss=0.003380, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 5600
+[Async Stage2 Group 2] Batch 5699: loss=0.000244, latency=0.41ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 5700
+[Async Stage2 Group 2] Batch 5799: loss=0.008355, latency=0.41ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 5800
+[Async Stage2 Group 2] Batch 5899: loss=0.009237, latency=0.49ms, stage2_time=0.47ms
+[Socket Receiver Group 2] Sent gradient for batch 5900
+[Async Stage2 Group 2] Batch 5999: loss=0.016307, latency=0.32ms, stage2_time=0.29ms
+[Async Stage2 Group 2] Syncing after 6000 images (sync #6), avg_loss=0.203091
+[Worker 2] Sent 3000 OUTPUT weights in 0.048ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.029ms
+[Worker 2] OUTPUT sync completed in 0.989ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=6000, dequeued=6000
+Gradient Queue: size=0/10, enqueued=6000, dequeued=6000
+================================
+[Async Stage2 Group 2] Processed 6000 images (62.1 imgs/sec)
+[Socket Receiver Group 2] Received 6000 activations
+[Socket Receiver Group 2] Sent gradient for batch 6000
+[Async Stage2 Group 2] Batch 6099: loss=0.466877, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 6100
+[Async Stage2 Group 2] Batch 6199: loss=0.000464, latency=0.59ms, stage2_time=0.56ms
+[Socket Receiver Group 2] Sent gradient for batch 6200
+[Async Stage2 Group 2] Batch 6299: loss=0.019286, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 6300
+[Async Stage2 Group 2] Batch 6399: loss=0.127376, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 6400
+[Async Stage2 Group 2] Batch 6499: loss=0.009179, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 6500
+[Async Stage2 Group 2] Batch 6599: loss=0.891560, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 6600
+[Async Stage2 Group 2] Batch 6699: loss=0.019154, latency=0.50ms, stage2_time=0.47ms
+[Socket Receiver Group 2] Sent gradient for batch 6700
+[Async Stage2 Group 2] Batch 6799: loss=0.000589, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 6800
+[Async Stage2 Group 2] Batch 6899: loss=0.001682, latency=0.46ms, stage2_time=0.43ms
+[Socket Receiver Group 2] Sent gradient for batch 6900
+[Async Stage2 Group 2] Batch 6999: loss=0.011472, latency=0.36ms, stage2_time=0.34ms
+[Async Stage2 Group 2] Syncing after 7000 images (sync #7), avg_loss=0.171486
+[Worker 2] Sent 3000 OUTPUT weights in 0.098ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.167ms
+[Worker 2] OUTPUT sync completed in 0.993ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=7000, dequeued=7000
+Gradient Queue: size=0/10, enqueued=7000, dequeued=7000
+================================
+[Async Stage2 Group 2] Processed 7000 images (60.9 imgs/sec)
+[Socket Receiver Group 2] Received 7000 activations
+[Socket Receiver Group 2] Sent gradient for batch 7000
+[Async Stage2 Group 2] Batch 7099: loss=0.058715, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 7100
+[Async Stage2 Group 2] Batch 7199: loss=0.010789, latency=0.37ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 7200
+[Async Stage2 Group 2] Batch 7299: loss=0.026816, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 7300
+[Async Stage2 Group 2] Batch 7399: loss=0.042735, latency=0.34ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 7400
+[Async Stage2 Group 2] Batch 7499: loss=0.063443, latency=0.28ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 7500
+[Async Stage2 Group 2] Batch 7599: loss=0.020617, latency=0.38ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 7600
+[Async Stage2 Group 2] Batch 7699: loss=0.377252, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 7700
+[Async Stage2 Group 2] Batch 7799: loss=0.000110, latency=0.32ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 7800
+[Async Stage2 Group 2] Batch 7899: loss=0.000071, latency=0.60ms, stage2_time=0.57ms
+[Socket Receiver Group 2] Sent gradient for batch 7900
+[Async Stage2 Group 2] Batch 7999: loss=0.020094, latency=0.43ms, stage2_time=0.41ms
+[Async Stage2 Group 2] Syncing after 8000 images (sync #8), avg_loss=0.223505
+[Worker 2] Sent 3000 OUTPUT weights in 0.221ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.134ms
+[Worker 2] OUTPUT sync completed in 1.259ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=8000, dequeued=8000
+Gradient Queue: size=0/10, enqueued=8000, dequeued=8000
+================================
+[Async Stage2 Group 2] Processed 8000 images (60.5 imgs/sec)
+[Socket Receiver Group 2] Received 8000 activations
+[Socket Receiver Group 2] Sent gradient for batch 8000
+[Async Stage2 Group 2] Batch 8099: loss=0.000238, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 8100
+[Async Stage2 Group 2] Batch 8199: loss=0.008611, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 8200
+[Async Stage2 Group 2] Batch 8299: loss=0.000200, latency=0.28ms, stage2_time=0.26ms
+[Socket Receiver Group 2] Sent gradient for batch 8300
+[Async Stage2 Group 2] Batch 8399: loss=0.081369, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 8400
+[Async Stage2 Group 2] Batch 8499: loss=0.000257, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 8500
+[Async Stage2 Group 2] Batch 8599: loss=0.000777, latency=0.37ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 8600
+[Async Stage2 Group 2] Batch 8699: loss=0.000012, latency=0.48ms, stage2_time=0.46ms
+[Socket Receiver Group 2] Sent gradient for batch 8700
+[Async Stage2 Group 2] Batch 8799: loss=0.009010, latency=0.41ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 8800
+[Async Stage2 Group 2] Batch 8899: loss=0.001174, latency=0.42ms, stage2_time=0.40ms
+[Socket Receiver Group 2] Sent gradient for batch 8900
+[Async Stage2 Group 2] Batch 8999: loss=0.001294, latency=0.48ms, stage2_time=0.45ms
+[Async Stage2 Group 2] Syncing after 9000 images (sync #9), avg_loss=0.180900
+[Worker 2] Sent 3000 OUTPUT weights in 0.116ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.305ms
+[Worker 2] OUTPUT sync completed in 1.530ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=9000, dequeued=9000
+Gradient Queue: size=0/10, enqueued=9000, dequeued=9000
+================================
+[Async Stage2 Group 2] Processed 9000 images (60.0 imgs/sec)
+[Socket Receiver Group 2] Received 9000 activations
+[Socket Receiver Group 2] Sent gradient for batch 9000
+[Async Stage2 Group 2] Batch 9099: loss=0.000271, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 9100
+[Async Stage2 Group 2] Batch 9199: loss=0.002789, latency=0.37ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 9200
+[Async Stage2 Group 2] Batch 9299: loss=0.087163, latency=0.87ms, stage2_time=0.84ms
+[Socket Receiver Group 2] Sent gradient for batch 9300
+[Async Stage2 Group 2] Batch 9399: loss=0.000053, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 9400
+[Async Stage2 Group 2] Batch 9499: loss=0.389500, latency=0.42ms, stage2_time=0.40ms
+[Socket Receiver Group 2] Sent gradient for batch 9500
+[Async Stage2 Group 2] Batch 9599: loss=0.002958, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 9600
+[Async Stage2 Group 2] Batch 9699: loss=0.008461, latency=0.42ms, stage2_time=0.40ms
+[Socket Receiver Group 2] Sent gradient for batch 9700
+[Async Stage2 Group 2] Batch 9799: loss=0.030713, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 9800
+[Async Stage2 Group 2] Batch 9899: loss=0.406761, latency=0.41ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 9900
+[Async Stage2 Group 2] Batch 9999: loss=1.066151, latency=0.57ms, stage2_time=0.53ms
+[Async Stage2 Group 2] Syncing after 10000 images (sync #10), avg_loss=0.193473
+[Worker 2] Sent 3000 OUTPUT weights in 0.095ms
+[Socket Receiver Group 2] Received 10000 activations
+[Worker 2] Received 3000 OUTPUT center weights in 0.184ms
+[Worker 2] OUTPUT sync completed in 3.399ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=10000, dequeued=10000
+Gradient Queue: size=0/10, enqueued=10000, dequeued=10000
+================================
+[Async Stage2 Group 2] Processed 10000 images (59.5 imgs/sec)
+[Socket Receiver Group 2] Sent gradient for batch 10000
+[Async Stage2 Group 2] Batch 10099: loss=0.000021, latency=0.47ms, stage2_time=0.44ms
+[Socket Receiver Group 2] Sent gradient for batch 10100
+[Async Stage2 Group 2] Batch 10199: loss=0.000399, latency=0.47ms, stage2_time=0.45ms
+[Socket Receiver Group 2] Sent gradient for batch 10200
+[Async Stage2 Group 2] Batch 10299: loss=0.001508, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 10300
+[Async Stage2 Group 2] Batch 10399: loss=0.000222, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 10400
+[Async Stage2 Group 2] Batch 10499: loss=0.004775, latency=0.28ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 10500
+[Async Stage2 Group 2] Batch 10599: loss=1.385665, latency=0.50ms, stage2_time=0.47ms
+[Socket Receiver Group 2] Sent gradient for batch 10600
+[Async Stage2 Group 2] Batch 10699: loss=0.000996, latency=0.29ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 10700
+[Async Stage2 Group 2] Batch 10799: loss=0.003244, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 10800
+[Async Stage2 Group 2] Batch 10899: loss=0.000037, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 10900
+[Async Stage2 Group 2] Batch 10999: loss=0.000719, latency=0.32ms, stage2_time=0.30ms
+[Async Stage2 Group 2] Syncing after 11000 images (sync #11), avg_loss=0.143750
+[Worker 2] Sent 3000 OUTPUT weights in 0.203ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.098ms
+[Worker 2] OUTPUT sync completed in 0.991ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=11000, dequeued=11000
+Gradient Queue: size=0/10, enqueued=11000, dequeued=11000
+================================
+[Async Stage2 Group 2] Processed 11000 images (58.5 imgs/sec)
+[Socket Receiver Group 2] Received 11000 activations
+[Socket Receiver Group 2] Sent gradient for batch 11000
+[Async Stage2 Group 2] Batch 11099: loss=0.000005, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 11100
+[Async Stage2 Group 2] Batch 11199: loss=0.016771, latency=0.40ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 11200
+[Async Stage2 Group 2] Batch 11299: loss=0.007571, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 11300
+[Async Stage2 Group 2] Batch 11399: loss=0.005365, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 11400
+[Async Stage2 Group 2] Batch 11499: loss=1.577637, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 11500
+[Async Stage2 Group 2] Batch 11599: loss=0.001204, latency=0.27ms, stage2_time=0.25ms
+[Socket Receiver Group 2] Sent gradient for batch 11600
+[Async Stage2 Group 2] Batch 11699: loss=0.369684, latency=0.33ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 11700
+[Async Stage2 Group 2] Batch 11799: loss=0.001059, latency=1.00ms, stage2_time=0.96ms
+[Socket Receiver Group 2] Sent gradient for batch 11800
+[Async Stage2 Group 2] Batch 11899: loss=0.755173, latency=0.32ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 11900
+[Async Stage2 Group 2] Batch 11999: loss=0.871166, latency=0.33ms, stage2_time=0.31ms
+[Async Stage2 Group 2] Syncing after 12000 images (sync #12), avg_loss=0.179852
+[Worker 2] Sent 3000 OUTPUT weights in 0.258ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.128ms
+[Worker 2] OUTPUT sync completed in 1.126ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=12000, dequeued=12000
+Gradient Queue: size=0/10, enqueued=12000, dequeued=12000
+================================
+[Async Stage2 Group 2] Processed 12000 images (58.2 imgs/sec)
+[Socket Receiver Group 2] Received 12000 activations
+[Socket Receiver Group 2] Sent gradient for batch 12000
+[Async Stage2 Group 2] Batch 12099: loss=1.564205, latency=0.34ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 12100
+[Async Stage2 Group 2] Batch 12199: loss=2.352405, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 12200
+[Async Stage2 Group 2] Batch 12299: loss=0.000029, latency=0.62ms, stage2_time=0.59ms
+[Socket Receiver Group 2] Sent gradient for batch 12300
+[Async Stage2 Group 2] Batch 12399: loss=0.000010, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 12400
+[Async Stage2 Group 2] Batch 12499: loss=0.004982, latency=0.54ms, stage2_time=0.50ms
+[Socket Receiver Group 2] Sent gradient for batch 12500
+[Async Stage2 Group 2] Batch 12599: loss=0.000008, latency=0.80ms, stage2_time=0.77ms
+[Socket Receiver Group 2] Sent gradient for batch 12600
+[Async Stage2 Group 2] Batch 12699: loss=0.000048, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 12700
+[Async Stage2 Group 2] Batch 12799: loss=1.884842, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 12800
+[Async Stage2 Group 2] Batch 12899: loss=0.000024, latency=0.50ms, stage2_time=0.47ms
+[Socket Receiver Group 2] Sent gradient for batch 12900
+[Async Stage2 Group 2] Batch 12999: loss=0.007679, latency=0.49ms, stage2_time=0.47ms
+[Async Stage2 Group 2] Syncing after 13000 images (sync #13), avg_loss=0.185703
+[Worker 2] Sent 3000 OUTPUT weights in 0.057ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.099ms
+[Worker 2] OUTPUT sync completed in 0.742ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=13000, dequeued=13000
+Gradient Queue: size=0/10, enqueued=13000, dequeued=13000
+================================
+[Async Stage2 Group 2] Processed 13000 images (57.7 imgs/sec)
+[Socket Receiver Group 2] Received 13000 activations
+[Socket Receiver Group 2] Sent gradient for batch 13000
+[Async Stage2 Group 2] Batch 13099: loss=0.003335, latency=0.42ms, stage2_time=0.40ms
+[Socket Receiver Group 2] Sent gradient for batch 13100
+[Async Stage2 Group 2] Batch 13199: loss=0.076715, latency=0.48ms, stage2_time=0.45ms
+[Socket Receiver Group 2] Sent gradient for batch 13200
+[Async Stage2 Group 2] Batch 13299: loss=0.000085, latency=0.33ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 13300
+[Async Stage2 Group 2] Batch 13399: loss=0.000002, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 13400
+[Async Stage2 Group 2] Batch 13499: loss=0.028437, latency=0.40ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 13500
+[Async Stage2 Group 2] Batch 13599: loss=0.001433, latency=0.27ms, stage2_time=0.26ms
+[Socket Receiver Group 2] Sent gradient for batch 13600
+[Async Stage2 Group 2] Batch 13699: loss=0.000064, latency=0.33ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 13700
+[Async Stage2 Group 2] Batch 13799: loss=0.006417, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 13800
+[Async Stage2 Group 2] Batch 13899: loss=0.000003, latency=0.35ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 13900
+[Async Stage2 Group 2] Batch 13999: loss=0.003674, latency=0.34ms, stage2_time=0.32ms
+[Async Stage2 Group 2] Syncing after 14000 images (sync #14), avg_loss=0.133370
+[Worker 2] Sent 3000 OUTPUT weights in 0.648ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.054ms
+[Worker 2] OUTPUT sync completed in 1.521ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=14000, dequeued=14000
+Gradient Queue: size=0/10, enqueued=14000, dequeued=14000
+================================
+[Async Stage2 Group 2] Processed 14000 images (57.3 imgs/sec)
+[Socket Receiver Group 2] Received 14000 activations
+[Socket Receiver Group 2] Sent gradient for batch 14000
+[Async Stage2 Group 2] Batch 14099: loss=0.853629, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 14100
+[Async Stage2 Group 2] Batch 14199: loss=0.000170, latency=0.45ms, stage2_time=0.42ms
+[Socket Receiver Group 2] Sent gradient for batch 14200
+[Async Stage2 Group 2] Batch 14299: loss=0.000682, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 14300
+[Async Stage2 Group 2] Batch 14399: loss=0.001183, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 14400
+[Async Stage2 Group 2] Batch 14499: loss=0.000074, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 14500
+[Async Stage2 Group 2] Batch 14599: loss=0.000098, latency=0.39ms, stage2_time=0.36ms
+[Socket Receiver Group 2] Sent gradient for batch 14600
+[Async Stage2 Group 2] Batch 14699: loss=0.001106, latency=0.41ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 14700
+[Async Stage2 Group 2] Batch 14799: loss=0.050810, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 14800
+[Async Stage2 Group 2] Batch 14899: loss=0.007478, latency=0.38ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 14900
+[Async Stage2 Group 2] Batch 14999: loss=0.000111, latency=0.27ms, stage2_time=0.25ms
+[Async Stage2 Group 2] Syncing after 15000 images (sync #15), avg_loss=0.148722
+[Worker 2] Sent 3000 OUTPUT weights in 0.052ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.179ms
+[Worker 2] OUTPUT sync completed in 0.779ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=15000, dequeued=15000
+Gradient Queue: size=0/10, enqueued=15000, dequeued=15000
+================================
+[Async Stage2 Group 2] Processed 15000 images (57.2 imgs/sec)
+[Socket Receiver Group 2] Received 15000 activations
+[Socket Receiver Group 2] Sent gradient for batch 15000
+[Async Stage2 Group 2] Batch 15099: loss=1.781837, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 15100
+[Async Stage2 Group 2] Batch 15199: loss=0.000264, latency=0.63ms, stage2_time=0.60ms
+[Socket Receiver Group 2] Sent gradient for batch 15200
+[Async Stage2 Group 2] Batch 15299: loss=0.000006, latency=0.40ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 15300
+[Async Stage2 Group 2] Batch 15399: loss=0.091911, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 15400
+[Async Stage2 Group 2] Batch 15499: loss=0.251833, latency=0.28ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 15500
+[Async Stage2 Group 2] Batch 15599: loss=0.000396, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 15600
+[Async Stage2 Group 2] Batch 15699: loss=0.000115, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 15700
+[Async Stage2 Group 2] Batch 15799: loss=0.000438, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 15800
+[Async Stage2 Group 2] Batch 15899: loss=0.009879, latency=0.37ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 15900
+[Async Stage2 Group 2] Batch 15999: loss=0.002918, latency=0.38ms, stage2_time=0.36ms
+[Async Stage2 Group 2] Syncing after 16000 images (sync #16), avg_loss=0.177008
+[Worker 2] Sent 3000 OUTPUT weights in 0.090ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.105ms
+[Worker 2] OUTPUT sync completed in 0.871ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=16000, dequeued=16000
+Gradient Queue: size=0/10, enqueued=16000, dequeued=16000
+================================
+[Async Stage2 Group 2] Processed 16000 images (57.1 imgs/sec)
+[Socket Receiver Group 2] Received 16000 activations
+[Socket Receiver Group 2] Sent gradient for batch 16000
+[Async Stage2 Group 2] Batch 16099: loss=0.003309, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 16100
+[Async Stage2 Group 2] Batch 16199: loss=0.003242, latency=0.29ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 16200
+[Async Stage2 Group 2] Batch 16299: loss=0.011600, latency=0.28ms, stage2_time=0.26ms
+[Socket Receiver Group 2] Sent gradient for batch 16300
+[Async Stage2 Group 2] Batch 16399: loss=0.000105, latency=0.47ms, stage2_time=0.44ms
+[Socket Receiver Group 2] Sent gradient for batch 16400
+[Async Stage2 Group 2] Batch 16499: loss=0.000038, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 16500
+[Async Stage2 Group 2] Batch 16599: loss=0.000032, latency=0.44ms, stage2_time=0.41ms
+[Socket Receiver Group 2] Sent gradient for batch 16600
+[Async Stage2 Group 2] Batch 16699: loss=0.018240, latency=0.52ms, stage2_time=0.49ms
+[Socket Receiver Group 2] Sent gradient for batch 16700
+[Async Stage2 Group 2] Batch 16799: loss=0.000019, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 16800
+[Async Stage2 Group 2] Batch 16899: loss=0.149471, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 16900
+[Async Stage2 Group 2] Batch 16999: loss=0.009690, latency=0.38ms, stage2_time=0.35ms
+[Async Stage2 Group 2] Syncing after 17000 images (sync #17), avg_loss=0.151336
+[Worker 2] Sent 3000 OUTPUT weights in 0.052ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.207ms
+[Worker 2] OUTPUT sync completed in 1.034ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=17000, dequeued=17000
+Gradient Queue: size=0/10, enqueued=17000, dequeued=17000
+================================
+[Async Stage2 Group 2] Processed 17000 images (56.7 imgs/sec)
+[Socket Receiver Group 2] Received 17000 activations
+[Socket Receiver Group 2] Sent gradient for batch 17000
+[Async Stage2 Group 2] Batch 17099: loss=0.000464, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 17100
+[Async Stage2 Group 2] Batch 17199: loss=0.000871, latency=0.43ms, stage2_time=0.41ms
+[Socket Receiver Group 2] Sent gradient for batch 17200
+[Async Stage2 Group 2] Batch 17299: loss=0.005500, latency=0.56ms, stage2_time=0.53ms
+[Socket Receiver Group 2] Sent gradient for batch 17300
+[Async Stage2 Group 2] Batch 17399: loss=0.075569, latency=0.38ms, stage2_time=0.36ms
+[Socket Receiver Group 2] Sent gradient for batch 17400
+[Async Stage2 Group 2] Batch 17499: loss=0.070868, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 17500
+[Async Stage2 Group 2] Batch 17599: loss=0.015936, latency=0.29ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 17600
+[Async Stage2 Group 2] Batch 17699: loss=0.000247, latency=0.44ms, stage2_time=0.41ms
+[Socket Receiver Group 2] Sent gradient for batch 17700
+[Async Stage2 Group 2] Batch 17799: loss=0.000314, latency=0.32ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 17800
+[Async Stage2 Group 2] Batch 17899: loss=0.000127, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 17900
+[Async Stage2 Group 2] Batch 17999: loss=0.001424, latency=0.29ms, stage2_time=0.27ms
+[Async Stage2 Group 2] Syncing after 18000 images (sync #18), avg_loss=0.149932
+[Worker 2] Sent 3000 OUTPUT weights in 0.056ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.165ms
+[Worker 2] OUTPUT sync completed in 0.994ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=18000, dequeued=18000
+Gradient Queue: size=0/10, enqueued=18000, dequeued=18000
+================================
+[Async Stage2 Group 2] Processed 18000 images (56.5 imgs/sec)
+[Socket Receiver Group 2] Received 18000 activations
+[Socket Receiver Group 2] Sent gradient for batch 18000
+[Async Stage2 Group 2] Batch 18099: loss=0.000932, latency=0.38ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 18100
+[Async Stage2 Group 2] Batch 18199: loss=0.000035, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 18200
+[Async Stage2 Group 2] Batch 18299: loss=0.000026, latency=0.39ms, stage2_time=0.37ms
+[Socket Receiver Group 2] Sent gradient for batch 18300
+[Async Stage2 Group 2] Batch 18399: loss=0.000020, latency=0.53ms, stage2_time=0.51ms
+[Socket Receiver Group 2] Sent gradient for batch 18400
+[Async Stage2 Group 2] Batch 18499: loss=0.000055, latency=0.29ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 18500
+[Async Stage2 Group 2] Batch 18599: loss=0.410923, latency=0.34ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 18600
+[Async Stage2 Group 2] Batch 18699: loss=0.001388, latency=0.43ms, stage2_time=0.40ms
+[Socket Receiver Group 2] Sent gradient for batch 18700
+[Async Stage2 Group 2] Batch 18799: loss=0.000097, latency=0.61ms, stage2_time=0.57ms
+[Socket Receiver Group 2] Sent gradient for batch 18800
+[Async Stage2 Group 2] Batch 18899: loss=1.165807, latency=0.47ms, stage2_time=0.44ms
+[Socket Receiver Group 2] Sent gradient for batch 18900
+[Async Stage2 Group 2] Batch 18999: loss=0.051522, latency=0.40ms, stage2_time=0.37ms
+[Async Stage2 Group 2] Syncing after 19000 images (sync #19), avg_loss=0.129931
+[Worker 2] Sent 3000 OUTPUT weights in 0.157ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.307ms
+[Worker 2] OUTPUT sync completed in 1.214ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=19000, dequeued=19000
+Gradient Queue: size=0/10, enqueued=19000, dequeued=19000
+================================
+[Async Stage2 Group 2] Processed 19000 images (56.5 imgs/sec)
+[Socket Receiver Group 2] Received 19000 activations
+[Socket Receiver Group 2] Sent gradient for batch 19000
+[Async Stage2 Group 2] Batch 19099: loss=0.422824, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 19100
+[Async Stage2 Group 2] Batch 19199: loss=0.028590, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 19200
+[Async Stage2 Group 2] Batch 19299: loss=0.000334, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 19300
+[Async Stage2 Group 2] Batch 19399: loss=0.000007, latency=0.63ms, stage2_time=0.60ms
+[Socket Receiver Group 2] Sent gradient for batch 19400
+[Async Stage2 Group 2] Batch 19499: loss=0.895154, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 19500
+[Async Stage2 Group 2] Batch 19599: loss=0.098330, latency=0.59ms, stage2_time=0.56ms
+[Socket Receiver Group 2] Sent gradient for batch 19600
+[Async Stage2 Group 2] Batch 19699: loss=0.114725, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 19700
+[Async Stage2 Group 2] Batch 19799: loss=0.001377, latency=0.78ms, stage2_time=0.74ms
+[Socket Receiver Group 2] Sent gradient for batch 19800
+[Async Stage2 Group 2] Batch 19899: loss=0.000033, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 19900
+[Async Stage2 Group 2] Batch 19999: loss=0.031055, latency=0.34ms, stage2_time=0.32ms
+[Async Stage2 Group 2] Syncing after 20000 images (sync #20), avg_loss=0.150895
+[Worker 2] Sent 3000 OUTPUT weights in 0.061ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.066ms
+[Worker 2] OUTPUT sync completed in 0.982ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=20000, dequeued=20000
+Gradient Queue: size=0/10, enqueued=20000, dequeued=20000
+================================
+[Async Stage2 Group 2] Processed 20000 images (56.1 imgs/sec)
+[Socket Receiver Group 2] Received 20000 activations
+[Socket Receiver Group 2] Sent gradient for batch 20000
+[Async Stage2 Group 2] Batch 20099: loss=0.146529, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 20100
+[Async Stage2 Group 2] Batch 20199: loss=0.000018, latency=0.42ms, stage2_time=0.40ms
+[Socket Receiver Group 2] Sent gradient for batch 20200
+[Async Stage2 Group 2] Batch 20299: loss=0.000249, latency=0.40ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 20300
+[Async Stage2 Group 2] Batch 20399: loss=0.098130, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 20400
+[Async Stage2 Group 2] Batch 20499: loss=0.431217, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 20500
+[Async Stage2 Group 2] Batch 20599: loss=0.000020, latency=0.41ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 20600
+[Async Stage2 Group 2] Batch 20699: loss=0.000052, latency=0.40ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 20700
+[Async Stage2 Group 2] Batch 20799: loss=0.000297, latency=0.42ms, stage2_time=0.39ms
+[Socket Receiver Group 2] Sent gradient for batch 20800
+[Async Stage2 Group 2] Batch 20899: loss=0.000360, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 20900
+[Async Stage2 Group 2] Batch 20999: loss=0.000300, latency=0.35ms, stage2_time=0.33ms
+[Async Stage2 Group 2] Syncing after 21000 images (sync #21), avg_loss=0.142199
+[Worker 2] Sent 3000 OUTPUT weights in 0.068ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.095ms
+[Worker 2] OUTPUT sync completed in 0.735ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=21000, dequeued=21000
+Gradient Queue: size=0/10, enqueued=21000, dequeued=21000
+================================
+[Async Stage2 Group 2] Processed 21000 images (56.0 imgs/sec)
+[Socket Receiver Group 2] Received 21000 activations
+[Socket Receiver Group 2] Sent gradient for batch 21000
+[Async Stage2 Group 2] Batch 21099: loss=0.001250, latency=0.32ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 21100
+[Async Stage2 Group 2] Batch 21199: loss=0.000003, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 21200
+[Async Stage2 Group 2] Batch 21299: loss=0.000031, latency=0.46ms, stage2_time=0.43ms
+[Socket Receiver Group 2] Sent gradient for batch 21300
+[Async Stage2 Group 2] Batch 21399: loss=0.001077, latency=0.37ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 21400
+[Async Stage2 Group 2] Batch 21499: loss=0.000007, latency=0.46ms, stage2_time=0.43ms
+[Socket Receiver Group 2] Sent gradient for batch 21500
+[Async Stage2 Group 2] Batch 21599: loss=0.000100, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 21600
+[Async Stage2 Group 2] Batch 21699: loss=0.000157, latency=0.31ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 21700
+[Async Stage2 Group 2] Batch 21799: loss=0.004429, latency=0.45ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 21800
+[Async Stage2 Group 2] Batch 21899: loss=0.002137, latency=0.35ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 21900
+[Async Stage2 Group 2] Batch 21999: loss=0.016438, latency=0.36ms, stage2_time=0.34ms
+[Async Stage2 Group 2] Syncing after 22000 images (sync #22), avg_loss=0.100374
+[Worker 2] Sent 3000 OUTPUT weights in 0.050ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.397ms
+[Worker 2] OUTPUT sync completed in 1.192ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=22000, dequeued=22000
+Gradient Queue: size=0/10, enqueued=22000, dequeued=22000
+================================
+[Async Stage2 Group 2] Processed 22000 images (55.9 imgs/sec)
+[Socket Receiver Group 2] Received 22000 activations
+[Socket Receiver Group 2] Sent gradient for batch 22000
+[Async Stage2 Group 2] Batch 22099: loss=0.544815, latency=0.49ms, stage2_time=0.47ms
+[Socket Receiver Group 2] Sent gradient for batch 22100
+[Async Stage2 Group 2] Batch 22199: loss=0.002127, latency=0.32ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 22200
+[Async Stage2 Group 2] Batch 22299: loss=0.000159, latency=0.34ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 22300
+[Async Stage2 Group 2] Batch 22399: loss=1.215157, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 22400
+[Async Stage2 Group 2] Batch 22499: loss=0.000002, latency=0.48ms, stage2_time=0.45ms
+[Socket Receiver Group 2] Sent gradient for batch 22500
+[Async Stage2 Group 2] Batch 22599: loss=0.000001, latency=0.42ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 22600
+[Async Stage2 Group 2] Batch 22699: loss=0.553647, latency=0.49ms, stage2_time=0.46ms
+[Socket Receiver Group 2] Sent gradient for batch 22700
+[Async Stage2 Group 2] Batch 22799: loss=0.000301, latency=0.38ms, stage2_time=0.36ms
+[Socket Receiver Group 2] Sent gradient for batch 22800
+[Async Stage2 Group 2] Batch 22899: loss=1.915082, latency=0.39ms, stage2_time=0.37ms
+[Socket Receiver Group 2] Sent gradient for batch 22900
+[Async Stage2 Group 2] Batch 22999: loss=0.015849, latency=0.38ms, stage2_time=0.36ms
+[Async Stage2 Group 2] Syncing after 23000 images (sync #23), avg_loss=0.166177
+[Worker 2] Sent 3000 OUTPUT weights in 0.083ms
+[Socket Receiver Group 2] Received 23000 activations
+[Worker 2] Received 3000 OUTPUT center weights in 0.087ms
+[Worker 2] OUTPUT sync completed in 3.916ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=23000, dequeued=23000
+Gradient Queue: size=0/10, enqueued=23000, dequeued=23000
+================================
+[Async Stage2 Group 2] Processed 23000 images (55.5 imgs/sec)
+[Socket Receiver Group 2] Sent gradient for batch 23000
+[Async Stage2 Group 2] Batch 23099: loss=0.014585, latency=0.28ms, stage2_time=0.26ms
+[Socket Receiver Group 2] Sent gradient for batch 23100
+[Async Stage2 Group 2] Batch 23199: loss=0.004215, latency=0.39ms, stage2_time=0.36ms
+[Socket Receiver Group 2] Sent gradient for batch 23200
+[Async Stage2 Group 2] Batch 23299: loss=0.000002, latency=0.40ms, stage2_time=0.37ms
+[Socket Receiver Group 2] Sent gradient for batch 23300
+[Async Stage2 Group 2] Batch 23399: loss=0.013161, latency=0.62ms, stage2_time=0.58ms
+[Socket Receiver Group 2] Sent gradient for batch 23400
+[Async Stage2 Group 2] Batch 23499: loss=0.001647, latency=0.68ms, stage2_time=0.64ms
+[Socket Receiver Group 2] Sent gradient for batch 23500
+[Async Stage2 Group 2] Batch 23599: loss=0.000650, latency=0.55ms, stage2_time=0.51ms
+[Socket Receiver Group 2] Sent gradient for batch 23600
+[Async Stage2 Group 2] Batch 23699: loss=0.001195, latency=0.60ms, stage2_time=0.56ms
+[Socket Receiver Group 2] Sent gradient for batch 23700
+[Async Stage2 Group 2] Batch 23799: loss=0.000012, latency=0.43ms, stage2_time=0.41ms
+[Socket Receiver Group 2] Sent gradient for batch 23800
+[Async Stage2 Group 2] Batch 23899: loss=0.000278, latency=0.69ms, stage2_time=0.57ms
+[Socket Receiver Group 2] Sent gradient for batch 23900
+[Async Stage2 Group 2] Batch 23999: loss=1.222153, latency=0.48ms, stage2_time=0.45ms
+[Async Stage2 Group 2] Syncing after 24000 images (sync #24), avg_loss=0.120070
+[Worker 2] Sent 3000 OUTPUT weights in 0.087ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.818ms
+[Worker 2] OUTPUT sync completed in 1.736ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=24000, dequeued=24000
+Gradient Queue: size=0/10, enqueued=24000, dequeued=24000
+================================
+[Async Stage2 Group 2] Processed 24000 images (54.3 imgs/sec)
+[Socket Receiver Group 2] Received 24000 activations
+[Socket Receiver Group 2] Sent gradient for batch 24000
+[Async Stage2 Group 2] Batch 24099: loss=0.014858, latency=0.56ms, stage2_time=0.54ms
+[Socket Receiver Group 2] Sent gradient for batch 24100
+[Async Stage2 Group 2] Batch 24199: loss=0.048580, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 24200
+[Async Stage2 Group 2] Batch 24299: loss=0.000001, latency=0.35ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 24300
+[Async Stage2 Group 2] Batch 24399: loss=0.000005, latency=0.38ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 24400
+[Async Stage2 Group 2] Batch 24499: loss=0.024389, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 24500
+[Async Stage2 Group 2] Batch 24599: loss=0.006678, latency=0.40ms, stage2_time=0.37ms
+[Socket Receiver Group 2] Sent gradient for batch 24600
+[Async Stage2 Group 2] Batch 24699: loss=0.000138, latency=0.57ms, stage2_time=0.55ms
+[Socket Receiver Group 2] Sent gradient for batch 24700
+[Async Stage2 Group 2] Batch 24799: loss=0.000868, latency=0.38ms, stage2_time=0.35ms
+[Socket Receiver Group 2] Sent gradient for batch 24800
+[Async Stage2 Group 2] Batch 24899: loss=0.000117, latency=0.38ms, stage2_time=0.36ms
+[Socket Receiver Group 2] Sent gradient for batch 24900
+[Async Stage2 Group 2] Batch 24999: loss=0.000007, latency=0.46ms, stage2_time=0.43ms
+[Async Stage2 Group 2] Syncing after 25000 images (sync #25), avg_loss=0.116957
+[Worker 2] Sent 3000 OUTPUT weights in 0.094ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.125ms
+[Worker 2] OUTPUT sync completed in 2.153ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=25000, dequeued=25000
+Gradient Queue: size=0/10, enqueued=25000, dequeued=25000
+================================
+[Async Stage2 Group 2] Processed 25000 images (54.3 imgs/sec)
+[Socket Receiver Group 2] Received 25000 activations
+[Socket Receiver Group 2] Sent gradient for batch 25000
+[Async Stage2 Group 2] Batch 25099: loss=0.000955, latency=0.50ms, stage2_time=0.47ms
+[Socket Receiver Group 2] Sent gradient for batch 25100
+[Async Stage2 Group 2] Batch 25199: loss=0.065515, latency=0.35ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 25200
+[Async Stage2 Group 2] Batch 25299: loss=0.000081, latency=0.47ms, stage2_time=0.45ms
+[Socket Receiver Group 2] Sent gradient for batch 25300
+[Async Stage2 Group 2] Batch 25399: loss=0.001508, latency=0.58ms, stage2_time=0.55ms
+[Socket Receiver Group 2] Sent gradient for batch 25400
+[Async Stage2 Group 2] Batch 25499: loss=0.000150, latency=0.31ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 25500
+[Async Stage2 Group 2] Batch 25599: loss=0.003519, latency=0.43ms, stage2_time=0.40ms
+[Socket Receiver Group 2] Sent gradient for batch 25600
+[Async Stage2 Group 2] Batch 25699: loss=0.000003, latency=0.37ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 25700
+[Async Stage2 Group 2] Batch 25799: loss=0.000004, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 25800
+[Async Stage2 Group 2] Batch 25899: loss=0.000271, latency=0.33ms, stage2_time=0.32ms
+[Socket Receiver Group 2] Sent gradient for batch 25900
+[Async Stage2 Group 2] Batch 25999: loss=0.000009, latency=0.30ms, stage2_time=0.28ms
+[Async Stage2 Group 2] Syncing after 26000 images (sync #26), avg_loss=0.094160
+[Worker 2] Sent 3000 OUTPUT weights in 0.061ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.102ms
+[Worker 2] OUTPUT sync completed in 0.904ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=26000, dequeued=26000
+Gradient Queue: size=0/10, enqueued=26000, dequeued=26000
+================================
+[Async Stage2 Group 2] Processed 26000 images (54.2 imgs/sec)
+[Socket Receiver Group 2] Received 26000 activations
+[Socket Receiver Group 2] Sent gradient for batch 26000
+[Async Stage2 Group 2] Batch 26099: loss=0.001476, latency=0.40ms, stage2_time=0.38ms
+[Socket Receiver Group 2] Sent gradient for batch 26100
+[Async Stage2 Group 2] Batch 26199: loss=0.128912, latency=0.32ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 26200
+[Async Stage2 Group 2] Batch 26299: loss=0.000041, latency=0.36ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 26300
+[Async Stage2 Group 2] Batch 26399: loss=0.004337, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 26400
+[Async Stage2 Group 2] Batch 26499: loss=0.450043, latency=0.33ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 26500
+[Async Stage2 Group 2] Batch 26599: loss=0.016213, latency=0.36ms, stage2_time=0.34ms
+[Socket Receiver Group 2] Sent gradient for batch 26600
+[Async Stage2 Group 2] Batch 26699: loss=0.000002, latency=0.47ms, stage2_time=0.44ms
+[Socket Receiver Group 2] Sent gradient for batch 26700
+[Async Stage2 Group 2] Batch 26799: loss=0.000308, latency=0.32ms, stage2_time=0.31ms
+[Socket Receiver Group 2] Sent gradient for batch 26800
+[Async Stage2 Group 2] Batch 26899: loss=0.000012, latency=0.32ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 26900
+[Async Stage2 Group 2] Batch 26999: loss=0.150319, latency=0.29ms, stage2_time=0.27ms
+[Async Stage2 Group 2] Syncing after 27000 images (sync #27), avg_loss=0.099623
+[Worker 2] Sent 3000 OUTPUT weights in 0.136ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.121ms
+[Worker 2] OUTPUT sync completed in 0.886ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=27000, dequeued=27000
+Gradient Queue: size=0/10, enqueued=27000, dequeued=27000
+================================
+[Async Stage2 Group 2] Processed 27000 images (54.4 imgs/sec)
+[Socket Receiver Group 2] Received 27000 activations
+[Socket Receiver Group 2] Sent gradient for batch 27000
+[Async Stage2 Group 2] Batch 27099: loss=0.000387, latency=0.28ms, stage2_time=0.27ms
+[Socket Receiver Group 2] Sent gradient for batch 27100
+[Async Stage2 Group 2] Batch 27199: loss=0.001298, latency=0.36ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 27200
+[Async Stage2 Group 2] Batch 27299: loss=0.000183, latency=0.29ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 27300
+[Async Stage2 Group 2] Batch 27399: loss=0.002266, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 27400
+[Async Stage2 Group 2] Batch 27499: loss=0.000018, latency=0.24ms, stage2_time=0.23ms
+[Socket Receiver Group 2] Sent gradient for batch 27500
+[Async Stage2 Group 2] Batch 27599: loss=0.000031, latency=0.48ms, stage2_time=0.45ms
+[Socket Receiver Group 2] Sent gradient for batch 27600
+[Async Stage2 Group 2] Batch 27699: loss=0.000114, latency=0.32ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 27700
+[Async Stage2 Group 2] Batch 27799: loss=0.000012, latency=0.27ms, stage2_time=0.25ms
+[Socket Receiver Group 2] Sent gradient for batch 27800
+[Async Stage2 Group 2] Batch 27899: loss=0.000399, latency=0.26ms, stage2_time=0.24ms
+[Socket Receiver Group 2] Sent gradient for batch 27900
+[Async Stage2 Group 2] Batch 27999: loss=0.000001, latency=0.25ms, stage2_time=0.23ms
+[Async Stage2 Group 2] Syncing after 28000 images (sync #28), avg_loss=0.084694
+[Worker 2] Sent 3000 OUTPUT weights in 0.019ms
+[Worker 2] Received 3000 OUTPUT center weights in 0.118ms
+[Worker 2] OUTPUT sync completed in 0.799ms
+[Async Stage2 Group 2] Successfully synced weights
+=== Pipeline Queue Statistics ===
+Activation Queue: size=0/10, enqueued=28000, dequeued=28000
+Gradient Queue: size=0/10, enqueued=28000, dequeued=28000
+================================
+[Async Stage2 Group 2] Processed 28000 images (54.8 imgs/sec)
+[Socket Receiver Group 2] Received 28000 activations
+[Socket Receiver Group 2] Sent gradient for batch 28000
+[Async Stage2 Group 2] Batch 28099: loss=0.007104, latency=0.47ms, stage2_time=0.45ms
+[Socket Receiver Group 2] Sent gradient for batch 28100
+[Async Stage2 Group 2] Batch 28199: loss=0.000022, latency=0.31ms, stage2_time=0.29ms
+[Socket Receiver Group 2] Sent gradient for batch 28200
+[Async Stage2 Group 2] Batch 28299: loss=0.002420, latency=0.33ms, stage2_time=0.30ms
+[Socket Receiver Group 2] Sent gradient for batch 28300
+[Async Stage2 Group 2] Batch 28399: loss=0.000016, latency=0.30ms, stage2_time=0.28ms
+[Socket Receiver Group 2] Sent gradient for batch 28400
+[Async Stage2 Group 2] Batch 28499: loss=0.000117, latency=0.26ms, stage2_time=0.24ms
+[Socket Receiver Group 2] Sent gradient for batch 28500
+[Async Stage2 Group 2] Batch 28599: loss=0.929383, latency=0.35ms, stage2_time=0.33ms
+[Socket Receiver Group 2] Sent gradient for batch 28600

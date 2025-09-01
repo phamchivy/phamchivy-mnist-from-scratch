@@ -1,0 +1,758 @@
+DEBUG: Set server port to: 12445
+=== Hybrid Parallelism Configuration ===
+Training: epochs=1, batch_size=1000, lr=0.100
+EASGD: alpha=0.010, beta=0.001, enabled=false
+Network: 784->300->10 (sigmoid)
+Pipeline: 2 groups, 2 stages, sync every 1000 images
+Server: 172.32.0.10:12445, expecting 120 requests
+Async Pipeline: disabled, queue_size=10, profiling=off
+=========================================
+[Parameter Server] Starting on port 12345 (Hybrid Mode)
+[Parameter Server] EASGD: α=0.010, β=0.001
+[Parameter Server] Expected requests: 120
+[Parameter Server] Hidden elastic center initialized (300x784)
+[Parameter Server] Output elastic center initialized (10x300)
+[Parameter Server] Separate elastic centers initialized
+[Parameter Server] Server socket ready, waiting for workers...
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #1)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.051ms
+[Parameter Server] Updated OUTPUT elastic center in 0.427ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.178ms
+[Parameter Server] Request #1 (OUTPUT) processed in 0.816ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #2)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.992ms
+[Parameter Server] Updated HIDDEN elastic center in 18.620ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.373ms
+[Parameter Server] Request #2 (HIDDEN) processed in 27.625ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #3)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.248ms
+[Parameter Server] Updated OUTPUT elastic center in 0.199ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.206ms
+[Parameter Server] Request #3 (OUTPUT) processed in 0.861ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #4)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 7.104ms
+[Parameter Server] Updated HIDDEN elastic center in 15.378ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 6.143ms
+[Parameter Server] Request #4 (HIDDEN) processed in 38.109ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #5)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.009ms
+[Parameter Server] Updated OUTPUT elastic center in 0.137ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.113ms
+[Parameter Server] Request #5 (OUTPUT) processed in 0.341ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #6)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 4.895ms
+[Parameter Server] Updated HIDDEN elastic center in 18.965ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 5.260ms
+[Parameter Server] Request #6 (HIDDEN) processed in 31.206ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #7)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.010ms
+[Parameter Server] Updated OUTPUT elastic center in 0.132ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.139ms
+[Parameter Server] Request #7 (OUTPUT) processed in 0.340ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #8)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 8.719ms
+[Parameter Server] Updated HIDDEN elastic center in 23.427ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 13.193ms
+[Parameter Server] Request #8 (HIDDEN) processed in 48.310ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #9)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.172ms
+[Parameter Server] Updated OUTPUT elastic center in 0.121ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.235ms
+[Parameter Server] Request #9 (OUTPUT) processed in 0.624ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #10)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 1.910ms
+[Parameter Server] Updated HIDDEN elastic center in 10.641ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.293ms
+[Parameter Server] Request #10 (HIDDEN) processed in 18.828ms
+[Parameter Server] === Processed 10 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #11)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.014ms
+[Parameter Server] Updated OUTPUT elastic center in 0.171ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.168ms
+[Parameter Server] Request #11 (OUTPUT) processed in 0.561ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #12)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 5.889ms
+[Parameter Server] Updated HIDDEN elastic center in 13.606ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.103ms
+[Parameter Server] Request #12 (HIDDEN) processed in 25.526ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #13)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.131ms
+[Parameter Server] Updated OUTPUT elastic center in 0.148ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.112ms
+[Parameter Server] Request #13 (OUTPUT) processed in 0.583ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #14)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 14.176ms
+[Parameter Server] Updated HIDDEN elastic center in 17.710ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 9.444ms
+[Parameter Server] Request #14 (HIDDEN) processed in 46.619ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #15)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.181ms
+[Parameter Server] Updated OUTPUT elastic center in 0.140ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.171ms
+[Parameter Server] Request #15 (OUTPUT) processed in 0.682ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #16)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 4.780ms
+[Parameter Server] Updated HIDDEN elastic center in 38.537ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 11.485ms
+[Parameter Server] Request #16 (HIDDEN) processed in 56.907ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #17)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.123ms
+[Parameter Server] Updated HIDDEN elastic center in 13.810ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.073ms
+[Parameter Server] Request #17 (HIDDEN) processed in 21.709ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #18)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.012ms
+[Parameter Server] Updated OUTPUT elastic center in 0.174ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.198ms
+[Parameter Server] Request #18 (OUTPUT) processed in 1.550ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #19)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.007ms
+[Parameter Server] Updated OUTPUT elastic center in 0.161ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.165ms
+[Parameter Server] Request #19 (OUTPUT) processed in 0.527ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #20)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 6.022ms
+[Parameter Server] Updated HIDDEN elastic center in 12.490ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 10.988ms
+[Parameter Server] Request #20 (HIDDEN) processed in 33.365ms
+[Parameter Server] === Processed 20 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #21)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.009ms
+[Parameter Server] Updated OUTPUT elastic center in 0.161ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.122ms
+[Parameter Server] Request #21 (OUTPUT) processed in 0.459ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #22)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 30.282ms
+[Parameter Server] Updated HIDDEN elastic center in 36.234ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 23.083ms
+[Parameter Server] Request #22 (HIDDEN) processed in 91.748ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #23)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.066ms
+[Parameter Server] Updated OUTPUT elastic center in 0.203ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.188ms
+[Parameter Server] Request #23 (OUTPUT) processed in 0.591ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #24)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 17.960ms
+[Parameter Server] Updated HIDDEN elastic center in 25.371ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.668ms
+[Parameter Server] Request #24 (HIDDEN) processed in 49.438ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #25)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.163ms
+[Parameter Server] Updated HIDDEN elastic center in 13.928ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.141ms
+[Parameter Server] Request #25 (HIDDEN) processed in 23.840ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #26)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.011ms
+[Parameter Server] Updated OUTPUT elastic center in 0.192ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.459ms
+[Parameter Server] Request #26 (OUTPUT) processed in 0.852ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #27)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.586ms
+[Parameter Server] Updated HIDDEN elastic center in 18.985ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 5.611ms
+[Parameter Server] Request #27 (HIDDEN) processed in 29.020ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #28)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.012ms
+[Parameter Server] Updated OUTPUT elastic center in 0.179ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.270ms
+[Parameter Server] Request #28 (OUTPUT) processed in 0.625ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #29)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.078ms
+[Parameter Server] Updated OUTPUT elastic center in 0.196ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.203ms
+[Parameter Server] Request #29 (OUTPUT) processed in 0.666ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #30)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.687ms
+[Parameter Server] Updated HIDDEN elastic center in 14.289ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.853ms
+[Parameter Server] Request #30 (HIDDEN) processed in 37.358ms
+[Parameter Server] === Processed 30 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #31)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.017ms
+[Parameter Server] Updated OUTPUT elastic center in 0.220ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.173ms
+[Parameter Server] Request #31 (OUTPUT) processed in 0.640ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #32)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.587ms
+[Parameter Server] Updated HIDDEN elastic center in 16.148ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 4.763ms
+[Parameter Server] Request #32 (HIDDEN) processed in 27.166ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #33)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.233ms
+[Parameter Server] Updated OUTPUT elastic center in 0.200ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.174ms
+[Parameter Server] Request #33 (OUTPUT) processed in 0.916ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #34)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.163ms
+[Parameter Server] Updated HIDDEN elastic center in 19.553ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 8.544ms
+[Parameter Server] Request #34 (HIDDEN) processed in 36.782ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #35)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.041ms
+[Parameter Server] Updated OUTPUT elastic center in 0.167ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.128ms
+[Parameter Server] Request #35 (OUTPUT) processed in 0.455ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #36)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 4.499ms
+[Parameter Server] Updated HIDDEN elastic center in 18.242ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.234ms
+[Parameter Server] Request #36 (HIDDEN) processed in 28.205ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #37)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.057ms
+[Parameter Server] Updated OUTPUT elastic center in 0.275ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.400ms
+[Parameter Server] Request #37 (OUTPUT) processed in 1.092ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #38)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 5.792ms
+[Parameter Server] Updated HIDDEN elastic center in 22.522ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.207ms
+[Parameter Server] Request #38 (HIDDEN) processed in 35.035ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #39)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.011ms
+[Parameter Server] Updated OUTPUT elastic center in 0.192ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.140ms
+[Parameter Server] Request #39 (OUTPUT) processed in 0.531ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #40)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 20.624ms
+[Parameter Server] Updated HIDDEN elastic center in 19.552ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 4.958ms
+[Parameter Server] Request #40 (HIDDEN) processed in 47.279ms
+[Parameter Server] === Processed 40 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #41)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.012ms
+[Parameter Server] Updated OUTPUT elastic center in 0.260ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.303ms
+[Parameter Server] Request #41 (OUTPUT) processed in 0.879ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #42)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.628ms
+[Parameter Server] Updated HIDDEN elastic center in 55.166ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.051ms
+[Parameter Server] Request #42 (HIDDEN) processed in 63.567ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #43)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.014ms
+[Parameter Server] Updated OUTPUT elastic center in 0.238ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.218ms
+[Parameter Server] Request #43 (OUTPUT) processed in 0.662ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #44)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.425ms
+[Parameter Server] Updated HIDDEN elastic center in 16.769ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.253ms
+[Parameter Server] Request #44 (HIDDEN) processed in 24.371ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #45)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.205ms
+[Parameter Server] Updated OUTPUT elastic center in 0.185ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.122ms
+[Parameter Server] Request #45 (OUTPUT) processed in 0.700ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #46)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.934ms
+[Parameter Server] Updated HIDDEN elastic center in 15.164ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.304ms
+[Parameter Server] Request #46 (HIDDEN) processed in 21.252ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #47)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.267ms
+[Parameter Server] Updated OUTPUT elastic center in 0.187ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.074ms
+[Parameter Server] Request #47 (OUTPUT) processed in 0.735ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #48)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 5.134ms
+[Parameter Server] Updated HIDDEN elastic center in 21.475ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 1.282ms
+[Parameter Server] Request #48 (HIDDEN) processed in 33.522ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #49)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.276ms
+[Parameter Server] Updated OUTPUT elastic center in 0.201ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.131ms
+[Parameter Server] Request #49 (OUTPUT) processed in 0.788ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #50)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.701ms
+[Parameter Server] Updated HIDDEN elastic center in 17.981ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.873ms
+[Parameter Server] Request #50 (HIDDEN) processed in 25.985ms
+[Parameter Server] === Processed 50 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #51)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.017ms
+[Parameter Server] Updated OUTPUT elastic center in 0.192ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.155ms
+[Parameter Server] Request #51 (OUTPUT) processed in 0.555ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #52)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 6.740ms
+[Parameter Server] Updated HIDDEN elastic center in 14.271ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 4.962ms
+[Parameter Server] Request #52 (HIDDEN) processed in 28.306ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #53)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.056ms
+[Parameter Server] Updated OUTPUT elastic center in 0.165ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.105ms
+[Parameter Server] Request #53 (OUTPUT) processed in 0.482ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #54)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.567ms
+[Parameter Server] Updated HIDDEN elastic center in 20.866ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.038ms
+[Parameter Server] Request #54 (HIDDEN) processed in 32.289ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #55)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.015ms
+[Parameter Server] Updated OUTPUT elastic center in 0.221ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.588ms
+[Parameter Server] Request #55 (OUTPUT) processed in 1.422ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #56)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 5.914ms
+[Parameter Server] Updated HIDDEN elastic center in 69.371ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 5.765ms
+[Parameter Server] Request #56 (HIDDEN) processed in 85.230ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #57)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.627ms
+[Parameter Server] Updated OUTPUT elastic center in 0.216ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.184ms
+[Parameter Server] Request #57 (OUTPUT) processed in 1.186ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #58)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.492ms
+[Parameter Server] Updated HIDDEN elastic center in 18.672ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 7.104ms
+[Parameter Server] Request #58 (HIDDEN) processed in 30.477ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #59)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 7.151ms
+[Parameter Server] Updated HIDDEN elastic center in 44.675ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 10.505ms
+[Parameter Server] Request #59 (HIDDEN) processed in 75.877ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #60)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.013ms
+[Parameter Server] Updated OUTPUT elastic center in 0.337ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.195ms
+[Parameter Server] Request #60 (OUTPUT) processed in 0.730ms
+[Parameter Server] === Processed 60 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #61)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.243ms
+[Parameter Server] Updated OUTPUT elastic center in 0.206ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.184ms
+[Parameter Server] Request #61 (OUTPUT) processed in 0.840ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #62)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 9.763ms
+[Parameter Server] Updated HIDDEN elastic center in 18.609ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 6.717ms
+[Parameter Server] Request #62 (HIDDEN) processed in 40.909ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #63)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.009ms
+[Parameter Server] Updated OUTPUT elastic center in 0.175ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.185ms
+[Parameter Server] Request #63 (OUTPUT) processed in 0.569ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #64)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.080ms
+[Parameter Server] Updated HIDDEN elastic center in 15.425ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.025ms
+[Parameter Server] Request #64 (HIDDEN) processed in 25.297ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #65)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.136ms
+[Parameter Server] Updated OUTPUT elastic center in 0.205ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.192ms
+[Parameter Server] Request #65 (OUTPUT) processed in 0.762ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #66)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 1.616ms
+[Parameter Server] Updated HIDDEN elastic center in 24.732ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 18.371ms
+[Parameter Server] Request #66 (HIDDEN) processed in 50.897ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #67)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.044ms
+[Parameter Server] Updated OUTPUT elastic center in 0.201ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.189ms
+[Parameter Server] Request #67 (OUTPUT) processed in 0.619ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #68)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.705ms
+[Parameter Server] Updated HIDDEN elastic center in 21.100ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.610ms
+[Parameter Server] Request #68 (HIDDEN) processed in 28.370ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #69)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.011ms
+[Parameter Server] Updated OUTPUT elastic center in 0.175ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.130ms
+[Parameter Server] Request #69 (OUTPUT) processed in 0.452ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #70)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 5.214ms
+[Parameter Server] Updated HIDDEN elastic center in 21.241ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.178ms
+[Parameter Server] Request #70 (HIDDEN) processed in 37.418ms
+[Parameter Server] === Processed 70 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #71)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.177ms
+[Parameter Server] Updated OUTPUT elastic center in 0.197ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.296ms
+[Parameter Server] Request #71 (OUTPUT) processed in 0.818ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #72)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.341ms
+[Parameter Server] Updated HIDDEN elastic center in 18.540ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 6.886ms
+[Parameter Server] Request #72 (HIDDEN) processed in 30.939ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #73)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.081ms
+[Parameter Server] Updated OUTPUT elastic center in 0.215ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.177ms
+[Parameter Server] Request #73 (OUTPUT) processed in 0.620ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #74)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.340ms
+[Parameter Server] Updated HIDDEN elastic center in 19.230ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 6.606ms
+[Parameter Server] Request #74 (HIDDEN) processed in 30.759ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #75)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.014ms
+[Parameter Server] Updated OUTPUT elastic center in 0.230ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.257ms
+[Parameter Server] Request #75 (OUTPUT) processed in 0.671ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #76)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.024ms
+[Parameter Server] Updated HIDDEN elastic center in 24.556ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.533ms
+[Parameter Server] Request #76 (HIDDEN) processed in 35.191ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #77)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.009ms
+[Parameter Server] Updated OUTPUT elastic center in 0.236ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.163ms
+[Parameter Server] Request #77 (OUTPUT) processed in 0.604ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #78)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 4.932ms
+[Parameter Server] Updated HIDDEN elastic center in 14.227ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 11.118ms
+[Parameter Server] Request #78 (HIDDEN) processed in 32.520ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #79)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.130ms
+[Parameter Server] Updated OUTPUT elastic center in 0.202ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.404ms
+[Parameter Server] Request #79 (OUTPUT) processed in 0.935ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #80)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.482ms
+[Parameter Server] Updated HIDDEN elastic center in 21.678ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 8.144ms
+[Parameter Server] Request #80 (HIDDEN) processed in 33.420ms
+[Parameter Server] === Processed 80 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #81)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.044ms
+[Parameter Server] Updated OUTPUT elastic center in 0.205ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.204ms
+[Parameter Server] Request #81 (OUTPUT) processed in 0.594ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #82)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.140ms
+[Parameter Server] Updated HIDDEN elastic center in 21.970ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.125ms
+[Parameter Server] Request #82 (HIDDEN) processed in 33.836ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #83)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.014ms
+[Parameter Server] Updated OUTPUT elastic center in 0.209ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.165ms
+[Parameter Server] Request #83 (OUTPUT) processed in 0.756ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #84)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.808ms
+[Parameter Server] Updated HIDDEN elastic center in 22.873ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 8.602ms
+[Parameter Server] Request #84 (HIDDEN) processed in 37.815ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #85)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.064ms
+[Parameter Server] Updated OUTPUT elastic center in 0.209ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.188ms
+[Parameter Server] Request #85 (OUTPUT) processed in 0.661ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #86)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 5.212ms
+[Parameter Server] Updated HIDDEN elastic center in 12.746ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 2.229ms
+[Parameter Server] Request #86 (HIDDEN) processed in 23.202ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #87)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.010ms
+[Parameter Server] Updated OUTPUT elastic center in 0.188ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.139ms
+[Parameter Server] Request #87 (OUTPUT) processed in 0.468ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #88)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 4.742ms
+[Parameter Server] Updated HIDDEN elastic center in 16.109ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 1.753ms
+[Parameter Server] Request #88 (HIDDEN) processed in 24.621ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #89)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.018ms
+[Parameter Server] Updated OUTPUT elastic center in 0.301ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.190ms
+[Parameter Server] Request #89 (OUTPUT) processed in 0.693ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #90)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 18.261ms
+[Parameter Server] Updated HIDDEN elastic center in 18.771ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 11.076ms
+[Parameter Server] Request #90 (HIDDEN) processed in 50.210ms
+[Parameter Server] === Processed 90 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #91)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.092ms
+[Parameter Server] Updated OUTPUT elastic center in 0.275ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.215ms
+[Parameter Server] Request #91 (OUTPUT) processed in 0.810ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #92)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.410ms
+[Parameter Server] Updated HIDDEN elastic center in 39.772ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 7.732ms
+[Parameter Server] Request #92 (HIDDEN) processed in 58.452ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #93)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.011ms
+[Parameter Server] Updated OUTPUT elastic center in 0.202ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.226ms
+[Parameter Server] Request #93 (OUTPUT) processed in 0.720ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #94)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 11.880ms
+[Parameter Server] Updated HIDDEN elastic center in 24.709ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 5.212ms
+[Parameter Server] Request #94 (HIDDEN) processed in 44.316ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #95)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 3.282ms
+[Parameter Server] Updated HIDDEN elastic center in 16.782ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 1.057ms
+[Parameter Server] Request #95 (HIDDEN) processed in 23.117ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #96)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.014ms
+[Parameter Server] Updated OUTPUT elastic center in 0.214ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.233ms
+[Parameter Server] Request #96 (OUTPUT) processed in 0.553ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #97)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.017ms
+[Parameter Server] Updated OUTPUT elastic center in 0.233ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.269ms
+[Parameter Server] Request #97 (OUTPUT) processed in 0.871ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #98)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 3.224ms
+[Parameter Server] Updated HIDDEN elastic center in 18.046ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 5.477ms
+[Parameter Server] Request #98 (HIDDEN) processed in 29.684ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #99)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.015ms
+[Parameter Server] Updated OUTPUT elastic center in 0.277ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.262ms
+[Parameter Server] Request #99 (OUTPUT) processed in 0.881ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #100)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 94.874ms
+[Parameter Server] Updated HIDDEN elastic center in 40.373ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 28.190ms
+[Parameter Server] Request #100 (HIDDEN) processed in 166.353ms
+[Parameter Server] === Processed 100 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #101)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.013ms
+[Parameter Server] Updated OUTPUT elastic center in 0.183ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.893ms
+[Parameter Server] Request #101 (OUTPUT) processed in 1.332ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #102)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 5.685ms
+[Parameter Server] Updated HIDDEN elastic center in 22.412ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 12.766ms
+[Parameter Server] Request #102 (HIDDEN) processed in 43.230ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #103)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.649ms
+[Parameter Server] Updated OUTPUT elastic center in 0.169ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.153ms
+[Parameter Server] Request #103 (OUTPUT) processed in 1.224ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #104)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 1.694ms
+[Parameter Server] Updated HIDDEN elastic center in 21.258ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 3.570ms
+[Parameter Server] Request #104 (HIDDEN) processed in 28.613ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #105)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.130ms
+[Parameter Server] Updated OUTPUT elastic center in 0.225ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.264ms
+[Parameter Server] Request #105 (OUTPUT) processed in 0.780ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #106)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 8.526ms
+[Parameter Server] Updated HIDDEN elastic center in 24.287ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.989ms
+[Parameter Server] Request #106 (HIDDEN) processed in 41.789ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #107)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.138ms
+[Parameter Server] Updated OUTPUT elastic center in 0.239ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.229ms
+[Parameter Server] Request #107 (OUTPUT) processed in 0.840ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #108)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 2.403ms
+[Parameter Server] Updated HIDDEN elastic center in 26.522ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 17.105ms
+[Parameter Server] Request #108 (HIDDEN) processed in 51.440ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #109)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.008ms
+[Parameter Server] Updated OUTPUT elastic center in 0.158ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.138ms
+[Parameter Server] Request #109 (OUTPUT) processed in 0.527ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #110)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.447ms
+[Parameter Server] Updated HIDDEN elastic center in 18.541ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 2.870ms
+[Parameter Server] Request #110 (HIDDEN) processed in 26.249ms
+[Parameter Server] === Processed 110 total requests ===
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #111)
+[Parameter Server] Received 3000 OUTPUT weights from worker 1 in 0.012ms
+[Parameter Server] Updated OUTPUT elastic center in 0.219ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 1 in 0.358ms
+[Parameter Server] Request #111 (OUTPUT) processed in 0.745ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #112)
+[Parameter Server] Received 235200 HIDDEN weights from worker 1 in 6.065ms
+[Parameter Server] Updated HIDDEN elastic center in 28.585ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 1 in 7.476ms
+[Parameter Server] Request #112 (HIDDEN) processed in 48.864ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #113)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.133ms
+[Parameter Server] Updated OUTPUT elastic center in 0.190ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.163ms
+[Parameter Server] Request #113 (OUTPUT) processed in 0.689ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #114)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 1.960ms
+[Parameter Server] Updated HIDDEN elastic center in 22.000ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.976ms
+[Parameter Server] Request #114 (HIDDEN) processed in 31.896ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #115)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.007ms
+[Parameter Server] Updated OUTPUT elastic center in 0.175ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.167ms
+[Parameter Server] Request #115 (OUTPUT) processed in 0.528ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #116)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 4.493ms
+[Parameter Server] Updated HIDDEN elastic center in 14.229ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 3.205ms
+[Parameter Server] Request #116 (HIDDEN) processed in 23.957ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #117)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.130ms
+[Parameter Server] Updated OUTPUT elastic center in 0.167ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.144ms
+[Parameter Server] Request #117 (OUTPUT) processed in 0.690ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #118)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 2.995ms
+[Parameter Server] Updated HIDDEN elastic center in 13.499ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.858ms
+[Parameter Server] Request #118 (HIDDEN) processed in 23.481ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #119)
+[Parameter Server] Received 3000 OUTPUT weights from worker 2 in 0.190ms
+[Parameter Server] Updated OUTPUT elastic center in 0.337ms
+[Parameter Server] Sent 3000 OUTPUT center weights to worker 2 in 0.300ms
+[Parameter Server] Request #119 (OUTPUT) processed in 1.112ms
+[Parameter Server] Waiting for worker connection...
+[Parameter Server] Worker connected (request #120)
+[Parameter Server] Received 235200 HIDDEN weights from worker 2 in 4.889ms
+[Parameter Server] Updated HIDDEN elastic center in 27.228ms
+[Parameter Server] Sent 235200 HIDDEN center weights to worker 2 in 4.307ms
+[Parameter Server] Request #120 (HIDDEN) processed in 42.310ms
+[Parameter Server] === Processed 120 total requests ===
+[Parameter Server] Training target reached (120 requests)
+[Parameter Server] No requests processed, exiting...
+[Parameter Server] Training completed, saving final model...
+Successfully saved matrix to hidden
+Successfully saved matrix to output
+[Parameter Server] Successfully saved hybrid final model to 'server_logs'
+[Parameter Server] Hidden weights: 300x784, Output weights: 10x300
+[Parameter Server] Final hybrid model saved successfully!
+[Parameter Server] Hidden elastic center cleaned up
+[Parameter Server] Output elastic center cleaned up

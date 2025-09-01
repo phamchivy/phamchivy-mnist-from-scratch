@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdarg.h> 
+#include <signal.h>
 #include <unistd.h>  
 #include "../neural/nn.h"
 #include "../socket/socket_utils.h"
@@ -13,7 +14,18 @@ typedef enum {
     WEIGHT_TYPE_OUTPUT = 2
 } WeightType;
 
+static volatile bool shutdown_requested = false;
+
+void signal_handler(int sig) {
+    shutdown_requested = true;
+    printf("\n[Parameter Server] Shutdown signal received\n");
+}
+
 int main(int argc, char** argv) {
+
+    // Setup signal handlers
+    signal(SIGINT, signal_handler);
+    signal(SIGTERM, signal_handler);
 
     // Load configuration
     const char* config_file = (argc > 1) ? argv[1] : "config.yml";
@@ -68,7 +80,7 @@ int main(int argc, char** argv) {
     //     system(mkdir_cmd);
     // }
     
-    while (!training_completed) {
+    while (!training_completed || !shutdown_requested) {
 
         // if (config->logging.log_sync_details) {
         //     printf("[Parameter Server] Waiting for worker connection...\n");
@@ -198,10 +210,10 @@ int main(int argc, char** argv) {
                 
         
         // ← CHECK COMPLETION
-        if (request_count >= config->server.expected_requests) {
-            printf("[Parameter Server] Training target reached (%d requests)\n", config->server.expected_requests);
-            training_completed = 1;  // ← SET FLAG
-        }
+        // if (request_count >= config->server.expected_requests) {
+        //     printf("[Parameter Server] Training target reached (%d requests)\n", config->server.expected_requests);
+        //     training_completed = 1;  // ← SET FLAG
+        // }
     }
     
     printf("[Parameter Server] No requests processed, exiting...\n");

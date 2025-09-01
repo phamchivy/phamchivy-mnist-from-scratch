@@ -15,7 +15,7 @@ services:
       - "${SERVER_PORT:-12345}:${SERVER_PORT:-12345}"
     volumes:
       - ./config/config.yml:/app/config.yml:ro  # Mount config file
-      - ./results/server_logs:/app/server_logs
+      - ./results/async_server_logs:/app/async_server_logs
       - ./logs:/app/logs
       - /dev/shm:/dev/shm:rw  # ✅ Shared memory for async communication
     networks:
@@ -33,15 +33,15 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.5"
+          cpus: "2"
           memory: "1G"
-    cpuset: "1"
+    cpuset: "1-2"
     depends_on:
       - parameter_server
       - worker1_stage2
     volumes:
       - ./config/config.yml:/app/config.yml:ro
-      - ./results/worker1_stage1:/app/stage1_group_1
+      - ./results/async_worker1_stage1:/app/async_stage1_group_1
       - ./logs:/app/logs
       - /dev/shm:/dev/shm:rw  # ✅ Shared memory
     networks:
@@ -62,14 +62,14 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.5"
+          cpus: "2"
           memory: "1G"
-    cpuset: "2"
+    cpuset: "3-4"
     depends_on:
       - parameter_server
     volumes:
       - ./config/config.yml:/app/config.yml:ro
-      - ./results/worker1_stage2:/app/stage2_group_1
+      - ./results/async_worker1_stage2:/app/async_stage2_group_1
       - ./logs:/app/logs
       - /dev/shm:/dev/shm:rw  # ✅ Shared memory
     networks:
@@ -93,15 +93,15 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.5"
+          cpus: "1"
           memory: "1G"
-    cpuset: "3"
+    cpuset: "5"
     depends_on:
       - parameter_server
       - worker2_stage2
     volumes:
       - ./config/config.yml:/app/config.yml:ro
-      - ./results/worker2_stage1:/app/stage1_group_2
+      - ./results/async_worker2_stage1:/app/async_stage1_group_2
       - ./logs:/app/logs
       - /dev/shm:/dev/shm:rw
     networks:
@@ -122,14 +122,14 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.5"
+          cpus: "1"
           memory: "1G"
-    cpuset: "4"
+    cpuset: "6"
     depends_on:
       - parameter_server
     volumes:
       - ./config/config.yml:/app/config.yml:ro
-      - ./results/worker2_stage2:/app/stage2_group_2
+      - ./results/async_worker2_stage2:/app/async_stage2_group_2
       - ./logs:/app/logs
       - /dev/shm:/dev/shm:rw
     networks:
@@ -145,17 +145,17 @@ services:
       - SHARED_MEMORY_KEY=/async_pipeline_group_2
 
   # Optional: Config validator service
-  config_validator:
-    build:
-      context: .
-      dockerfile: dockerfiles/Dockerfile.server  # Reuse server image
-    command: ["./test_config", "config.yml"]
-    volumes:
-      - ./config/config.yml:/app/config.yml:ro
-      - ./logs:/app/logs
-    networks:
-      hybrid_net:
-    profiles: ["validate"]  # Only run when explicitly requested
+  # config_validator:
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfiles/Dockerfile.server  # Reuse server image
+  #   command: ["./test_config", "config.yml"]
+  #   volumes:
+  #     - ./config/config.yml:/app/config.yml:ro
+  #     - ./logs:/app/logs
+  #   networks:
+  #     hybrid_net:
+  #   profiles: ["validate"]  # Only run when explicitly requested
 
 networks:
   hybrid_net:
